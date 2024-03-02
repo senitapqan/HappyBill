@@ -10,9 +10,9 @@ const (
 	usersTable      = "t_users"
 	rolesTable      = "t_roles"
 	usersRolesTable = "t_users_roles"
-	clientsTable    = "t_students"
-	managersTable   = "t_teachers"
-	adminsTable     = "t_admins"
+	clientsTable    = "t_client"
+	managersTable   = "t_manager"
+	adminsTable     = "t_admin"
 )
 
 type Config struct {
