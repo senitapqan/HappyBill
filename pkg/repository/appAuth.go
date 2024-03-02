@@ -1,16 +1,15 @@
 package repository
 
 import (
-	"happyBill/models"
 	"fmt"
 	"strings"
-
+	"happyBill/consts"
 	"github.com/jmoiron/sqlx"
 )
 
 func (r *repository) GetRoles(id int) ([]string, error) {
 	var roles []string
-	query := fmt.Sprintf("select r.role_name from %s r join %s c on c.role_id = r.id where c.user_id = $1", rolesTable, usersRolesTable)
+	query := fmt.Sprintf("select r.role_name from %s r join %s c on c.role_id = r.id where c.user_id = $1", consts.RolesTable, consts.UsersRolesTable)
 	rows, err := r.db.Query(query, id)
 	if err != nil {
 		return roles, err
@@ -34,13 +33,6 @@ func (r *repository) GetRoleId(role string, userId int) (int, error) {
 	err := r.db.Get(&id, query, userId)
 	return id, err
 }  
-
-func (r *repository) GetUser(username string) (models.User, error) {
-	var user models.User
-	query := fmt.Sprintf("select id, username, password from %s where username = $1", usersTable)
-	err := r.db.Get(&user, query, username)
-	return user, err
-}
 
 func (r repository) GetIdByRole(tx *sqlx.Tx, roleId int, roleTable string) (int, error) {
 	var userId int

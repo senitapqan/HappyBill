@@ -6,14 +6,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-const (
-	usersTable      = "t_users"
-	rolesTable      = "t_roles"
-	usersRolesTable = "t_users_roles"
-	clientsTable    = "t_client"
-	managersTable   = "t_manager"
-	adminsTable     = "t_admin"
-)
 
 type Config struct {
 	Host     string
