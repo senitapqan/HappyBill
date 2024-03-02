@@ -5,10 +5,10 @@ import (
 	"happyBill/models"
 )
 
-func (s *service) CreateClient(student models.User) (int, error) {
-	student.Password = s.hashPassword(student.Password)
-	student_id, err := s.repos.CreateClient(student)
-	return student_id, err
+func (s *service) CreateClient(client models.User) (int, error) {
+	client.Password = s.hashPassword(client.Password)
+	client_id, err := s.repos.CreateClient(client)
+	return client_id, err
 }
 
 func (s service) DeleteStudent(lessonId int) error {

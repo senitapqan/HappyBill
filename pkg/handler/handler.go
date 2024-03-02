@@ -10,9 +10,15 @@ type Handler struct {
 	service service.Service
 }
 
-func (h Handler) InitRoutes() *gin.Engine{
+func (h Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
-	
+
+	auth := router.Group("/auth")
+	{
+		auth.POST("/sign-in", h.signIn)
+		auth.POST("/sign-up", h.signUp)
+	}
+
 	return router
 }
 
