@@ -2,8 +2,9 @@ package repository
 
 import (
 	"fmt"
-	"strings"
 	"happyBill/consts"
+	"strings"
+
 	"github.com/jmoiron/sqlx"
 )
 
@@ -27,14 +28,14 @@ func (r *repository) GetRoles(id int) ([]string, error) {
 
 func (r *repository) GetRoleId(role string, userId int) (int, error) {
 	var id int
-	table := "t_" + strings.ToLower(role) + "s"
+	table := "t_" + strings.ToLower(role)
 
 	query := fmt.Sprintf("select id from %s where user_id = $1", table)
 	err := r.db.Get(&id, query, userId)
 	return id, err
-}  
+}
 
-func (r repository) GetIdByRole(tx *sqlx.Tx, roleId int, roleTable string) (int, error) {
+func (r *repository) GetIdByRole(tx *sqlx.Tx, roleId int, roleTable string) (int, error) {
 	var userId int
 	query := fmt.Sprintf("select user_id from %s where id = $1", roleTable)
 	row := r.db.QueryRowx(query, roleId)

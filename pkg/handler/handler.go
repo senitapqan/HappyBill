@@ -19,6 +19,11 @@ func (h Handler) InitRoutes() *gin.Engine {
 		auth.POST("/sign-up", h.signUp)
 	}
 
+	app := router.Group("/home") 
+	{
+		app.Use(h.userIdentify())
+	}
+
 	return router
 }
 

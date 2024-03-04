@@ -40,3 +40,38 @@ CREATE TABLE IF NOT EXISTS t_admin (
     FOREIGN KEY (user_id) 
       REFERENCES t_users(id)
 );
+
+CREATE TABLE IF NOT EXISTS t_region (
+    id serial Primary key, 
+    name varchar(50) not null
+);
+
+CREATE TABLE IF NOT EXISTS t_location (
+    id serial Primary key, 
+    name varchar(50) not null, 
+    regionId int not null, 
+    FOREIGN KEY (regionId) REFERENCES t_region(id) 
+);
+
+CREATE TABLE IF NOT EXISTS t_product (
+    id serial Primary key, 
+    size varchar(50) not null, 
+    display_type varchar(50) not null, 
+    locationId int not null, 
+    FOREIGN KEY (locationId) REFERENCES t_location(id)
+);
+
+CREATE TABLE IF NOT EXISTS t_order (
+    id serial Primary key, 
+    status varchar(50) not null,
+    orderTime Date not null, 
+    deadline Date not null, 
+    startDate Date not null, 
+    endDate Date not null, 
+    productId int not null, 
+    clientId int not null, 
+    managerId int not null, 
+    FOREIGN KEY (productId) REFERENCES t_product(id),
+    FOREIGN KEY (clientId) REFERENCES t_client(id),
+    FOREIGN KEY (managerId) REFERENCES t_manager(id)
+);
