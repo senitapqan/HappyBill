@@ -4,16 +4,14 @@ import (
 	"happyBill/dtos"
 	"happyBill/models"
 	"net/http"
-	
+
 	"github.com/gin-gonic/gin"
 )
-
-
 
 func (h *Handler) signIn(c *gin.Context) {
 	var request dtos.SignInRequest
 	if err := c.BindJSON(&request); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())		
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -32,7 +30,7 @@ func (h *Handler) signIn(c *gin.Context) {
 func (h *Handler) signUp(c *gin.Context) {
 	var request models.User
 	if err := c.BindJSON(&request); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())		
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -47,3 +45,4 @@ func (h *Handler) signUp(c *gin.Context) {
 		"new user was succesfully added with id": id,
 	})
 }
+

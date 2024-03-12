@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"happyBill/consts"
 	"happyBill/models"
+	"log"
+
 	"github.com/jmoiron/sqlx"
 )
-
-
 
 func (r *repository) CreateUser(user models.User, tx *sqlx.Tx) (int, error) {
 	var userId int
@@ -22,7 +22,10 @@ func (r *repository) CreateUser(user models.User, tx *sqlx.Tx) (int, error) {
 
 func (r *repository) GetUser(username string) (models.User, error) {
 	var user models.User
-	query := fmt.Sprintf("select id, username, password from %s where username = $1", consts.UsersRolesTable)
+	query := fmt.Sprintf("select id, username, password from %s where username = $1", consts.UsersTable)
 	err := r.db.Get(&user, query, username)
+	if err != nil {
+		log.Panic("Proeb: ", err.Error())
+	}
 	return user, err
 }

@@ -16,9 +16,9 @@ type Admin struct {
 }
 
 type User struct {
-	Id       int    `json:"userId"`
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Id       int    `json:"id" db:"id"`
+	Username string `json:"username" binding:"required" db:"username"`
+	Password string `json:"password" binding:"required" db:"password"`
 	Email    string `json:"email"    binding:"required"`
 	Name     string `json:"name"     binding:"required"`
 	Surname  string `json:"surname"  binding:"required"`
