@@ -30,7 +30,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 	admin := router.Group("/admin")
 	{
 		admin.Use(h.userIdentify())
-		admin.GET("/getBill", h.getBillboard)
+		admin.GET("/getBill", h.getAllBillboards)
 		admin.POST("/addBill", h.createBillboard)
 		admin.DELETE("/deleteBill", h.deleteBillboard)
 		admin.PUT("/updateBill", h.updateBillboard)
@@ -47,10 +47,10 @@ func (h Handler) InitRoutes() *gin.Engine {
 func (h *Handler) getIds(role string, c *gin.Context) (int, int, error) {
 	userId, err := getId(c, userCtx)
 	if err != nil {
-		return -1, -1, err;
+		return -1, -1, err
 	}
 
 	roleId, err := getId(c, role)
-	
-	return userId, roleId, err;
+
+	return userId, roleId, err
 }

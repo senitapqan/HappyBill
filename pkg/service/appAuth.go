@@ -1,10 +1,10 @@
 package service
 
 import (
-	"happyBill/models"
 	"crypto/sha1"
 	"errors"
 	"fmt"
+	"happyBill/models"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -85,7 +85,7 @@ func (s *service) ParseToken(accessToken string) (int, []models.RolesHeaders, er
 		return 0, nil, err
 	}
 
-	claims, ok := token.Claims.(*tokenClaims) 
+	claims, ok := token.Claims.(*tokenClaims)
 	if !ok {
 		return 0, nil, errors.New("token claims are not type of *tokenClaims")
 	}

@@ -7,8 +7,9 @@ const (
 	ClientsTable    = "t_client"
 	ManagersTable   = "t_manager"
 	AdminsTable     = "t_admin"
+	ProductsTable   = "t_product"
 
-	ClientRoleId = 3
+	ClientRoleId  = 3
 	ManagerRoleId = 2
-	AdminRoleId = 1
+	AdminRoleId   = 1
 )

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"happyBill/models"
+
 	"github.com/jmoiron/sqlx"
 )
 
@@ -11,6 +12,10 @@ type Repository interface {
 	GetRoleId(role string, userId int) (int, error)
 
 	CreateClient(student models.User) (int, error)
+
+	CreateBillboard(product models.Product) (int, error)
+	GetAllBillboards() ([]models.Product, error)
+	DeleteBillboard(id int) error
 }
 
 type repository struct {
