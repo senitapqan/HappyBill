@@ -45,4 +45,3 @@ func (h *Handler) signUp(c *gin.Context) {
 		"new user was succesfully added with id": id,
 	})
 }
-
