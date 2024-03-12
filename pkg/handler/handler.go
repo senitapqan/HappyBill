@@ -20,14 +20,14 @@ func (h Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
 	router.Use(CORSMiddleware())
-	
+
 	auth := router.Group("/auth")
 	{
 		auth.POST("/sign-in", h.signIn)
 		auth.POST("/sign-up", h.signUp)
 	}
 
-	admin := router.Group("/admin") 
+	admin := router.Group("/admin")
 	{
 		admin.Use(h.userIdentify())
 		admin.GET("/getBill", h.getBillboard)
@@ -36,7 +36,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 		admin.PUT("/updateBill", h.updateBillboard)
 	}
 
-	app := router.Group("/home") 
+	app := router.Group("/home")
 	{
 		app.Use(h.userIdentify())
 	}
@@ -44,3 +44,13 @@ func (h Handler) InitRoutes() *gin.Engine {
 	return router
 }
 
+func (h *Handler) getIds(role string, c *gin.Context) (int, int, error) {
+	userId, err := getId(c, userCtx)
+	if err != nil {
+		return -1, -1, err;
+	}
+
+	roleId, err := getId(c, role)
+	
+	return userId, roleId, err;
+}

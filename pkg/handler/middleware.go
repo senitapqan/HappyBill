@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -50,6 +51,22 @@ func (h *Handler) userIdentify() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+func getId(c *gin.Context, header string) (int, error) {
+	id := c.GetHeader(header)
+	if id == "" {
+		return 0, fmt.Errorf("%s id not found", header)
+	}
+
+	intId, err := strconv.Atoi(id)
+
+	if err != nil {
+		return 0, fmt.Errorf("cant converse %s id", header)
+	}
+
+	return intId, nil
+}
+
 
 func CORSMiddleware() gin.HandlerFunc {
     return func(c *gin.Context) {

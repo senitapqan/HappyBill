@@ -37,6 +37,10 @@ func (s *service) GenerateToken(username, password string) (string, error) {
 		return "", err
 	}
 
+	if user.Id == 0 {
+		return "", fmt.Errorf("there is no such user with username: %s", username)
+	}
+
 	if user.Password != password {
 		return "", errors.New("incorrect password")
 	}
