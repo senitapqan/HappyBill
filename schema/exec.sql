@@ -1,1 +1,1 @@
-select * from t_users
+SELECT * from t_location

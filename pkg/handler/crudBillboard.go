@@ -31,6 +31,7 @@ func (h *Handler) createBillboard(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
+		"Message: ": "New billboard was created!",
 		"id": id,
 	})
 
@@ -68,7 +69,7 @@ func (h *Handler) deleteBillboard(c *gin.Context) {
 	id, err := ValidateId(c)
 
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 

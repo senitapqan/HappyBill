@@ -25,6 +25,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 	{
 		auth.POST("/sign-in", h.signIn)
 		auth.POST("/sign-up", h.signUp)
+		auth.GET("/aza-lox", h.testing)
 	}
 
 	admin := router.Group("/admin")

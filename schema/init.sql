@@ -48,14 +48,16 @@ CREATE TABLE IF NOT EXISTS t_region (
 
 CREATE TABLE IF NOT EXISTS t_location (
     id serial Primary key, 
-    name varchar(50) not null, 
+    name varchar(50) not null,
+    link varchar(255), 
     regionId int not null, 
     FOREIGN KEY (regionId) REFERENCES t_region(id) 
 );
 
 CREATE TABLE IF NOT EXISTS t_product (
     id serial Primary key, 
-    size varchar(50) not null, 
+    width int, 
+    height int,
     display_type varchar(50) not null, 
     locationId int not null, 
     FOREIGN KEY (locationId) REFERENCES t_location(id)

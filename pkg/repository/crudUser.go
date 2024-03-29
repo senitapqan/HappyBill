@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"happyBill/consts"
 	"happyBill/models"
-	"log"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -24,8 +23,5 @@ func (r *repository) GetUser(username string) (models.User, error) {
 	var user models.User
 	query := fmt.Sprintf("select id, username, password from %s where username = $1", consts.UsersTable)
 	err := r.db.Get(&user, query, username)
-	if err != nil {
-		log.Panic("Proeb: ", err.Error())
-	}
 	return user, err
 }

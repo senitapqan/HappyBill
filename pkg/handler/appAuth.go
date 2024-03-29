@@ -45,3 +45,9 @@ func (h *Handler) signUp(c *gin.Context) {
 		"new user was succesfully added with id": id,
 	})
 }
+
+func (h *Handler) testing(c *gin.Context) {
+	c.JSON(http.StatusOK, map[string]string{
+		"AZA": "LOH",
+	})
+}
