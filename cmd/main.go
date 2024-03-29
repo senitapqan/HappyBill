@@ -42,7 +42,7 @@ func main() {
 }
 
 func initConfig() error {
-	viper.AddConfigPath("../HappyBill/config")
+	viper.AddConfigPath("../config")
 	viper.SetConfigName("configs")
 	return viper.ReadInConfig()
 }
