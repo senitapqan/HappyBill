@@ -5,6 +5,7 @@ type Product struct {
 	Size        int    `json:"size"`
 	DisplayType string `json:"display_type"`
 	LocationId  int    `json:"locationId"`
+	Price       int    `json:"price"`
 }
 
 type Location struct {

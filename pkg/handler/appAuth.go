@@ -30,14 +30,15 @@ func (h *Handler) signIn(c *gin.Context) {
 func (h *Handler) signUp(c *gin.Context) {
 	var request models.User
 	if err := c.BindJSON(&request); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		//newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
 
 	id, err := h.service.CreateClient(request)
 
 	if err != nil {
-		newErrorResponse(c, http.StatusBadGateway, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, "something went wrong")
 		return
 	}
 

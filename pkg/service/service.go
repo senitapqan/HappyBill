@@ -5,6 +5,8 @@ import (
 	"happyBill/pkg/repository"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 type Service interface {
 	GenerateToken(username, password string) (string, error)
 	ParseToken(accessToken string) (int, []models.RolesHeaders, error)
