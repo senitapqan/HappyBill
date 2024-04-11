@@ -17,6 +17,7 @@ type Repository interface {
 	GetAllBillboards() ([]models.Product, error)
 	GetBillboardById(id int) (models.Product, error)
 	DeleteBillboard(id int) error
+	UpdateBillboard(id int, input models.Product) error
 }
 
 type repository struct {

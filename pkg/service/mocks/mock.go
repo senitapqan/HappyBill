@@ -138,3 +138,17 @@ func (mr *MockServiceMockRecorder) ParseToken(accessToken interface{}) *gomock.C
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseToken", reflect.TypeOf((*MockService)(nil).ParseToken), accessToken)
 }
+
+// UpdateBillboard mocks base method.
+func (m *MockService) UpdateBillboard(id int, input models.Product) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateBillboard", id, input)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateBillboard indicates an expected call of UpdateBillboard.
+func (mr *MockServiceMockRecorder) UpdateBillboard(id, input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateBillboard", reflect.TypeOf((*MockService)(nil).UpdateBillboard), id, input)
+}
