@@ -51,6 +51,11 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 
 }
 
+func (h *Handler) getBillboardInfo(c *gin.Context) {
+	
+
+}
+
 func (h *Handler) updateBillboard(c *gin.Context) {
 	// userId, roleId, err := h.getIds(adminCtx, c)
 	// if err != nil {

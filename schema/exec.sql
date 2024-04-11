@@ -1,1 +1,0 @@
-SELECT * from t_location

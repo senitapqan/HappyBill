@@ -13,4 +13,19 @@ func (s Server) Run(port string, handler http.Handler) error {
 	}
 
 	return s.httpServer.ListenAndServe();
+
 }
+
+
+/*
+	thread T = new thread();
+	for true {
+		T.listen&serve();
+
+		if T.connect == true() {
+			thread P = new thread(T.front());
+			tread.run();
+		}
+	}
+
+*/

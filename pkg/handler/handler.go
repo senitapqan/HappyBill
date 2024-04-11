@@ -25,21 +25,28 @@ func (h Handler) InitRoutes() *gin.Engine {
 	{
 		auth.POST("/sign-in", h.signIn)
 		auth.POST("/sign-up", h.signUp)
-		auth.GET("/aza-lox", h.testing)
+	}
+
+	unauth := router.Group("/")
+	{
+		unauth.GET("/home", h.getAllBillboards)
+		unauth.GET("/home/:id", h.getBillboardInfo)
 	}
 
 	admin := router.Group("/admin")
 	{
 		admin.Use(h.userIdentify())
-		admin.GET("/getBill", h.getAllBillboards)
 		admin.POST("/addBill", h.createBillboard)
 		admin.DELETE("/deleteBill", h.deleteBillboard)
 		admin.PUT("/updateBill", h.updateBillboard)
 	}
 
-	app := router.Group("/home")
+	app := router.Group("/app")
 	{
 		app.Use(h.userIdentify())
+		
+		app.GET("")
+
 	}
 
 	return router
