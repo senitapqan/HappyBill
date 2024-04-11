@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"happyBill/consts"
 	"happyBill/models"
-	"strings"
-
-	"github.com/sirupsen/logrus"
+	//"strings"
+	//"github.com/sirupsen/logrus"
 )
 
 func (r *repository) CreateBillboard(product models.Product) (int, error) {
@@ -55,16 +54,16 @@ func (r *repository) UpdateBillboard(id int, input models.Product) {
 		argId++
 	}
 
-	setQuery := strings.Join(setValues, ", ")
+	//setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s ul WHERE tl.id = ul.list_id AND ul.list_id = $%d AND ul.user_id = $%d",
-		todoListsTable, setQuery, usersListsTable, argId, argId+1)
+	//query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s ul WHERE tl.id = ul.list_id AND ul.list_id = $%d AND ul.user_id = $%d",
+	//	todoListsTable, setQuery, usersListsTable, argId, argId+1)
 
-	args = append(args, listId, userId)
+	//args = append(args, listId, userId)
 
-	logrus.Debugf("updateQuery: %s", query)
-	logrus.Debugf("args: %s", args)
+	// logrus.Debugf("updateQuery: %s", query)
+	// logrus.Debugf("args: %s", args)
 
-	_, err := r.db.Exec(query, args...)
-	return err
+	// _, err := r.db.Exec(query, args...)
+	// return err
 }
