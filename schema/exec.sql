@@ -1,1 +1,1 @@
-SELECT * from t_location
+drop table t_product

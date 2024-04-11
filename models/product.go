@@ -2,8 +2,9 @@ package models
 
 type Product struct {
 	Id          int    `json:"productId"`
-	Size        int    `json:"size"`
-	DisplayType string `json:"display_type"`
+	Width       int    `json:"width"`
+	Height      int    `json:"height"`
+	DisplayType string `json:"display_type" db:"display_type"`
 	LocationId  int    `json:"locationId"`
 	Price       int    `json:"price"`
 }

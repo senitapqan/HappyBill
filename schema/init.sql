@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS t_roles (
    role_name varchar(50) not null
 );
 
-CREATE TABLE IF NOt EXISTS t_users_roles (
+CREATE TABLE IF NOT EXISTS t_users_roles (
     user_id int not null,
     role_id int not null, 
     Primary key(user_id, role_id), 
@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS t_product (
     height int,
     display_type varchar(50) not null, 
     locationId int not null, 
+    price int,
     FOREIGN KEY (locationId) REFERENCES t_location(id)
 );
 

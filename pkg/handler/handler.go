@@ -32,6 +32,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 	{
 		admin.Use(h.userIdentify())
 		admin.GET("/getBill", h.getAllBillboards)
+		admin.GET("/getBill/:id", h.getBillboardById)
 		admin.POST("/addBill", h.createBillboard)
 		admin.DELETE("/deleteBill", h.deleteBillboard)
 		admin.PUT("/updateBill", h.updateBillboard)

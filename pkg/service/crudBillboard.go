@@ -13,3 +13,6 @@ func (s *service) GetAllBillboards() ([]models.Product, error) {
 func (s *service) DeleteBillboard(id int) error {
 	return s.repos.DeleteBillboard(id)
 }
+func (s *service) GetBillboardById(id int) (models.Product, error) {
+	return s.repos.GetBillboardById(id)
+}

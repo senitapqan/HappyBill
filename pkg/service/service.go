@@ -15,6 +15,7 @@ type Service interface {
 
 	CreateBillboard(product models.Product) (int, error)
 	GetAllBillboards() ([]models.Product, error)
+	GetBillboardById(id int) (models.Product, error)
 	DeleteBillboard(id int) error
 }
 

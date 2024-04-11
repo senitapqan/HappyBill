@@ -108,6 +108,21 @@ func (mr *MockServiceMockRecorder) GetAllBillboards() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockService)(nil).GetAllBillboards))
 }
 
+// GetBillboardById mocks base method.
+func (m *MockService) GetBillboardById(id int) (models.Product, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetBillboardById", id)
+	ret0, _ := ret[0].(models.Product)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBillboardById indicates an expected call of GetBillboardById.
+func (mr *MockServiceMockRecorder) GetBillboardById(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBillboardById", reflect.TypeOf((*MockService)(nil).GetBillboardById), id)
+}
+
 // ParseToken mocks base method.
 func (m *MockService) ParseToken(accessToken string) (int, []models.RolesHeaders, error) {
 	m.ctrl.T.Helper()
