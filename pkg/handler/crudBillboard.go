@@ -11,6 +11,10 @@ type getAllBillboardsResponse struct {
 	Data []models.Product `json:"data"`
 }
 
+type getBillboardByIdResponse struct {
+	Data models.Product `json:"data"`
+}
+
 func (h *Handler) createBillboard(c *gin.Context) {
 	_, _, err := h.getIds(adminCtx, c)
 	if err != nil {
@@ -32,7 +36,7 @@ func (h *Handler) createBillboard(c *gin.Context) {
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"Message: ": "New billboard was created!",
-		"id": id,
+		"id":        id,
 	})
 
 }
@@ -51,13 +55,29 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 
 }
 
-func (h *Handler) getBillboardInfo(c *gin.Context) {
-	
+func (h *Handler) getBillboardById(c *gin.Context) {
+	id, err := ValidateId(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		return
+	}
+
+	product, err := h.service.GetBillboardById(id)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getBillboardByIdResponse{
+		Data: product,
+	})
 
 }
 
 func (h *Handler) updateBillboard(c *gin.Context) {
-	// userId, roleId, err := h.getIds(adminCtx, c)
+	//userId, roleId, err := h.getIds(adminCtx, c)
 	// if err != nil {
 	// 	newErrorResponse(c, http.StatusBadRequest, err.Error())
 	// 	return
