@@ -42,6 +42,12 @@ func (h *Handler) createBillboard(c *gin.Context) {
 }
 
 func (h *Handler) getAllBillboards(c *gin.Context) {
+	_, _, err := h.getIds(adminCtx, c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
 	products, err := h.service.GetAllBillboards()
 
 	if err != nil {
@@ -56,6 +62,12 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 }
 
 func (h *Handler) getBillboardById(c *gin.Context) {
+	_, _, err := h.getIds(adminCtx, c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
 	id, err := ValidateId(c)
 
 	if err != nil {
@@ -77,11 +89,33 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 }
 
 func (h *Handler) updateBillboard(c *gin.Context) {
-	//userId, roleId, err := h.getIds(adminCtx, c)
-	// if err != nil {
-	// 	newErrorResponse(c, http.StatusBadRequest, err.Error())
-	// 	return
-	// }
+	_, _, err := h.getIds(adminCtx, c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	id, err := ValidateId(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		return
+	}
+
+	var input models.Product
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.service.UpdateBillboard(id, input); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{"ok"})
+
 }
 
 func (h *Handler) deleteBillboard(c *gin.Context) {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"happyBill/consts"
 	"happyBill/models"
-	"log"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -37,7 +36,6 @@ func (r *repository) GetBillboardById(id int) (models.Product, error) {
 	var product models.Product
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1 LIMIT 1", consts.ProductsTable)
 	err := r.db.Get(&product, query, id)
-	log.Print(err)
 	return product, err
 
 }
