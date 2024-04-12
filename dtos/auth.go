@@ -5,6 +5,3 @@ type SignInRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
-type Test struct {
-	test string
-}

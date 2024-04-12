@@ -8,9 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type getAllMAnagersResponse struct {
-	Data []dtos.User `json:"data"`
-}
 
 func (h *Handler) createManager(c *gin.Context) {
 	/*_, _, err := h.getIds(adminCtx, c)
@@ -56,5 +53,50 @@ func (h *Handler) getAllManager(c *gin.Context) {
 	c.JSON(http.StatusOK, getAllMAnagersResponse{
 		Data: managers,
 	})
+}
 
+
+func (h *Handler) getManagerById(c *gin.Context) {
+	/*_, _, err := h.getIds(adminCtx, c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	*/	
+	id, err := ValidateId(c) 
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		return
+	}
+
+	manager, err := h.service.GetManagerById(id)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadGateway, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllMAnagersResponse{
+		Data: manager,
+	})
+
+}
+
+func (h *Handler) deleteManager(c *gin.Context) {
+	/*_, _, err := h.getIds(adminCtx, c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	*/	
+}
+
+func (h *Handler) updateManager(c *gin.Context) {
+	/*_, _, err := h.getIds(adminCtx, c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	*/	
 }

@@ -8,3 +8,4 @@ type User struct {
 	Surname  string `json:"surname" db:"surname"`
 	RoleId   int    `json:"roleId" db:"roleid"`
 }
+

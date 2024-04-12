@@ -1,20 +1,13 @@
 package handler
 
 import (
+	"happyBill/dtos"
 	"happyBill/models"
 
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
-
-type getAllBillboardsResponse struct {
-	Data []models.Product `json:"data"`
-}
-
-type getBillboardByIdResponse struct {
-	Data models.Product `json:"data"`
-}
 
 func (h *Handler) createBillboard(c *gin.Context) {
 	_, _, err := h.getIds(adminCtx, c)
@@ -56,7 +49,7 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllBillboardsResponse{
+	c.JSON(http.StatusOK, dtos.GetAllBillboardsResponse{
 		Data: products,
 	})
 
@@ -83,7 +76,7 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getBillboardByIdResponse{
+	c.JSON(http.StatusOK, dtos.GetBillboardByIdResponse{
 		Data: product,
 	})
 
@@ -115,8 +108,8 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{
-		Status: "ok",
+	c.JSON(http.StatusOK, map[string]string{
+		"Message": "Updated succesfully",
 	})
 
 }

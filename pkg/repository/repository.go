@@ -16,6 +16,9 @@ type Repository interface {
 
 	CreateManager(manager models.User) (int, error)
 	GetAllManagers() ([]dtos.User, error)
+	GetManagerById(id int) (dtos.User, error)
+	UpdateManager(id int, input models.User) error
+	DeleteManager(id int) error
 
 	CreateBillboard(product models.Product) (int, error)
 	GetAllBillboards() ([]models.Product, error)
