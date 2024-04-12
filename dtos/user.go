@@ -1,11 +1,10 @@
 package dtos
 
 type User struct {
-	Id       int    `json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Email    string `json:"email"  `
-	Name     string `json:"name"   `
-	Surname  string `json:"surname"`
-	RoleId   int    `json:"roleId"`
+	Id       int    `json:"id" db:"id"`
+	Username string `json:"username" db:"username"`
+	Email    string `json:"email" db:"email"`
+	Name     string `json:"name" db:"name"`
+	Surname  string `json:"surname" db:"surname"`
+	RoleId   int    `json:"roleId" db:"roleid"`
 }

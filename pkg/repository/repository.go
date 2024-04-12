@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"happyBill/dtos"
 	"happyBill/models"
 
 	"github.com/jmoiron/sqlx"
@@ -11,7 +12,10 @@ type Repository interface {
 	GetRoles(id int) ([]string, error)
 	GetRoleId(role string, userId int) (int, error)
 
-	CreateClient(student models.User) (int, error)
+	CreateClient(client models.User) (int, error)
+
+	CreateManager(manager models.User) (int, error)
+	GetAllManagers() ([]dtos.User, error)
 
 	CreateBillboard(product models.Product) (int, error)
 	GetAllBillboards() ([]models.Product, error)

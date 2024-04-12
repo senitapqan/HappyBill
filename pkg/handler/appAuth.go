@@ -30,7 +30,6 @@ func (h *Handler) signIn(c *gin.Context) {
 func (h *Handler) signUp(c *gin.Context) {
 	var request models.User
 	if err := c.BindJSON(&request); err != nil {
-		//newErrorResponse(c, http.StatusBadRequest, err.Error())
 		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
@@ -44,11 +43,5 @@ func (h *Handler) signUp(c *gin.Context) {
 
 	c.JSON(http.StatusOK, map[string]int{
 		"new user was succesfully added with id": id,
-	})
-}
-
-func (h *Handler) testing(c *gin.Context) {
-	c.JSON(http.StatusOK, map[string]string{
-		"AZA": "LOH",
 	})
 }

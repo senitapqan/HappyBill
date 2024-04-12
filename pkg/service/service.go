@@ -1,6 +1,7 @@
 package service
 
 import (
+	"happyBill/dtos"
 	"happyBill/models"
 	"happyBill/pkg/repository"
 )
@@ -11,7 +12,10 @@ type Service interface {
 	GenerateToken(username, password string) (string, error)
 	ParseToken(accessToken string) (int, []models.RolesHeaders, error)
 
-	CreateClient(student models.User) (int, error)
+	CreateClient(client models.User) (int, error)
+
+	CreateManager(manager models.User) (int, error)
+	GetAllManagers() ([]dtos.User, error)
 
 	CreateBillboard(product models.Product) (int, error)
 	GetAllBillboards() ([]models.Product, error)

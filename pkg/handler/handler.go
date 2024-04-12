@@ -31,6 +31,8 @@ func (h Handler) InitRoutes() *gin.Engine {
 	{
 		unauth.GET("/home", h.getAllBillboards)
 	}
+	router.POST("/manager/add", h.createManager)
+	router.GET("/manager/get", h.getAllManager)
 
 	admin := router.Group("/admin")
 	{
@@ -44,7 +46,6 @@ func (h Handler) InitRoutes() *gin.Engine {
 			bills.PUT("/:id", h.updateBillboard)
 			bills.DELETE("/:id", h.deleteBillboard)
 		}
-		admin.Use(h.userIdentify())
 
 		admin.GET("/getBill", h.getAllBillboards)
 		admin.GET("/getBill/:id", h.getBillboardById)
