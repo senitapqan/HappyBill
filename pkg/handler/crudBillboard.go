@@ -2,6 +2,7 @@ package handler
 
 import (
 	"happyBill/models"
+
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -114,7 +115,9 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{"ok"})
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
 
 }
 
