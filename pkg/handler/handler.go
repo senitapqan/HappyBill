@@ -34,30 +34,30 @@ func (h Handler) InitRoutes() *gin.Engine {
 
 	admin := router.Group("/admin")
 	{
-		
-		admin.Use(h.userIdentify())
-		bills := router.Group("/billboard")
-		{
-			bills.POST("/", h.createBillboard)
-			bills.GET("/", h.getAllBillboards)
-			bills.GET("/:id", h.getBillboardById)
-			bills.PUT("/:id", h.updateBillboard)
-			bills.DELETE("/:id", h.deleteBillboard)
-		}
+
+		// admin.Use(h.userIdentify())
+		// bills := router.Group("/billboard")
+		// {
+		// 	bills.POST("/", h.createBillboard)
+		// 	bills.GET("/", h.getAllBillboards)
+		// 	bills.GET("/:id", h.getBillboardById)
+		// 	bills.PUT("/:id", h.updateBillboard)
+		// 	bills.DELETE("/:id", h.deleteBillboard)
+		// }
 		admin.Use(h.userIdentify())
 
 		admin.GET("/getBill", h.getAllBillboards)
 		admin.GET("/getBill/:id", h.getBillboardById)
 		admin.POST("/addBill", h.createBillboard)
 
-		admin.DELETE("/deleteBill", h.deleteBillboard)
-		admin.PUT("/updateBill", h.updateBillboard)
+		admin.DELETE("/deleteBill/:id", h.deleteBillboard)
+		admin.PUT("/updateBill/:id", h.updateBillboard)
 	}
 
 	app := router.Group("/app")
 	{
 		app.Use(h.userIdentify())
-		
+
 		app.GET("")
 
 	}

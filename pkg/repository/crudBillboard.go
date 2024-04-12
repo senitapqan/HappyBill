@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"happyBill/consts"
 	"happyBill/models"
-	"strings"
+	"log"
 
-	"github.com/sirupsen/logrus"
+	"strings"
 )
 
 func (r *repository) CreateBillboard(product models.Product) (int, error) {
@@ -27,8 +27,10 @@ func (r *repository) CreateBillboard(product models.Product) (int, error) {
 func (r *repository) GetAllBillboards() ([]models.Product, error) {
 	var products []models.Product
 	query := fmt.Sprintf("SELECT * FROM %s", consts.ProductsTable)
-	err := r.db.Get(&products, query)
-	return products, err
+	if err := r.db.Select(&products, query); err != nil {
+		return nil, err
+	}
+	return products, nil
 
 }
 
@@ -52,13 +54,13 @@ func (r *repository) UpdateBillboard(id int, input models.Product) error {
 	argId := 1
 
 	if input.Width != 0 {
-		setValues = append(setValues, fmt.Sprintf("size=$%d", argId))
+		setValues = append(setValues, fmt.Sprintf("width=$%d", argId))
 		args = append(args, input.Width)
 		argId++
 	}
 
 	if input.Height != 0 {
-		setValues = append(setValues, fmt.Sprintf("size=$%d", argId))
+		setValues = append(setValues, fmt.Sprintf("height=$%d", argId))
 		args = append(args, input.Height)
 		argId++
 	}
@@ -77,14 +79,10 @@ func (r *repository) UpdateBillboard(id int, input models.Product) error {
 
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s tp SET %s WHERE tp.id = $%d",
+	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = %d",
 		consts.ProductsTable, setQuery, id)
 
-	args = append(args, id)
-
-	logrus.Debugf("updateQuery: %s", query)
-	logrus.Debugf("args: %s", args)
-
 	_, err := r.db.Exec(query, args...)
+	log.Printf("args: %s query: %s", args, query)
 	return err
 }
