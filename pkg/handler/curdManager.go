@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 func (h *Handler) createManager(c *gin.Context) {
 	/*_, _, err := h.getIds(adminCtx, c)
 	if err != nil {
@@ -50,11 +49,10 @@ func (h *Handler) getAllManager(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllMAnagersResponse{
+	c.JSON(http.StatusOK, dtos.GetAllManagersResponse{
 		Data: managers,
 	})
 }
-
 
 func (h *Handler) getManagerById(c *gin.Context) {
 	/*_, _, err := h.getIds(adminCtx, c)
@@ -62,8 +60,8 @@ func (h *Handler) getManagerById(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	*/	
-	id, err := ValidateId(c) 
+	*/
+	id, err := ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
@@ -77,7 +75,7 @@ func (h *Handler) getManagerById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllMAnagersResponse{
+	c.JSON(http.StatusOK, dtos.getAllManagersResponse{
 		Data: manager,
 	})
 
@@ -89,7 +87,7 @@ func (h *Handler) deleteManager(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	*/	
+	*/
 }
 
 func (h *Handler) updateManager(c *gin.Context) {
@@ -98,5 +96,5 @@ func (h *Handler) updateManager(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	*/	
+	*/
 }

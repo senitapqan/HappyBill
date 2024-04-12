@@ -1,5 +1,5 @@
 package dtos
 
-type GetAllMAnagersResponse struct {
+type GetAllManagersResponse struct {
 	Data []User `json:"data"`
 }

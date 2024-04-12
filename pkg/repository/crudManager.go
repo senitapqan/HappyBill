@@ -42,7 +42,7 @@ func (r *repository) GetAllManagers() ([]dtos.User, error) {
 	var result []dtos.User
 	query := fmt.Sprintf("select u.id, u.name, u.surname, u.username, u.email, m.id as roleid from %s u join %s m ON m.user_id = u.id", consts.UsersTable, consts.ManagersTable)
 
-	err := r.db.Select(&result, query);
+	err := r.db.Select(&result, query)
 	return result, err
 }
 
@@ -50,9 +50,9 @@ func (r *repository) GetManagerById(id int) (dtos.User, error) {
 	var result dtos.User
 
 	query := fmt.Sprintf(`select u.id, u.name, u.surname, u.username, u.email, m.id as roleid from %s u join %S m ON m.user_id = u.id where m.id = $1`,
-			consts.UsersRolesTable, consts.ManagersTable)
+		consts.UsersRolesTable, consts.ManagersTable)
 	err := r.db.Get(result, query, id)
-	return result, err;
+	return result, err
 }
 
-func (r *repository) DeleteBillboard(id int) 
+func (r *repository) DeleteManager(id int)
