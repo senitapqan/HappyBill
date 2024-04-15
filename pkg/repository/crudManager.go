@@ -55,4 +55,6 @@ func (r *repository) GetManagerById(id int) (dtos.User, error) {
 	return result, err
 }
 
-func (r *repository) DeleteManager(id int)
+func (r *repository) DeleteManager(id int) error {
+	return nil
+}

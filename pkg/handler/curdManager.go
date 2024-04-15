@@ -75,10 +75,9 @@ func (h *Handler) getManagerById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, dtos.getAllManagersResponse{
+	c.JSON(http.StatusOK, dtos.GetManagersResponse{
 		Data: manager,
 	})
-
 }
 
 func (h *Handler) deleteManager(c *gin.Context) {

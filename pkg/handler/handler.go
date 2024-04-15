@@ -32,7 +32,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 		unauth.GET("/home", h.getAllBillboards)
 	}
 
-	
+
 	admin := router.Group("/admin")
 	{
 		admin.Use(h.userIdentify())
