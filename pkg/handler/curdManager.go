@@ -74,24 +74,26 @@ func (h *Handler) getManagerById(c *gin.Context) {
 	id, err := ValidateId(c)
 
 	if err != nil {
-		log.Error().Msg("unvalid id")
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
 		return
 	}
 
+	log.Info().Msg("STARTED HANDLING GET MANAGER BY ID REQUEST")
+
 	manager, err := h.service.GetManagerById(id)
 
 	if err != nil {
-		log.Error().Msg("Error getting manager by id")
+
 		newErrorResponse(c, http.StatusBadGateway, err.Error())
 		return
 	}
 
-	log.Info().Msg("manager get by id works properly")
-
 	c.JSON(http.StatusOK, dtos.GetManagersResponse{
 		Data: manager,
 	})
+
+	log.Info().Msg("GET MANAGER BY ID REQUEST ENDED")
+
 }
 
 func (h *Handler) deleteManager(c *gin.Context) {
