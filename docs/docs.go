@@ -27,7 +27,7 @@ const docTemplate = `{
                 "tags": [
                     "auth"
                 ],
-                "summary": "SignIn",
+                "summary": "Sign In",
                 "operationId": "login-account",
                 "parameters": [
                     {
@@ -37,6 +37,34 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/dtos.SignInRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/auth/sign-up": {
+            "post": {
+                "description": "register to site",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign Up",
+                "operationId": "create-account",
+                "parameters": [
+                    {
+                        "description": "username / email / password / name / surname",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
                         }
                     }
                 ],
@@ -53,6 +81,36 @@ const docTemplate = `{
             ],
             "properties": {
                 "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password",
+                "surname",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "surname": {
                     "type": "string"
                 },
                 "username": {

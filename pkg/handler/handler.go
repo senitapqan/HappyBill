@@ -46,7 +46,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 			billboard.GET("/:id", h.getBillboardById)
 			billboard.POST("/", h.createBillboard)
 			billboard.DELETE("/:id", h.deleteBillboard)
-			billboard.PATCH("/:id", h.updateBillboard)
+			billboard.PUT("/:id", h.updateBillboard)
 		}
 
 		managers := admin.Group("/manager")
@@ -55,7 +55,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 			managers.GET("/", h.getAllManager)
 			managers.GET("/:id", h.getManagerById)
 			managers.DELETE("/:id", h.deleteManager)
-			managers.PATCH("/:id", h.updateManager)
+			managers.PUT("/:id", h.updateManager)
 		}
 	}
 

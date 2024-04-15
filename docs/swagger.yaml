@@ -10,6 +10,27 @@ definitions:
     - password
     - username
     type: object
+  models.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      surname:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - surname
+    - username
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -33,7 +54,26 @@ paths:
       produces:
       - application/json
       responses: {}
-      summary: SignIn
+      summary: Sign In
+      tags:
+      - auth
+  /auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: register to site
+      operationId: create-account
+      parameters:
+      - description: username / email / password / name / surname
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses: {}
+      summary: Sign Up
       tags:
       - auth
 swagger: "2.0"

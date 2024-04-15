@@ -48,6 +48,7 @@ func (r *repository) DeleteBillboard(id int) error {
 	return err
 }
 
+
 func (r *repository) UpdateBillboard(id int, input models.Product) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
@@ -65,7 +66,7 @@ func (r *repository) UpdateBillboard(id int, input models.Product) error {
 		argId++
 	}
 
-	if input.DisplayType != "" {
+	if input.DisplayType != 0 {
 		setValues = append(setValues, fmt.Sprintf("display_type=$%d", argId))
 		args = append(args, input.DisplayType)
 		argId++

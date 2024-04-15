@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"happyBill/dtos"
 	"happyBill/models"
 
@@ -10,6 +11,14 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// @Summary Create
+// @Tags admin/billboard
+// @Description Create the billboard and add it to data base
+// @ID create-billboard
+// @Accept json
+// @Produce json
+// @Param input body models.Product true " height / width / display_type / location_id / price"
+// @Router /admin/bill [post]
 func (h *Handler) createBillboard(c *gin.Context) {
 	_, _, err := h.getIds(adminCtx, c)
 	if err != nil {
@@ -43,6 +52,13 @@ func (h *Handler) createBillboard(c *gin.Context) {
 
 }
 
+// @Summary GetAll
+// @Tags admin/billboard
+// @Description Get all billboards from data base
+// @ID get-billboards
+// @Accept json
+// @Produce json
+// @Router /admin/bill [get]
 func (h *Handler) getAllBillboards(c *gin.Context) {
 	_, _, err := h.getIds(adminCtx, c)
 	if err != nil {
@@ -63,6 +79,13 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 
 }
 
+// @Summary GetById
+// @Tags admin/billboard
+// @Description Get the billboard from data base
+// @ID get-billboard
+// @Accept json
+// @Produce json
+// @Router /admin/bill/{id} [get]
 func (h *Handler) getBillboardById(c *gin.Context) {
 	_, _, err := h.getIds(adminCtx, c)
 	if err != nil {
@@ -95,6 +118,13 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 
 }
 
+// @Summary UpdateById
+// @Tags admin/billboard
+// @Description Update
+// @ID update-billboard
+// @Accept json
+// @Produce json
+// @Router /admin/bill/{id} [update]
 func (h *Handler) updateBillboard(c *gin.Context) {
 	_, _, err := h.getIds(adminCtx, c)
 	if err != nil {
@@ -112,6 +142,8 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 	}
 
 	var input models.Product
+
+	log.Info().Msg(fmt.Sprintf("input.Height: + %d", input.Height))
 
 	if err := c.BindJSON(&input); err != nil {
 		log.Error().Msg("Error binding JSON")

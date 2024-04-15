@@ -9,7 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// @Summary SignIn
+// @Summary Sign In
 // @Tags auth
 // @Description login to account
 // @ID login-account
@@ -40,6 +40,14 @@ func (h *Handler) signIn(c *gin.Context) {
 	})
 }
 
+// @Summary Sign Up
+// @Tags auth
+// @Description register to site
+// @ID create-account
+// @Accept json
+// @Produce json
+// @Param input body models.User true "username / email / password / name / surname"
+// @Router /auth/sign-up [post]
 func (h *Handler) signUp(c *gin.Context) {
 	var request models.User
 	if err := c.BindJSON(&request); err != nil {
