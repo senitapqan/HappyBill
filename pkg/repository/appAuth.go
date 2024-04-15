@@ -6,12 +6,14 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/rs/zerolog/log"
 )
 
 func (r *repository) GetRoles(id int) ([]string, error) {
 	var roles []string
 	query := fmt.Sprintf("select r.role_name from %s r join %s c on c.role_id = r.id where c.user_id = $1", consts.RolesTable, consts.UsersRolesTable)
 	rows, err := r.db.Query(query, id)
+	log.Error().Msg("Error executing sql query")
 	if err != nil {
 		return roles, err
 	}
