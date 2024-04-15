@@ -1,0 +1,39 @@
+basePath: /
+definitions:
+  dtos.SignInRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a server for order billboards.
+  title: HappyBill
+  version: "1.0"
+paths:
+  /auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: login to account
+      operationId: login-account
+      parameters:
+      - description: username / password
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.SignInRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: SignIn
+      tags:
+      - auth
+swagger: "2.0"

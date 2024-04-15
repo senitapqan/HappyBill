@@ -1,0 +1,58 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a server for order billboards.",
+        "title": "HappyBill",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/auth/sign-in": {
+            "post": {
+                "description": "login to account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "SignIn",
+                "operationId": "login-account",
+                "parameters": [
+                    {
+                        "description": "username / password",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SignInRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "dtos.SignInRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
