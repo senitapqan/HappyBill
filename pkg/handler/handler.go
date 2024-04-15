@@ -4,6 +4,10 @@ import (
 	"happyBill/pkg/service"
 
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/files"
+
+	_ "happyBill/docs"
 )
 
 type Handler struct {
@@ -59,6 +63,8 @@ func (h Handler) InitRoutes() *gin.Engine {
 	{
 		app.Use(h.userIdentify())
 	}
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return router
 }
