@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -17,11 +18,10 @@ const (
 	adminCtx            = "ADMIN"
 )
 
-
-
 func (h *Handler) userIdentify() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		header := c.GetHeader(authorizationHeader)
+		log.Info().Msg(header)
 		if header == "" {
 			newErrorResponse(c, http.StatusUnauthorized, "empty auth header")
 			return
@@ -38,10 +38,14 @@ func (h *Handler) userIdentify() gin.HandlerFunc {
 			return
 		}
 
+		log.Info().Msg("PARSING TOKEN")
+
 		userId, roles, err := h.service.ParseToken(headerParts[1])
 
+		log.Info().Msg(fmt.Sprintf("userId: %d", userId))
+
 		if err != nil {
-			newErrorResponse(c, http.StatusUnauthorized, "Parsing works wrong: "+err.Error())
+			newErrorResponse(c, http.StatusUnauthorized, err.Error())
 			return
 		}
 
@@ -55,6 +59,8 @@ func (h *Handler) userIdentify() gin.HandlerFunc {
 }
 
 func getId(c *gin.Context, header string) (int, error) {
+	log.Info().Msg("GETTING HEADER OF THE REQUEST")
+
 	id := c.GetHeader(header)
 	if id == "" {
 		return 0, fmt.Errorf("%s id not found", header)
