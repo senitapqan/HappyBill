@@ -20,46 +20,48 @@ import (
 func (h *Handler) signIn(c *gin.Context) {
 	var request dtos.SignInRequest
 	if err := c.BindJSON(&request); err != nil {
-		log.Error().Msg("Error binding JSON")
+
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	log.Info().Msg("JSON binded successfully")
+	log.Info().Msg("STARTED GENERATING TOKEN")
 
 	token, err := h.service.GenerateToken(request.Username, request.Password)
 
 	if err != nil {
-		log.Error().Msg("Error generating token")
 		newErrorResponse(c, http.StatusBadGateway, err.Error())
 		return
 	}
-	log.Info().Msg("Token generated")
+
 	c.JSON(http.StatusOK, map[string]string{
 		"token": token,
 	})
+
+	log.Info().Msg("TOKEN GENERATION ENDED")
 }
 
 func (h *Handler) signUp(c *gin.Context) {
 	var request models.User
 	if err := c.BindJSON(&request); err != nil {
-		log.Error().Msg("Error binding JSON")
+
 		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
-	log.Info().Msg("JSON binded successfully")
+
+	log.Info().Msg("STARTED HANDLING CREATE CLIENT REQUEST")
 
 	id, err := h.service.CreateClient(request)
 
 	if err != nil {
-		log.Error().Msg("Error crating a client")
+
 		newErrorResponse(c, http.StatusInternalServerError, "something went wrong")
 		return
 	}
 
-	log.Info().Msg("Client created successfully")
-
 	c.JSON(http.StatusOK, map[string]int{
 		"new user was succesfully added with id": id,
 	})
+
+	log.Info().Msg("REQUEST CREATE CLIENT ENDED")
 }

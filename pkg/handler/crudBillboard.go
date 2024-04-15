@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"happyBill/dtos"
 	"happyBill/models"
 
@@ -11,35 +12,35 @@ import (
 )
 
 func (h *Handler) createBillboard(c *gin.Context) {
+
 	_, _, err := h.getIds(adminCtx, c)
+
 	if err != nil {
-		log.Error().Msg("Error getting admin id")
+
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	var input models.Product
 	if err := c.BindJSON(&input); err != nil {
-		log.Error().Msg("Error binding JSON")
+
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	log.Info().Msg("JSON binded successfully")
-
+	log.Info().Msg(fmt.Sprintf("STARTED HANDLING CREATE BILLBOARD REQUEST"))
 	id, err := h.service.CreateBillboard(input)
 	if err != nil {
-		log.Error().Msg("Error crating billboard")
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-
-	log.Info().Msg("billboard created successfully")
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"Message: ": "New billboard was created!",
 		"id":        id,
 	})
+
+	log.Info().Msg(fmt.Sprintf("CREATE BILLBOARD REQUEST ENDED"))
 
 }
 
@@ -49,6 +50,8 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+
+	log.Info().Msg(fmt.Sprintf("STARTED HANDLING GET ALL BILLBOARDS REQUEST"))
 
 	products, err := h.service.GetAllBillboards()
 
@@ -61,12 +64,14 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 		Data: products,
 	})
 
+	log.Info().Msg(fmt.Sprintf("GET ALL BILLBOARDS REQUEST ENDED"))
+
 }
 
 func (h *Handler) getBillboardById(c *gin.Context) {
 	_, _, err := h.getIds(adminCtx, c)
 	if err != nil {
-		log.Error().Msg("Error getting admin id")
+
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -74,31 +79,33 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 	id, err := ValidateId(c)
 
 	if err != nil {
-		log.Error().Msg("unvalid id")
+
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
 		return
 	}
 
+	log.Info().Msg(fmt.Sprintf("STARTED HANDLING GET BILLBOARD BY ID REQUEST"))
+
 	product, err := h.service.GetBillboardById(id)
 
 	if err != nil {
-		log.Error().Msg("Error getting billboard by id")
+
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	log.Info().Msg("get billboard by id works properly")
-
 	c.JSON(http.StatusOK, dtos.GetBillboardByIdResponse{
 		Data: product,
 	})
+
+	log.Info().Msg(fmt.Sprintf("GET BILLBOARD BY ID REQUEST ENDED"))
 
 }
 
 func (h *Handler) updateBillboard(c *gin.Context) {
 	_, _, err := h.getIds(adminCtx, c)
 	if err != nil {
-		log.Error().Msg("Error getting admin id")
+
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -106,7 +113,7 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 	id, err := ValidateId(c)
 
 	if err != nil {
-		log.Error().Msg("unvalid id")
+
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
 		return
 	}
@@ -114,31 +121,31 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 	var input models.Product
 
 	if err := c.BindJSON(&input); err != nil {
-		log.Error().Msg("Error binding JSON")
+
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	log.Info().Msg("JSON binded successfully")
+	log.Info().Msg(fmt.Sprintf("STARTED HANDLING UPDATE BILLBOARD REQUEST"))
 
 	if err := h.service.UpdateBillboard(id, input); err != nil {
-		log.Error().Msg("Error updating billboard")
+
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	log.Info().Msg("billboard updated successfully")
-
 	c.JSON(http.StatusOK, map[string]string{
 		"Message": "Updated succesfully",
 	})
+
+	log.Info().Msg(fmt.Sprintf("UPDATE BILLBOARD REQUEST ENDED"))
 
 }
 
 func (h *Handler) deleteBillboard(c *gin.Context) {
 	_, _, err := h.getIds(adminCtx, c)
 	if err != nil {
-		log.Error().Msg("Error getting admin id")
+
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -146,23 +153,25 @@ func (h *Handler) deleteBillboard(c *gin.Context) {
 	id, err := ValidateId(c)
 
 	if err != nil {
-		log.Error().Msg("unvalid id")
+
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
+	log.Info().Msg(fmt.Sprintf("STARTED HANDLING DELETE BILLBOARD REQUEST"))
+
 	err = h.service.DeleteBillboard(id)
 
 	if err != nil {
-		log.Error().Msg("Error deleting billboard")
+
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	log.Info().Msg("billboard deleted successfully")
-
 	c.JSON(http.StatusOK, statusResponse{
 		Status: "ok",
 	})
+
+	log.Info().Msg(fmt.Sprintf("DELETE BILLBOARD REQUEST ENDED"))
 
 }

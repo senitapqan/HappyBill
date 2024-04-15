@@ -5,6 +5,7 @@
 package mock_service
 
 import (
+	dtos "happyBill/dtos"
 	models "happyBill/models"
 	reflect "reflect"
 
@@ -50,18 +51,33 @@ func (mr *MockServiceMockRecorder) CreateBillboard(product interface{}) *gomock.
 }
 
 // CreateClient mocks base method.
-func (m *MockService) CreateClient(student models.User) (int, error) {
+func (m *MockService) CreateClient(client models.User) (int, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateClient", student)
+	ret := m.ctrl.Call(m, "CreateClient", client)
 	ret0, _ := ret[0].(int)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateClient indicates an expected call of CreateClient.
-func (mr *MockServiceMockRecorder) CreateClient(student interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) CreateClient(client interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateClient", reflect.TypeOf((*MockService)(nil).CreateClient), student)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateClient", reflect.TypeOf((*MockService)(nil).CreateClient), client)
+}
+
+// CreateManager mocks base method.
+func (m *MockService) CreateManager(manager models.User) (int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateManager", manager)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateManager indicates an expected call of CreateManager.
+func (mr *MockServiceMockRecorder) CreateManager(manager interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateManager", reflect.TypeOf((*MockService)(nil).CreateManager), manager)
 }
 
 // DeleteBillboard mocks base method.
@@ -108,6 +124,21 @@ func (mr *MockServiceMockRecorder) GetAllBillboards() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockService)(nil).GetAllBillboards))
 }
 
+// GetAllManagers mocks base method.
+func (m *MockService) GetAllManagers() ([]dtos.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAllManagers")
+	ret0, _ := ret[0].([]dtos.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAllManagers indicates an expected call of GetAllManagers.
+func (mr *MockServiceMockRecorder) GetAllManagers() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllManagers", reflect.TypeOf((*MockService)(nil).GetAllManagers))
+}
+
 // GetBillboardById mocks base method.
 func (m *MockService) GetBillboardById(id int) (models.Product, error) {
 	m.ctrl.T.Helper()
@@ -121,6 +152,21 @@ func (m *MockService) GetBillboardById(id int) (models.Product, error) {
 func (mr *MockServiceMockRecorder) GetBillboardById(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBillboardById", reflect.TypeOf((*MockService)(nil).GetBillboardById), id)
+}
+
+// GetManagerById mocks base method.
+func (m *MockService) GetManagerById(id int) (dtos.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetManagerById", id)
+	ret0, _ := ret[0].(dtos.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetManagerById indicates an expected call of GetManagerById.
+func (mr *MockServiceMockRecorder) GetManagerById(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetManagerById", reflect.TypeOf((*MockService)(nil).GetManagerById), id)
 }
 
 // ParseToken mocks base method.
