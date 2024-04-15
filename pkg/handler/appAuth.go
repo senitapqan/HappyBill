@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 )
 
 func (h *Handler) signIn(c *gin.Context) {
@@ -14,6 +15,8 @@ func (h *Handler) signIn(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+
+	log.Print("Sign in request")
 
 	token, err := h.service.GenerateToken(request.Username, request.Password)
 

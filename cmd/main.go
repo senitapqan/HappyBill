@@ -12,6 +12,19 @@ import (
 	"github.com/spf13/viper"
 )
 
+// @title           Swagger Example API
+// @version         1.0
+// @description     This is a server for order billboards.
+// @termsOfService  http://swagger.io/terms/
+
+// @host      localhost:8080
+// @BasePath  /api/v1
+
+// @securityDefinitions.basic  BasicAuth
+
+// @externalDocs.description  OpenAPI
+// @externalDocs.url          https://swagger.io/resources/open-api/
+
 func main() {
 	if err := initConfig(); err != nil {
 		log.Fatalf("some error with initializiing: %s", err.Error())

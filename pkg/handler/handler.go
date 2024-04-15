@@ -32,7 +32,6 @@ func (h Handler) InitRoutes() *gin.Engine {
 		unauth.GET("/home", h.getAllBillboards)
 	}
 
-
 	admin := router.Group("/admin")
 	{
 		admin.Use(h.userIdentify())
@@ -50,12 +49,11 @@ func (h Handler) InitRoutes() *gin.Engine {
 		{
 			managers.POST("/", h.createManager)
 			managers.GET("/", h.getAllManager)
-			managers.GET("/:", h.getManagerById)
+			managers.GET("/:id", h.getManagerById)
 			managers.DELETE("/:id", h.deleteManager)
 			managers.PATCH("/:id", h.updateManager)
 		}
 	}
-
 
 	app := router.Group("/app")
 	{
