@@ -10,6 +10,21 @@ definitions:
     - password
     - username
     type: object
+  models.Product:
+    properties:
+      display_type:
+        type: integer
+      height:
+        type: integer
+      locationId:
+        type: integer
+      price:
+        type: integer
+      productId:
+        type: integer
+      width:
+        type: integer
+    type: object
   models.User:
     properties:
       email:
@@ -38,6 +53,59 @@ info:
   title: HappyBill
   version: "1.0"
 paths:
+  /admin/bill:
+    get:
+      consumes:
+      - application/json
+      description: Get all billboards from data base
+      operationId: get-billboards
+      produces:
+      - application/json
+      responses: {}
+      summary: GetAll
+      tags:
+      - admin/billboard
+    post:
+      consumes:
+      - application/json
+      description: Create the billboard and add it to data base
+      operationId: create-billboard
+      parameters:
+      - description: ' height / width / display_type / location_id / price'
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create
+      tags:
+      - admin/billboard
+  /admin/bill/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the billboard from data base
+      operationId: get-billboard
+      produces:
+      - application/json
+      responses: {}
+      summary: GetById
+      tags:
+      - admin/billboard
+    put:
+      consumes:
+      - application/json
+      description: Update
+      operationId: update-billboard
+      produces:
+      - application/json
+      responses: {}
+      summary: UpdateById
+      tags:
+      - admin/billboard
   /auth/sign-in:
     post:
       consumes:
@@ -76,4 +144,9 @@ paths:
       summary: Sign Up
       tags:
       - auth
+securityDefinitions:
+  ApiKeyAuth:
+    in: headers
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

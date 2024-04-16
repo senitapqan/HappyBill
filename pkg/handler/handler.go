@@ -23,7 +23,9 @@ func NewHandler(serv service.Service) *Handler {
 func (h Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
+
 	router.Use(CORSMiddleware())
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	auth := router.Group("/auth")
 	{
@@ -57,14 +59,8 @@ func (h Handler) InitRoutes() *gin.Engine {
 			managers.DELETE("/:id", h.deleteManager)
 			managers.PUT("/:id", h.updateManager)
 		}
+		
 	}
-
-	app := router.Group("/app")
-	{
-		app.Use(h.userIdentify())
-	}
-
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return router
 }

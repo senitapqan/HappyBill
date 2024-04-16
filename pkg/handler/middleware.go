@@ -21,7 +21,7 @@ const (
 func (h *Handler) userIdentify() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		header := c.GetHeader(authorizationHeader)
-		log.Info().Msg(header)
+		log.Info().Msg(fmt.Sprintf("Here is header: %s", header))
 		if header == "" {
 			newErrorResponse(c, http.StatusUnauthorized, "empty auth header")
 			return

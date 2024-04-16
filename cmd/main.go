@@ -12,12 +12,17 @@ import (
 	"github.com/spf13/viper"
 )
 
-// @title           HappyBill
-// @version         1.0
-// @description     This is a server for order billboards.
+//	@title			HappyBill
+//	@version		1.0
+//	@description	This is a server for order billboards.
 
-// @host      localhost:8080
-// @BasePath  /
+//	@host		localhost:8080
+//	@BasePath	/
+
+//	@securityDefinitions.apikey	ApiKeyAuth
+//	@in							headers
+//	@name						Authorization
+
 func main() {
 	if err := initConfig(); err != nil {
 		log.Fatalf("some error with initializiing: %s", err.Error())
