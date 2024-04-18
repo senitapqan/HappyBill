@@ -29,33 +29,33 @@ func (s *service) hashPassword(password string) string {
 	return fmt.Sprintf("%x", hash.Sum(nil))
 }
 
-func (s *service) GenerateToken(username, password string) (string, error) {
+func (s *service) GenerateToken(input, password string) ([]models.RolesHeaders, string, error) {
 	password = s.hashPassword(password)
-	user, err := s.repos.GetUser(username)
+	user, err := s.repos.GetUser(input)
 
 	if err != nil {
-		return "", err
+		return nil, "", err
 	}
 
 	if user.Id == 0 {
-		return "", fmt.Errorf("there is no such user with username: %s", username)
+		return nil, "", fmt.Errorf("there is no such user with username/email: %s", input)
 	}
 
 	if user.Password != password {
-		return "", errors.New("incorrect password")
+		return nil, "", errors.New("incorrect password")
 	}
 
 	var rolesHeaders []models.RolesHeaders
 	roles, err := s.repos.GetRoles(user.Id)
 
 	if err != nil {
-		return "", err
+		return nil, "", err
 	}
 
 	for _, role := range roles {
 		id, err := s.repos.GetRoleId(role, user.Id)
 		if err != nil {
-			return "", err
+			return nil, "", err
 		}
 		rolesHeaders = append(rolesHeaders, models.RolesHeaders{Role: role, Id: id})
 	}
@@ -69,7 +69,8 @@ func (s *service) GenerateToken(username, password string) (string, error) {
 		rolesHeaders,
 	})
 
-	return token.SignedString([]byte(signingKey))
+	tokenString, err := token.SignedString([]byte(signingKey))
+	return rolesHeaders, tokenString, err
 }
 
 func (s *service) ParseToken(accessToken string) (int, []models.RolesHeaders, error) {

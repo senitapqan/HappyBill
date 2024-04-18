@@ -1,18 +1,23 @@
 package models
 
+import "time"
+
 type Manager struct {
 	Id     int `json:"managerId"`
 	UserId int `json:"userId"`
+	CreatedAt time.Time `json:"created"`
 }
 
 type Client struct {
-	Id     int `json:"clientId"`
-	UserId int `json:"userId"`
+	Id        int       `json:"clientId"`
+	UserId    int       `json:"userId"`
+	CreatedAt time.Time `json:"created"`
 }
 
 type Admin struct {
-	Id     int `json:"adminId"`
-	UserId int `json:"userId"`
+	Id        int       `json:"adminId"`
+	UserId    int       `json:"userId"`
+	CreatedAt time.Time `json:"created"`
 }
 
 type User struct {

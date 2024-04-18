@@ -10,6 +10,9 @@ import (
 
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
+
+	_ "github.com/swaggo/files"
+	_ "github.com/swaggo/gin-swagger"
 )
 
 //	@title			HappyBill

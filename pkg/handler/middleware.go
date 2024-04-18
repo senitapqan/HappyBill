@@ -58,6 +58,31 @@ func (h *Handler) userIdentify() gin.HandlerFunc {
 	}
 }
 
+func (h *Handler) adminIdentify() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id, err := getId(c, adminCtx)	
+		if err != nil {
+			log.Error().Msg("You dont have admin permission")
+			newErrorResponse(c, http.StatusMethodNotAllowed, err.Error())
+			return
+		}
+
+		log.Info().Msg(fmt.Sprintf("ADMIN WITH ID %d SENT REQUEST", id))
+		c.Next()
+	}
+}
+
+// func (h *Handler) getIds(role string, c *gin.Context) (int, int, error) {
+// 	userId, err := getId(c, userCtx)
+// 	if err != nil {
+// 		return -1, -1, err
+// 	}
+
+// 	roleId, err := getId(c, role)
+
+// 	return userId, roleId, err
+// }
+
 func getId(c *gin.Context, header string) (int, error) {
 	log.Info().Msg("GETTING HEADER OF THE REQUEST")
 

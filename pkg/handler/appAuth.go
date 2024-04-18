@@ -20,23 +20,21 @@ import (
 func (h *Handler) signIn(c *gin.Context) {
 	var request dtos.SignInRequest
 	if err := c.BindJSON(&request); err != nil {
-
+		
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	log.Info().Msg("STARTED GENERATING TOKEN")
 
-	token, err := h.service.GenerateToken(request.Username, request.Password)
+	_, token, err := h.service.GenerateToken(request.Username, request.Password)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadGateway, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]string{
-		"token": token,
-	})
+	c.JSON(http.StatusOK, map[string]interface{}{"token": token,})
 
 	log.Info().Msg("TOKEN GENERATION ENDED")
 }
@@ -52,7 +50,6 @@ func (h *Handler) signIn(c *gin.Context) {
 func (h *Handler) signUp(c *gin.Context) {
 	var request models.User
 	if err := c.BindJSON(&request); err != nil {
-
 		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
@@ -62,8 +59,7 @@ func (h *Handler) signUp(c *gin.Context) {
 	id, err := h.service.CreateClient(request)
 
 	if err != nil {
-
-		newErrorResponse(c, http.StatusInternalServerError, "something went wrong")
+		newErrorResponse(c, http.StatusInternalServerError, "something went wrong: " + err.Error())
 		return
 	}
 

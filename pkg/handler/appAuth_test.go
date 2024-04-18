@@ -59,10 +59,10 @@ func TestHandler_signUp(t *testing.T) {
 				Surname:  "Test Surname",
 			},
 			mockBehavior: func(r *mock_service.MockService, user models.User) {
-				r.EXPECT().CreateClient(user).Return(0, errors.New("something went wrong"))
+				r.EXPECT().CreateClient(user).Return(0, errors.New("error with repository"))
 			},
 			expectedStatusCode:   500,
-			expectedResponseBody: `{"message":"something went wrong"}`,
+			expectedResponseBody: `{"message":"something went wrong: error with repository"}`,
 		},
 	}
 

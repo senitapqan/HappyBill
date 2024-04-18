@@ -3,8 +3,10 @@ package repository
 import (
 	"fmt"
 	"happyBill/consts"
+	"happyBill/dtos"
 	"happyBill/models"
 	"log"
+	"time"
 
 	"strings"
 )
@@ -12,8 +14,8 @@ import (
 func (r *repository) CreateBillboard(product models.Product) (int, error) {
 	var productId int
 
-	createBillboardQuery := fmt.Sprintf("INSERT INTO %s (width, height, display_type, locationId, price) VALUES ($1, $2, $3, $4, $5) RETURNING id", consts.ProductsTable)
-	row := r.db.DB.QueryRow(createBillboardQuery, product.Width, product.Height, product.DisplayType, product.LocationId, product.Price)
+	createBillboardQuery := fmt.Sprintf("INSERT INTO %s (width, height, display_type, locationId, price, created_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id", consts.ProductsTable)
+	row := r.db.DB.QueryRow(createBillboardQuery, product.Width, product.Height, product.DisplayType, product.LocationId, product.Price, time.Now())
 
 	err := row.Scan(&productId)
 	if err != nil {
@@ -24,18 +26,22 @@ func (r *repository) CreateBillboard(product models.Product) (int, error) {
 
 }
 
-func (r *repository) GetAllBillboards() ([]models.Product, error) {
-	var products []models.Product
-	query := fmt.Sprintf("SELECT * FROM %s", consts.ProductsTable)
+func (r *repository) GetAllBillboards(page int) ([]dtos.Product, error) {
+	var products []dtos.Product
+	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name
+			from %s prod
+			join %s loc on loc.id = prod.locationid
+			order by prod.created_time desc
+			limit %d offset %d`, 
+			consts.ProductsTable, consts.LocationsTable, consts.PaginationLimit, (page - 1) * consts.PaginationLimit)
 	if err := r.db.Select(&products, query); err != nil {
 		return nil, err
 	}
 	return products, nil
-
 }
 
-func (r *repository) GetBillboardById(id int) (models.Product, error) {
-	var product models.Product
+func (r *repository) GetBillboardById(id int) (dtos.Product, error) {
+	var product dtos.Product
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1 LIMIT 1", consts.ProductsTable)
 	err := r.db.Get(&product, query, id)
 	return product, err

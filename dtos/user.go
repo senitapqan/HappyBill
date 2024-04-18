@@ -9,3 +9,8 @@ type User struct {
 	RoleId   int    `json:"roleId" db:"roleid"`
 }
 
+type SignInRequest struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+

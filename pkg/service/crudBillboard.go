@@ -1,20 +1,23 @@
 package service
 
-import "happyBill/models"
+import (
+	"happyBill/dtos"
+	"happyBill/models"
+)
 
 func (s *service) CreateBillboard(product models.Product) (int, error) {
 	return s.repos.CreateBillboard(product)
 }
 
-func (s *service) GetAllBillboards() ([]models.Product, error) {
-	return s.repos.GetAllBillboards()
+func (s *service) GetAllBillboards(page int) ([]dtos.Product, error) {
+	return s.repos.GetAllBillboards(page)
 }
 
 func (s *service) DeleteBillboard(id int) error {
 	return s.repos.DeleteBillboard(id)
 }
 
-func (s *service) GetBillboardById(id int) (models.Product, error) {
+func (s *service) GetBillboardById(id int) (dtos.Product, error) {
 	return s.repos.GetBillboardById(id)
 }
 

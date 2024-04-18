@@ -5,6 +5,7 @@ import (
 	"happyBill/consts"
 	"happyBill/dtos"
 	"happyBill/models"
+	"time"
 )
 
 func (r *repository) CreateManager(manager models.User) (int, error) {
@@ -27,8 +28,8 @@ func (r *repository) CreateManager(manager models.User) (int, error) {
 		return 0, err
 	}
 
-	query = fmt.Sprintf("insert into %s (user_id, role_id) values ($1, $2)", consts.UsersRolesTable)
-	_, err = tx.Exec(query, userId, consts.ManagerRoleId)
+	query = fmt.Sprintf("insert into %s (user_id, role_id, created_time) values ($1, $2)", consts.UsersRolesTable)
+	_, err = tx.Exec(query, userId, consts.ManagerRoleId, time.Now())
 
 	if err != nil {
 		tx.Rollback()
@@ -38,10 +39,13 @@ func (r *repository) CreateManager(manager models.User) (int, error) {
 	return managerId, tx.Commit()
 }
 
-func (r *repository) GetAllManagers() ([]dtos.User, error) {
+func (r *repository) GetAllManagers(page int) ([]dtos.User, error) {
 	var result []dtos.User
-	query := fmt.Sprintf("select u.id, u.name, u.surname, u.username, u.email, m.id as roleid from %s u join %s m ON m.user_id = u.id", 
-		consts.UsersTable, consts.ManagersTable)
+	query := fmt.Sprintf(`select u.id, u.name, u.surname, u.username, u.email, m.id as roleid 
+			from %s u join %s m ON m.user_id = u.id 
+			order by m.created_time desc
+			limit %d offset %d`, 
+		consts.UsersTable, consts.ManagersTable, consts.PaginationLimit, (page - 1) * consts.PaginationLimit)
 
 	err := r.db.Select(&result, query)
 	return result, err

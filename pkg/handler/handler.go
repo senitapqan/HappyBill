@@ -1,4 +1,4 @@
-package handler
+ package handler
 
 import (
 	"happyBill/pkg/service"
@@ -41,6 +41,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 	admin := router.Group("/admin")
 	{
 		admin.Use(h.userIdentify())
+		admin.Use(h.adminIdentify())
 
 		billboard := admin.Group("/bill")
 		{
@@ -59,19 +60,14 @@ func (h Handler) InitRoutes() *gin.Engine {
 			managers.DELETE("/:id", h.deleteManager)
 			managers.PUT("/:id", h.updateManager)
 		}
-		
+	}
+
+	client := router.Group("/home")
+	{
+		client.GET("/my-orders")
 	}
 
 	return router
 }
 
-func (h *Handler) getIds(role string, c *gin.Context) (int, int, error) {
-	userId, err := getId(c, userCtx)
-	if err != nil {
-		return -1, -1, err
-	}
 
-	roleId, err := getId(c, role)
-
-	return userId, roleId, err
-}

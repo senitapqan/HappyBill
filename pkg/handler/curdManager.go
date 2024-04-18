@@ -9,13 +9,15 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+//		@Summary		Create Manager
+//	 @Security		ApiKeyAuth
+//		@Tags			admin/manager
+//		@Description	Create new manager to Data Base
+//		@ID				create-manager
+//		@Accept			json
+//		@Produce		json
+//		@Router			/admin/admin [post]
 func (h *Handler) createManager(c *gin.Context) {
-	/*_, _, err := h.getIds(adminCtx, c)
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-	*/
 	var request models.User
 	if err := c.BindJSON(&request); err != nil {
 		log.Error().Msg("Error binding JSON")
@@ -41,15 +43,23 @@ func (h *Handler) createManager(c *gin.Context) {
 
 }
 
+//		@Summary		Get all Managers
+//	 @Security		ApiKeyAuth
+//		@Tags			admin/manager
+//		@Description	Get all managers from data base
+//		@ID				get-managers
+//		@Accept			json
+//		@Produce		json
+//		@Router			/admin/manager [get]
 func (h *Handler) getAllManager(c *gin.Context) {
-	/*_, _, err := h.getIds(adminCtx, c)
+	page, err := ValidatePage(c)
+
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	*/
 
-	managers, err := h.service.GetAllManagers()
+	managers, err := h.service.GetAllManagers(page)
 
 	if err != nil {
 		log.Error().Msg("Error getting all managers")
@@ -64,13 +74,15 @@ func (h *Handler) getAllManager(c *gin.Context) {
 	})
 }
 
+//		@Summary		Get Manager By Id
+//	 @Security		ApiKeyAuth
+//		@Tags			admin/manager
+//		@Description	Get the manager from data base with ID
+//		@ID				get-manager
+//		@Accept			json
+//		@Produce		json
+//		@Router			/admin/manager/:id [get]
 func (h *Handler) getManagerById(c *gin.Context) {
-	/*_, _, err := h.getIds(adminCtx, c)
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-	*/
 	id, err := ValidateId(c)
 
 	if err != nil {
@@ -97,19 +109,9 @@ func (h *Handler) getManagerById(c *gin.Context) {
 }
 
 func (h *Handler) deleteManager(c *gin.Context) {
-	/*_, _, err := h.getIds(adminCtx, c)
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-	*/
+
 }
 
 func (h *Handler) updateManager(c *gin.Context) {
-	/*_, _, err := h.getIds(adminCtx, c)
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-	*/
+
 }

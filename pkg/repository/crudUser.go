@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"happyBill/consts"
 	"happyBill/models"
+	"strings"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -19,9 +20,15 @@ func (r *repository) CreateUser(user models.User, tx *sqlx.Tx) (int, error) {
 	return userId, nil
 }
 
-func (r *repository) GetUser(username string) (models.User, error) {
+func (r *repository) GetUser(input string) (models.User, error) {
 	var user models.User
-	query := fmt.Sprintf("select id, username, password from %s where username = $1", consts.UsersTable)
-	err := r.db.Get(&user, query, username)
+
+	queryParam := "username"
+
+	if strings.Contains(input, "@") {
+			queryParam = "email"
+	}
+	query := fmt.Sprintf("select id, username, password from %s where %s = $1", consts.UsersTable, queryParam)
+	err := r.db.Get(&user, query, input)
 	return user, err
 }

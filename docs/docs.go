@@ -15,8 +15,35 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/admin": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create new manager to Data Base",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin/manager"
+                ],
+                "summary": "Create Manager",
+                "operationId": "create-manager",
+                "responses": {}
+            }
+        },
         "/admin/bill": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all billboards from data base",
                 "consumes": [
                     "application/json"
@@ -32,6 +59,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "post": {
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ],
                 "description": "Create the billboard and add it to data base",
                 "consumes": [
                     "application/json"
@@ -60,6 +92,11 @@ const docTemplate = `{
         },
         "/admin/bill/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get the billboard from data base",
                 "consumes": [
                     "application/json"
@@ -87,6 +124,50 @@ const docTemplate = `{
                 ],
                 "summary": "UpdateById",
                 "operationId": "update-billboard",
+                "responses": {}
+            }
+        },
+        "/admin/manager": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all managers from data base",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin/manager"
+                ],
+                "summary": "Get all Managers",
+                "operationId": "get-managers",
+                "responses": {}
+            }
+        },
+        "/admin/manager/:id": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the manager from data base with ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin/manager"
+                ],
+                "summary": "Get Manager By Id",
+                "operationId": "get-manager",
                 "responses": {}
             }
         },
@@ -166,6 +247,9 @@ const docTemplate = `{
         "models.Product": {
             "type": "object",
             "properties": {
+                "created": {
+                    "type": "string"
+                },
                 "display_type": {
                     "type": "integer"
                 },

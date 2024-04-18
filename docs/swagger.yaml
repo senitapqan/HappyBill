@@ -12,6 +12,8 @@ definitions:
     type: object
   models.Product:
     properties:
+      created:
+        type: string
       display_type:
         type: integer
       height:
@@ -53,6 +55,20 @@ info:
   title: HappyBill
   version: "1.0"
 paths:
+  /admin/admin:
+    post:
+      consumes:
+      - application/json
+      description: Create new manager to Data Base
+      operationId: create-manager
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create Manager
+      tags:
+      - admin/manager
   /admin/bill:
     get:
       consumes:
@@ -62,6 +78,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - ApiKeyAuth: []
       summary: GetAll
       tags:
       - admin/billboard
@@ -80,6 +98,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - apiKeyAuth: []
       summary: Create
       tags:
       - admin/billboard
@@ -92,6 +112,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - ApiKeyAuth: []
       summary: GetById
       tags:
       - admin/billboard
@@ -106,6 +128,34 @@ paths:
       summary: UpdateById
       tags:
       - admin/billboard
+  /admin/manager:
+    get:
+      consumes:
+      - application/json
+      description: Get all managers from data base
+      operationId: get-managers
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get all Managers
+      tags:
+      - admin/manager
+  /admin/manager/:id:
+    get:
+      consumes:
+      - application/json
+      description: Get the manager from data base with ID
+      operationId: get-manager
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get Manager By Id
+      tags:
+      - admin/manager
   /auth/sign-in:
     post:
       consumes:

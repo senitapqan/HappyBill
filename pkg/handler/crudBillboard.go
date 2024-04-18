@@ -13,6 +13,7 @@ import (
 
 //	@Summary		Create
 //	@Tags			admin/billboard
+//  @Security		apiKeyAuth
 //	@Description	Create the billboard and add it to data base
 //	@ID				create-billboard
 //	@Accept			json
@@ -20,18 +21,8 @@ import (
 //	@Param			input	body	models.Product	true	" height / width / display_type / location_id / price"
 //	@Router			/admin/bill [post]
 func (h *Handler) createBillboard(c *gin.Context) {
-
-	_, _, err := h.getIds(adminCtx, c)
-
-	if err != nil {
-
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
 	var input models.Product
 	if err := c.BindJSON(&input); err != nil {
-
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -53,6 +44,7 @@ func (h *Handler) createBillboard(c *gin.Context) {
 }
 
 //	@Summary		GetAll
+//  @Security		ApiKeyAuth
 //	@Tags			admin/billboard
 //	@Description	Get all billboards from data base
 //	@ID				get-billboards
@@ -60,15 +52,16 @@ func (h *Handler) createBillboard(c *gin.Context) {
 //	@Produce		json
 //	@Router			/admin/bill [get]
 func (h *Handler) getAllBillboards(c *gin.Context) {
-	_, _, err := h.getIds(adminCtx, c)
+	log.Info().Msg("STARTED HANDLING GET ALL BILLBOARDS REQUEST")
+
+	page, err := ValidatePage(c)
+
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	log.Info().Msg(fmt.Sprintf("STARTED HANDLING GET ALL BILLBOARDS REQUEST"))
-
-	products, err := h.service.GetAllBillboards()
+	products, err := h.service.GetAllBillboards(page)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -79,25 +72,18 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 		Data: products,
 	})
 
-	log.Info().Msg(fmt.Sprintf("GET ALL BILLBOARDS REQUEST ENDED"))
-
+	log.Info().Msg("GET ALL BILLBOARDS REQUEST ENDED")
 }
 
 //	@Summary		GetById
 //	@Tags			admin/billboard
+//  @Security		ApiKeyAuth
 //	@Description	Get the billboard from data base
 //	@ID				get-billboard
 //	@Accept			json
 //	@Produce		json
 //	@Router			/admin/bill/{id} [get]
 func (h *Handler) getBillboardById(c *gin.Context) {
-	_, _, err := h.getIds(adminCtx, c)
-	if err != nil {
-
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
 	id, err := ValidateId(c)
 
 	if err != nil {
@@ -106,7 +92,7 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 		return
 	}
 
-	log.Info().Msg(fmt.Sprintf("STARTED HANDLING GET BILLBOARD BY ID REQUEST"))
+	log.Info().Msg("STARTED HANDLING GET BILLBOARD BY ID REQUEST")
 
 	product, err := h.service.GetBillboardById(id)
 
@@ -120,25 +106,19 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 		Data: product,
 	})
 
-	log.Info().Msg(fmt.Sprintf("GET BILLBOARD BY ID REQUEST ENDED"))
+	log.Info().Msg("GET BILLBOARD BY ID REQUEST ENDED")
 
 }
 
 //	@Summary		UpdateById
 //	@Tags			admin/billboard
+//  @Security		ApiKeyAuth
 //	@Description	Update
 //	@ID				update-billboard
 //	@Accept			json
 //	@Produce		json
 //	@Router			/admin/bill/{id} [put]
 func (h *Handler) updateBillboard(c *gin.Context) {
-	_, _, err := h.getIds(adminCtx, c)
-	if err != nil {
-
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
 	id, err := ValidateId(c)
 
 	if err != nil {
@@ -157,10 +137,9 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 		return
 	}
 
-	log.Info().Msg(fmt.Sprintf("STARTED HANDLING UPDATE BILLBOARD REQUEST"))
+	log.Info().Msg("STARTED HANDLING UPDATE BILLBOARD REQUEST")
 
 	if err := h.service.UpdateBillboard(id, input); err != nil {
-
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -169,18 +148,11 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 		"Message": "Updated succesfully",
 	})
 
-	log.Info().Msg(fmt.Sprintf("UPDATE BILLBOARD REQUEST ENDED"))
+	log.Info().Msg("UPDATE BILLBOARD REQUEST ENDED")
 
 }
 
 func (h *Handler) deleteBillboard(c *gin.Context) {
-	_, _, err := h.getIds(adminCtx, c)
-	if err != nil {
-
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
 	id, err := ValidateId(c)
 
 	if err != nil {
@@ -189,7 +161,7 @@ func (h *Handler) deleteBillboard(c *gin.Context) {
 		return
 	}
 
-	log.Info().Msg(fmt.Sprintf("STARTED HANDLING DELETE BILLBOARD REQUEST"))
+	log.Info().Msg("STARTED HANDLING DELETE BILLBOARD REQUEST")
 
 	err = h.service.DeleteBillboard(id)
 
@@ -203,6 +175,6 @@ func (h *Handler) deleteBillboard(c *gin.Context) {
 		Status: "ok",
 	})
 
-	log.Info().Msg(fmt.Sprintf("DELETE BILLBOARD REQUEST ENDED"))
+	log.Info().Msg("DELETE BILLBOARD REQUEST ENDED")
 
 }

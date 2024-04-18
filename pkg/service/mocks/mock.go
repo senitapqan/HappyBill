@@ -95,12 +95,13 @@ func (mr *MockServiceMockRecorder) DeleteBillboard(id interface{}) *gomock.Call 
 }
 
 // GenerateToken mocks base method.
-func (m *MockService) GenerateToken(username, password string) (string, error) {
+func (m *MockService) GenerateToken(username, password string) ([]models.RolesHeaders, string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenerateToken", username, password)
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].([]models.RolesHeaders)
+	ret1, _ := ret[1].(string)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GenerateToken indicates an expected call of GenerateToken.
@@ -110,40 +111,55 @@ func (mr *MockServiceMockRecorder) GenerateToken(username, password interface{})
 }
 
 // GetAllBillboards mocks base method.
-func (m *MockService) GetAllBillboards() ([]models.Product, error) {
+func (m *MockService) GetAllBillboards(page int) ([]dtos.Product, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAllBillboards")
-	ret0, _ := ret[0].([]models.Product)
+	ret := m.ctrl.Call(m, "GetAllBillboards", page)
+	ret0, _ := ret[0].([]dtos.Product)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAllBillboards indicates an expected call of GetAllBillboards.
-func (mr *MockServiceMockRecorder) GetAllBillboards() *gomock.Call {
+func (mr *MockServiceMockRecorder) GetAllBillboards(page interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockService)(nil).GetAllBillboards))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockService)(nil).GetAllBillboards), page)
 }
 
 // GetAllManagers mocks base method.
-func (m *MockService) GetAllManagers() ([]dtos.User, error) {
+func (m *MockService) GetAllManagers(page int) ([]dtos.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAllManagers")
+	ret := m.ctrl.Call(m, "GetAllManagers", page)
 	ret0, _ := ret[0].([]dtos.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAllManagers indicates an expected call of GetAllManagers.
-func (mr *MockServiceMockRecorder) GetAllManagers() *gomock.Call {
+func (mr *MockServiceMockRecorder) GetAllManagers(page interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllManagers", reflect.TypeOf((*MockService)(nil).GetAllManagers))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllManagers", reflect.TypeOf((*MockService)(nil).GetAllManagers), page)
+}
+
+// GetAllOrders mocks base method.
+func (m *MockService) GetAllOrders(page int) ([]dtos.Order, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAllOrders", page)
+	ret0, _ := ret[0].([]dtos.Order)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAllOrders indicates an expected call of GetAllOrders.
+func (mr *MockServiceMockRecorder) GetAllOrders(page interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllOrders", reflect.TypeOf((*MockService)(nil).GetAllOrders), page)
 }
 
 // GetBillboardById mocks base method.
-func (m *MockService) GetBillboardById(id int) (models.Product, error) {
+func (m *MockService) GetBillboardById(id int) (dtos.Product, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBillboardById", id)
-	ret0, _ := ret[0].(models.Product)
+	ret0, _ := ret[0].(dtos.Product)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

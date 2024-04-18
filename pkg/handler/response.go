@@ -31,3 +31,18 @@ func ValidateId(c *gin.Context) (int, error) {
 	}
 	return id, nil
 }
+
+func ValidatePage(c *gin.Context) (int, error) {
+	pageStr := c.DefaultQuery("page", "1")
+	pageInt, err := strconv.Atoi(pageStr)
+
+	if err != nil {
+		return -1, errors.New("value of query parameter 'page' is not integer")
+	}
+
+	if pageInt <= 0 {
+		return -1, errors.New("page cannot be negative")
+	}
+
+	return pageInt, nil
+}

@@ -11,8 +11,8 @@ func (s *service) CreateManager(manager models.User) (int, error) {
 	return manager_id, err
 }
 
-func (s *service) GetAllManagers() ([]dtos.User, error) {
-	return s.repos.GetAllManagers()
+func (s *service) GetAllManagers(page int) ([]dtos.User, error) {
+	return s.repos.GetAllManagers(page)
 }
 
 func (s *service) GetManagerById(id int) (dtos.User, error) {

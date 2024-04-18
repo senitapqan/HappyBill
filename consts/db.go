@@ -8,8 +8,11 @@ const (
 	ManagersTable   = "t_manager"
 	AdminsTable     = "t_admin"
 	ProductsTable   = "t_product"
+	LocationsTable  = "t_location"
 
 	ClientRoleId  = 3
 	ManagerRoleId = 2
 	AdminRoleId   = 1
+
+	PaginationLimit = 10
 )
