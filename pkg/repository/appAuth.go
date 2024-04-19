@@ -13,7 +13,7 @@ func (r *repository) GetRoles(id int) ([]string, error) {
 	var roles []string
 	query := fmt.Sprintf("select r.role_name from %s r join %s c on c.role_id = r.id where c.user_id = $1", consts.RolesTable, consts.UsersRolesTable)
 
-	log.Error().Msg("EXECUTING SQL QUERY")
+	log.Info().Msg("EXECUTING SQL QUERY")
 
 	rows, err := r.db.Query(query, id)
 

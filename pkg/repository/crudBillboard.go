@@ -32,8 +32,8 @@ func (r *repository) GetAllBillboards(page int) ([]dtos.Product, error) {
 			from %s prod
 			join %s loc on loc.id = prod.locationid
 			order by prod.created_time desc
-			limit %d offset %d`, 
-			consts.ProductsTable, consts.LocationsTable, consts.PaginationLimit, (page - 1) * consts.PaginationLimit)
+			limit %d offset %d`,
+		consts.ProductsTable, consts.LocationsTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
 	if err := r.db.Select(&products, query); err != nil {
 		return nil, err
 	}
@@ -53,7 +53,6 @@ func (r *repository) DeleteBillboard(id int) error {
 	_, err := r.db.Exec(query, id)
 	return err
 }
-
 
 func (r *repository) UpdateBillboard(id int, input models.Product) error {
 	setValues := make([]string, 0)

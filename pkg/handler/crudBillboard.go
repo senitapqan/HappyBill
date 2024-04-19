@@ -11,19 +11,20 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-//	@Summary		Create
-//	@Tags			admin/billboard
-//  @Security		apiKeyAuth
-//	@Description	Create the billboard and add it to data base
-//	@ID				create-billboard
-//	@Accept			json
-//	@Produce		json
-//	@Param			input	body	models.Product	true	" height / width / display_type / location_id / price"
-//	@Router			/admin/bill [post]
+//		@Summary		Create
+//		@Tags			admin/billboard
+//	 @Security		apiKeyAuth
+//		@Description	Create the billboard and add it to data base
+//		@ID				create-billboard
+//		@Accept			json
+//		@Produce		json
+//		@Param			input	body	models.Product	true	" height / width / display_type / location_id / price"
+//		@Router			/admin/bill [post]
 func (h *Handler) createBillboard(c *gin.Context) {
 	var input models.Product
 	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		log.Error().Msg("STARTED HANDLING CREATE BILLBOARD REQUEST")
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
 
@@ -35,22 +36,22 @@ func (h *Handler) createBillboard(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"Message: ": "New billboard was created!",
-		"id":        id,
+		"Message": "New billboard was created!",
+		"id":      id,
 	})
 
 	log.Info().Msg("CREATE BILLBOARD REQUEST ENDED")
 
 }
 
-//	@Summary		GetAll
-//  @Security		ApiKeyAuth
-//	@Tags			admin/billboard
-//	@Description	Get all billboards from data base
-//	@ID				get-billboards
-//	@Accept			json
-//	@Produce		json
-//	@Router			/admin/bill [get]
+//		@Summary		GetAll
+//	 @Security		ApiKeyAuth
+//		@Tags			admin/billboard
+//		@Description	Get all billboards from data base
+//		@ID				get-billboards
+//		@Accept			json
+//		@Produce		json
+//		@Router			/admin/bill [get]
 func (h *Handler) getAllBillboards(c *gin.Context) {
 	log.Info().Msg("STARTED HANDLING GET ALL BILLBOARDS REQUEST")
 
@@ -75,14 +76,14 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 	log.Info().Msg("GET ALL BILLBOARDS REQUEST ENDED")
 }
 
-//	@Summary		GetById
-//	@Tags			admin/billboard
-//  @Security		ApiKeyAuth
-//	@Description	Get the billboard from data base
-//	@ID				get-billboard
-//	@Accept			json
-//	@Produce		json
-//	@Router			/admin/bill/{id} [get]
+//		@Summary		GetById
+//		@Tags			admin/billboard
+//	 @Security		ApiKeyAuth
+//		@Description	Get the billboard from data base
+//		@ID				get-billboard
+//		@Accept			json
+//		@Produce		json
+//		@Router			/admin/bill/{id} [get]
 func (h *Handler) getBillboardById(c *gin.Context) {
 	id, err := ValidateId(c)
 
@@ -110,14 +111,14 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 
 }
 
-//	@Summary		UpdateById
-//	@Tags			admin/billboard
-//  @Security		ApiKeyAuth
-//	@Description	Update
-//	@ID				update-billboard
-//	@Accept			json
-//	@Produce		json
-//	@Router			/admin/bill/{id} [put]
+//		@Summary		UpdateById
+//		@Tags			admin/billboard
+//	 @Security		ApiKeyAuth
+//		@Description	Update
+//		@ID				update-billboard
+//		@Accept			json
+//		@Produce		json
+//		@Router			/admin/bill/{id} [put]
 func (h *Handler) updateBillboard(c *gin.Context) {
 	id, err := ValidateId(c)
 

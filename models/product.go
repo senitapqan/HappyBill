@@ -4,11 +4,11 @@ import "time"
 
 type Product struct {
 	Id          int       `json:"productId"`
-	Width       int       `json:"width"`
-	Height      int       `json:"height"`
-	DisplayType int       `json:"display_type" db:"display_type"`
-	LocationId  int       `json:"locationId"`
-	Price       int       `json:"price"`
+	Width       int       `json:"width" binding:"required"`
+	Height      int       `json:"height" binding:"required"`
+	DisplayType int       `json:"display_type" binding:"required" db:"display_type"`
+	LocationId  int       `json:"locationId" binding:"required"`
+	Price       int       `json:"price" binding:"required"`
 	CreatedAt   time.Time `json:"created"`
 }
 
