@@ -15,7 +15,7 @@ func (r *repository) CreateBillboard(product models.Product) (int, error) {
 	var productId int
 
 	createBillboardQuery := fmt.Sprintf("INSERT INTO %s (width, height, display_type, locationId, price, created_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id", consts.ProductsTable)
-	row := r.db.DB.QueryRow(createBillboardQuery, product.Width, product.Height, product.DisplayType, product.LocationId, product.Price, time.Now())
+	row := r.db.QueryRow(createBillboardQuery, product.Width, product.Height, product.DisplayType, product.LocationId, product.Price, time.Now())
 
 	err := row.Scan(&productId)
 	if err != nil {

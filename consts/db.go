@@ -9,6 +9,7 @@ const (
 	AdminsTable     = "t_admin"
 	ProductsTable   = "t_product"
 	LocationsTable  = "t_location"
+	OrdersTable 	= "t_order"
 
 	ClientRoleId  = 3
 	ManagerRoleId = 2

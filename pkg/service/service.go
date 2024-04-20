@@ -23,6 +23,7 @@ type Service interface {
 
 	//CreateOrder(order models.Order) (int, error)
 	GetAllOrders(page int) ([]dtos.Order, error)
+	GetMyOrders(clientId, page int) ([]dtos.MyOrder, error)
 
 	CreateBillboard(product models.Product) (int, error)
 	GetAllBillboards(page int) ([]dtos.Product, error)

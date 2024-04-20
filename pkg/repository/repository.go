@@ -27,6 +27,7 @@ type Repository interface {
 	UpdateBillboard(id int, input models.Product) error
 
 	//GetAllOrders() ([]dtos.Order, error)
+	GetMyOrders(clientId, page int) ([]dtos.MyOrder, error)
 }
 
 type repository struct {

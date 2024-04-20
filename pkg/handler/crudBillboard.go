@@ -13,7 +13,7 @@ import (
 
 //	@Summary		Create
 //	@Tags			admin/billboard
-//  @Security		apiKeyAuth
+//	@Security		apiKeyAuth
 //	@Description	Create the billboard and add it to data base
 //	@ID				create-billboard
 //	@Accept			json
@@ -44,7 +44,7 @@ func (h *Handler) createBillboard(c *gin.Context) {
 }
 
 //	@Summary		GetAll
-//  @Security		ApiKeyAuth
+//	@Security		ApiKeyAuth
 //	@Tags			admin/billboard
 //	@Description	Get all billboards from data base
 //	@ID				get-billboards
@@ -77,7 +77,7 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 
 //	@Summary		GetById
 //	@Tags			admin/billboard
-//  @Security		ApiKeyAuth
+//	@Security		ApiKeyAuth
 //	@Description	Get the billboard from data base
 //	@ID				get-billboard
 //	@Accept			json
@@ -112,7 +112,7 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 
 //	@Summary		UpdateById
 //	@Tags			admin/billboard
-//  @Security		ApiKeyAuth
+//	@Security		ApiKeyAuth
 //	@Description	Update
 //	@ID				update-billboard
 //	@Accept			json
