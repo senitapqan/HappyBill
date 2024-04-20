@@ -1,12 +1,19 @@
-qFROM golang:1.20
+FROM golang:1.19-buster
 
-WORKDIR /app
+RUN go version
+ENV GOPATH=/
 
-COPY go.mod go.sum ./
+COPY ./ ./
 
+# install psql
+RUN apt-get update
+RUN apt-get -y install postgresql-client
+
+# make wait-for-postgres.sh executable
+RUN chmod +x wait-for-postgres.sh
+
+# build go app
 RUN go mod download
+RUN go build -o happybill ./cmd/main.go
 
-COPY . .
-
-CMD ["go", "run", "./cmd/main.go" ]
-
+CMD ["./HappyBill"]

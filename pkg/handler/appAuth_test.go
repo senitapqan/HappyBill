@@ -64,6 +64,38 @@ func TestHandler_signUp(t *testing.T) {
 			expectedStatusCode:   500,
 			expectedResponseBody: `{"message":"something went wrong: error with repository"}`,
 		},
+		{
+			name:      "Existing username",
+			inputBody: `{"username": "username", "name": "Test Name", "password": "qwerty", "email": "test@gmail.com", "surname": "Test Surname"}`,
+			inputUser: models.User{
+				Username: "username",
+				Name:     "Test Name",
+				Password: "qwerty",
+				Email:    "test@gmail.com",
+				Surname:  "Test Surname",
+			},
+			mockBehavior: func(r *mock_service.MockService, user models.User) {
+				r.EXPECT().CreateClient(user).Return(0, errors.New("there is already exist account with such username"))
+			},
+			expectedStatusCode:   500,
+			expectedResponseBody: `{"message":"something went wrong: there is already exist account with such username"}`,
+		},
+		{
+			name:      "Existing email",
+			inputBody: `{"username": "username", "name": "Test Name", "password": "qwerty", "email": "test@gmail.com", "surname": "Test Surname"}`,
+			inputUser: models.User{
+				Username: "username",
+				Name:     "Test Name",
+				Password: "qwerty",
+				Email:    "test@gmail.com",
+				Surname:  "Test Surname",
+			},
+			mockBehavior: func(r *mock_service.MockService, user models.User) {
+				r.EXPECT().CreateClient(user).Return(0, errors.New("there is already exist account with such email"))
+			},
+			expectedStatusCode:   500,
+			expectedResponseBody: `{"message":"something went wrong: there is already exist account with such email"}`,
+		},
 	}
 
 	for _, test := range tests {

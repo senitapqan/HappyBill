@@ -23,7 +23,8 @@ import (
 func (h *Handler) createBillboard(c *gin.Context) {
 	var input models.Product
 	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		log.Error().Msg("STARTED HANDLING CREATE BILLBOARD REQUEST")
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
 
@@ -35,8 +36,8 @@ func (h *Handler) createBillboard(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"Message: ": "New billboard was created!",
-		"id":        id,
+		"Message": "New billboard was created!",
+		"id":      id,
 	})
 
 	log.Info().Msg("CREATE BILLBOARD REQUEST ENDED")
