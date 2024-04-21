@@ -15,7 +15,7 @@ func (r *repository) CreateBillboard(product models.Product) (int, error) {
 	var productId int
 
 	createBillboardQuery := fmt.Sprintf("INSERT INTO %s (width, height, display_type, locationId, price, created_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id", consts.ProductsTable)
-	row := r.db.DB.QueryRow(createBillboardQuery, product.Width, product.Height, product.DisplayType, product.LocationId, product.Price, time.Now())
+	row := r.db.QueryRow(createBillboardQuery, product.Width, product.Height, product.DisplayType, product.LocationId, product.Price, time.Now())
 
 	err := row.Scan(&productId)
 	if err != nil {
@@ -35,6 +35,22 @@ func (r *repository) GetAllBillboards(page int) ([]dtos.Product, error) {
 			limit %d offset %d`,
 		consts.ProductsTable, consts.LocationsTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
 	if err := r.db.Select(&products, query); err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
+func (r *repository) GetMyBillboards(clientId, page int) ([]dtos.Product, error) {
+	var products []dtos.Product
+	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name
+			from %s prod
+			join %s clprod on clprod.product_id = prod.id
+			join %s loc on loc.id = prod.locationid
+			where clprod.clientid = $1
+			order by clprod.created_time desc
+			limit %d offset %d`,
+		consts.ProductsTable, consts.ClientProductsTable, consts.LocationsTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
+	if err := r.db.Select(&products, query, clientId); err != nil {
 		return nil, err
 	}
 	return products, nil

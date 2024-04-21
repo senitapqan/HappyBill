@@ -1,11 +1,11 @@
- package handler
+package handler
 
 import (
 	"happyBill/pkg/service"
 
 	"github.com/gin-gonic/gin"
-	"github.com/swaggo/gin-swagger"
-	"github.com/swaggo/files"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	_ "happyBill/docs"
 )
@@ -23,7 +23,6 @@ func NewHandler(serv service.Service) *Handler {
 func (h Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
-
 	router.Use(CORSMiddleware())
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -31,11 +30,6 @@ func (h Handler) InitRoutes() *gin.Engine {
 	{
 		auth.POST("/sign-in", h.signIn)
 		auth.POST("/sign-up", h.signUp)
-	}
-
-	unauth := router.Group("/")
-	{
-		unauth.GET("/home", h.getAllBillboards)
 	}
 
 	admin := router.Group("/admin")
@@ -60,14 +54,28 @@ func (h Handler) InitRoutes() *gin.Engine {
 			managers.DELETE("/:id", h.deleteManager)
 			managers.PUT("/:id", h.updateManager)
 		}
+
+		orders := admin.Group("/order")
+		{
+			orders.GET("/", h.getAllOrders)
+		}
 	}
 
-	client := router.Group("/home")
+	client := router.Group("")
 	{
-		client.GET("/my-orders")
+		profile := client.Group("/profile")
+		{
+			profile.Use(h.userIdentify())
+			profile.Use(h.clientIdentify())
+
+			profile.GET("/", h.getMyProfile)
+			profile.PUT("/", h.UpdateMyProfile)
+
+			profile.GET("/my-orders", h.getMyOrders)
+			profile.GET("/my-fav", h.getMyBillboards)
+		}
+
 	}
 
 	return router
 }
-
-

@@ -185,6 +185,21 @@ func (mr *MockServiceMockRecorder) GetManagerById(id interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetManagerById", reflect.TypeOf((*MockService)(nil).GetManagerById), id)
 }
 
+// GetMyOrders mocks base method.
+func (m *MockService) GetMyOrders(clientId, page int) ([]dtos.MyOrder, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMyOrders", clientId, page)
+	ret0, _ := ret[0].([]dtos.MyOrder)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMyOrders indicates an expected call of GetMyOrders.
+func (mr *MockServiceMockRecorder) GetMyOrders(clientId, page interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMyOrders", reflect.TypeOf((*MockService)(nil).GetMyOrders), clientId, page)
+}
+
 // ParseToken mocks base method.
 func (m *MockService) ParseToken(accessToken string) (int, []models.RolesHeaders, error) {
 	m.ctrl.T.Helper()

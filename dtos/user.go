@@ -14,3 +14,6 @@ type SignInRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type GetUserByIdResponse struct {
+	Data User `json:"data"`
+}

@@ -13,6 +13,8 @@ type Service interface {
 	ParseToken(accessToken string) (int, []models.RolesHeaders, error)
 
 	CreateClient(client models.User) (int, error)
+	GetClientByUserId(id int) (dtos.User, error)
+	GetClientById(id int) (dtos.User, error)
 
 	CreateManager(manager models.User) (int, error)
 	GetAllManagers(page int) ([]dtos.User, error)
@@ -23,9 +25,12 @@ type Service interface {
 
 	//CreateOrder(order models.Order) (int, error)
 	GetAllOrders(page int) ([]dtos.Order, error)
+	GetMyOrders(clientId, page int) ([]dtos.MyOrder, error)
+	UpdateMyProfile(userId int, input models.User) error
 
 	CreateBillboard(product models.Product) (int, error)
 	GetAllBillboards(page int) ([]dtos.Product, error)
+	GetMyBillboards(id, page int) ([]dtos.Product, error)
 	GetBillboardById(id int) (dtos.Product, error)
 	DeleteBillboard(id int) error
 	UpdateBillboard(id int, input models.Product) error

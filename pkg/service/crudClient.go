@@ -25,15 +25,18 @@ func (s *service) CreateClient(client models.User) (int, error) {
 	return client_id, err
 }
 
-func (s service) DeleteStudent(lessonId int) error {
+func (s service) DeleteClient(lessonId int) error {
 	return nil
 }
 
-func (s service) GetStudent(lessonId int) (dtos.User, error) {
-	var student dtos.User
-	return student, nil
+func (s service) GetClientById(id int) (dtos.User, error) {
+	return s.repos.GetClientById(id)
 }
 
-func (s service) GetStudents() ([]dtos.User,  error) {
-	return nil, nil
+func (s service) GetClientByUserId(id int) (dtos.User, error) {
+	return s.repos.GetClientByUserId(id)
+}
+
+func (s service) UpdateMyProfile(userId int, input models.User) error {
+	return s.repos.UpdateMyProfile(userId, input)
 }

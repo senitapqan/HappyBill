@@ -13,6 +13,10 @@ func (s *service) GetAllBillboards(page int) ([]dtos.Product, error) {
 	return s.repos.GetAllBillboards(page)
 }
 
+func (s *service) GetMyBillboards(id, page int) ([]dtos.Product, error) {
+	return s.repos.GetMyBillboards(id, page)
+}
+
 func (s *service) DeleteBillboard(id int) error {
 	return s.repos.DeleteBillboard(id)
 }

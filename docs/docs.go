@@ -112,6 +112,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update",
                 "consumes": [
                     "application/json"
@@ -224,6 +229,28 @@ const docTemplate = `{
                         }
                     }
                 ],
+                "responses": {}
+            }
+        },
+        "/profile/my-orders/": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all orders i have",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "profile/my-orders"
+                ],
+                "summary": "Get My Orders",
+                "operationId": "get-my-orders",
                 "responses": {}
             }
         }

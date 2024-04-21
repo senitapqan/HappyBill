@@ -125,6 +125,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - ApiKeyAuth: []
       summary: UpdateById
       tags:
       - admin/billboard
@@ -194,6 +196,20 @@ paths:
       summary: Sign Up
       tags:
       - auth
+  /profile/my-orders/:
+    get:
+      consumes:
+      - application/json
+      description: Get all orders i have
+      operationId: get-my-orders
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get My Orders
+      tags:
+      - profile/my-orders
 securityDefinitions:
   ApiKeyAuth:
     in: headers

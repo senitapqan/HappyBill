@@ -9,14 +9,14 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-//		@Summary		Create Manager
-//	 @Security		ApiKeyAuth
-//		@Tags			admin/manager
-//		@Description	Create new manager to Data Base
-//		@ID				create-manager
-//		@Accept			json
-//		@Produce		json
-//		@Router			/admin/admin [post]
+//	@Summary		Create Manager
+//	@Security		ApiKeyAuth
+//	@Tags			admin/manager
+//	@Description	Create new manager to Data Base
+//	@ID				create-manager
+//	@Accept			json
+//	@Produce		json
+//	@Router			/admin/admin [post]
 func (h *Handler) createManager(c *gin.Context) {
 	var request models.User
 	if err := c.BindJSON(&request); err != nil {
@@ -43,14 +43,14 @@ func (h *Handler) createManager(c *gin.Context) {
 
 }
 
-//		@Summary		Get all Managers
-//	 @Security		ApiKeyAuth
-//		@Tags			admin/manager
-//		@Description	Get all managers from data base
-//		@ID				get-managers
-//		@Accept			json
-//		@Produce		json
-//		@Router			/admin/manager [get]
+//	@Summary		Get all Managers
+//	@Security		ApiKeyAuth
+//	@Tags			admin/manager
+//	@Description	Get all managers from data base
+//	@ID				get-managers
+//	@Accept			json
+//	@Produce		json
+//	@Router			/admin/manager [get]
 func (h *Handler) getAllManager(c *gin.Context) {
 	page, err := ValidatePage(c)
 
@@ -74,14 +74,14 @@ func (h *Handler) getAllManager(c *gin.Context) {
 	})
 }
 
-//		@Summary		Get Manager By Id
-//	 @Security		ApiKeyAuth
-//		@Tags			admin/manager
-//		@Description	Get the manager from data base with ID
-//		@ID				get-manager
-//		@Accept			json
-//		@Produce		json
-//		@Router			/admin/manager/:id [get]
+//	@Summary		Get Manager By Id
+//	@Security		ApiKeyAuth
+//	@Tags			admin/manager
+//	@Description	Get the manager from data base with ID
+//	@ID				get-manager
+//	@Accept			json
+//	@Produce		json
+//	@Router			/admin/manager/:id [get]
 func (h *Handler) getManagerById(c *gin.Context) {
 	id, err := ValidateId(c)
 
