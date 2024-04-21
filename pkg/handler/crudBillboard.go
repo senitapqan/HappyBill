@@ -113,7 +113,7 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 
 //		@Summary		UpdateById
 //		@Tags			admin/billboard
-//	 @Security		ApiKeyAuth
+//	    @Security		ApiKeyAuth
 //		@Description	Update
 //		@ID				update-billboard
 //		@Accept			json

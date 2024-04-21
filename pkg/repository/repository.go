@@ -7,8 +7,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-//go:generate mockgen -source=repository.go -destination=mocks/mock_repository.go
-
 type Repository interface {
 	GetUser(username string) (models.User, error)
 	GetRoles(id int) ([]string, error)

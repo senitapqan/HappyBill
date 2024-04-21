@@ -5,10 +5,9 @@ import (
 	_ "errors"
 	"happyBill/models"
 	mock_service "happyBill/pkg/service/mocks"
-	"log"
+
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
@@ -16,7 +15,7 @@ import (
 )
 
 func TestHandler_createBillboard(t *testing.T) {
-	log.Print(time.Date(2024, 4, 19, 14, 49, 0, 0, time.Now().Local().Location()))
+
 	// Init Test Table
 	type mockBehavior func(s *mock_service.MockService, product models.Product)
 	tests := []struct {
