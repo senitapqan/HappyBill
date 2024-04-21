@@ -37,6 +37,9 @@ func (s service) GetClientByUserId(id int) (dtos.User, error) {
 	return s.repos.GetClientByUserId(id)
 }
 
-func (s service) UpdateMyProfile(userId int, input models.User) error {
+func (s service) UpdateMyProfile(userId int, input dtos.UpdateUser) error {
+	if input.Password != "" {
+		input.Password = s.hashPassword(input.Password)
+	}
 	return s.repos.UpdateMyProfile(userId, input)
 }
