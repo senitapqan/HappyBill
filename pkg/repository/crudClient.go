@@ -34,7 +34,7 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 	query = fmt.Sprintf("insert into %s (user_id, role_id) values ($1, $2)", consts.UsersRolesTable)
 	log.Info().Msg(query)
 	_, err = tx.Exec(query, userId, consts.ClientRoleId)
-	log.Error().Msg(err.Error() + "kjbjno")
+	log.Info().Msg(query)
 	if err != nil {
 		tx.Rollback()
 		return 0, err
