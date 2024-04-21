@@ -6,6 +6,8 @@ import (
 	"happyBill/dtos"
 	"happyBill/models"
 	"strings"
+
+	"github.com/rs/zerolog/log"
 )
 
 func (r *repository) CreateClient(client models.User) (int, error) {
@@ -13,29 +15,31 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-
+	log.Info().Msg("mglksjdf;vjksfdks")
 	var clientId int
 	userId, err := r.CreateUser(client, tx)
 	if err != nil {
 		return 0, err
 	}
+	log.Info().Msg("mglksjdf;vjksfdks")
 
 	query := fmt.Sprintf("insert into %s (user_id) values($1) returning id", consts.ClientsTable)
 	row := tx.QueryRowx(query, userId)
-
+	log.Info().Msg(fmt.Sprintf("userid: %d ", userId))
 	if err := row.Scan(&clientId); err != nil {
 		tx.Rollback()
 		return 0, err
 	}
-
+	log.Info().Msg("mglksjdf;vjksfdks")
 	query = fmt.Sprintf("insert into %s (user_id, role_id) values ($1, $2)", consts.UsersRolesTable)
+	log.Info().Msg(query)
 	_, err = tx.Exec(query, userId, consts.ClientRoleId)
-
+	log.Error().Msg(err.Error() + "kjbjno")
 	if err != nil {
 		tx.Rollback()
 		return 0, err
 	}
-
+	log.Info().Msg("mglksjdf;vjksfdks")
 	return clientId, tx.Commit()
 }
 
