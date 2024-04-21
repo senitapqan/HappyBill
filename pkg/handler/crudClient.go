@@ -2,7 +2,6 @@ package handler
 
 import (
 	"happyBill/dtos"
-	"happyBill/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -46,7 +45,7 @@ func (h *Handler) GetClientById(c *gin.Context) {
 func (h *Handler) UpdateMyProfile(c *gin.Context) {
 	userId, _ := getId(c, userCtx)
 
-	var input models.User
+	var input dtos.UpdateUser
 
 	if err := c.BindJSON(&input); err != nil {
 

@@ -31,7 +31,7 @@ type Repository interface {
 
 	//GetAllOrders() ([]dtos.Order, error)
 	GetMyOrders(clientId, page int) ([]dtos.MyOrder, error)
-	UpdateMyProfile(userId int, input models.User) error
+	UpdateMyProfile(userId int, input dtos.UpdateUser) error
 }
 
 type repository struct {

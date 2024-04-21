@@ -21,25 +21,24 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	log.Info().Msg("mglksjdf;vjksfdks")
 
 	query := fmt.Sprintf("insert into %s (user_id) values($1) returning id", consts.ClientsTable)
 	row := tx.QueryRowx(query, userId)
-	log.Info().Msg(fmt.Sprintf("userid: %d ", userId))
+
 	if err := row.Scan(&clientId); err != nil {
 		tx.Rollback()
 		return 0, err
 	}
-	log.Info().Msg("mglksjdf;vjksfdks")
+
 	query = fmt.Sprintf("insert into %s (user_id, role_id) values ($1, $2)", consts.UsersRolesTable)
 	log.Info().Msg(query)
 	_, err = tx.Exec(query, userId, consts.ClientRoleId)
-	log.Error().Msg(err.Error() + "kjbjno")
+
 	if err != nil {
 		tx.Rollback()
 		return 0, err
 	}
-	log.Info().Msg("mglksjdf;vjksfdks")
+
 	return clientId, tx.Commit()
 }
 
@@ -60,7 +59,7 @@ func (r *repository) GetClientById(id int) (dtos.User, error) {
 	return result, err
 }
 
-func (r *repository) UpdateMyProfile(userId int, input models.User) error {
+func (r *repository) UpdateMyProfile(userId int, input dtos.UpdateUser) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1
