@@ -52,6 +52,7 @@ func (h *Handler) createBillboard(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Router			/admin/bill [get]
+//host:port/admin/bill?page=1&limit=10&q="naruto"
 func (h *Handler) getAllBillboards(c *gin.Context) {
 	log.Info().Msg("STARTED HANDLING GET ALL BILLBOARDS REQUEST")
 
@@ -88,7 +89,6 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 	id, err := ValidateId(c)
 
 	if err != nil {
-
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
 		return
 	}
@@ -98,7 +98,6 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 	product, err := h.service.GetBillboardById(id)
 
 	if err != nil {
-
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -108,7 +107,27 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 	})
 
 	log.Info().Msg("GET BILLBOARD BY ID REQUEST ENDED")
+}
 
+func (h *Handler) getMyBillboards(c *gin.Context) {
+	clientId, _ := getId(c, clientCtx)
+
+	page, err := ValidatePage(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	products, err := h.service.GetMyBillboards(clientId, page)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, dtos.GetAllBillboardsResponse{
+		Data: products,
+	})
 }
 
 //	@Summary		UpdateById

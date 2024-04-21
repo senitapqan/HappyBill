@@ -15,6 +15,8 @@ type Repository interface {
 	GetRoleId(role string, userId int) (int, error)
 
 	CreateClient(client models.User) (int, error)
+	GetClientById(id int) (dtos.User, error)
+	GetClientByUserId(id int) (dtos.User, error)
 
 	CreateManager(manager models.User) (int, error)
 	GetAllManagers(page int) ([]dtos.User, error)
@@ -24,6 +26,7 @@ type Repository interface {
 
 	CreateBillboard(product models.Product) (int, error)
 	GetAllBillboards(page int) ([]dtos.Product, error)
+	GetMyBillboards(id, page int) ([]dtos.Product, error)
 	GetBillboardById(id int) (dtos.Product, error)
 	DeleteBillboard(id int) error
 	UpdateBillboard(id int, input models.Product) error
@@ -34,6 +37,7 @@ type Repository interface {
 
 type repository struct {
 	db *sqlx.DB
+
 }
 
 func NewRepository(db *sqlx.DB) Repository {

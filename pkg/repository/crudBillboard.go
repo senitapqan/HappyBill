@@ -40,6 +40,22 @@ func (r *repository) GetAllBillboards(page int) ([]dtos.Product, error) {
 	return products, nil
 }
 
+func (r *repository) GetMyBillboards(clientId, page int) ([]dtos.Product, error) {
+	var products []dtos.Product
+	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name
+			from %s prod
+			join %s clprod on clprod.product_id = prod.id
+			join %s loc on loc.id = prod.locationid
+			where clprod.clientid = $1
+			order by clprod.created_time desc
+			limit %d offset %d`,
+		consts.ProductsTable, consts.ClientProductsTable, consts.LocationsTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
+	if err := r.db.Select(&products, query, clientId); err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
 func (r *repository) GetBillboardById(id int) (dtos.Product, error) {
 	var product dtos.Product
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1 LIMIT 1", consts.ProductsTable)

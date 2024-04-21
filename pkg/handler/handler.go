@@ -54,6 +54,11 @@ func (h Handler) InitRoutes() *gin.Engine {
 			managers.DELETE("/:id", h.deleteManager)
 			managers.PUT("/:id", h.updateManager)
 		}
+
+		orders := admin.Group("/order") 
+		{
+			orders.GET("/", h.getAllOrders)
+		}
 	}
 
 	client := router.Group("")
@@ -62,9 +67,15 @@ func (h Handler) InitRoutes() *gin.Engine {
 		{
 			profile.Use(h.userIdentify())
 			profile.Use(h.clientIdentify())
-			profile.GET("/", h.getClientById)
+			
+			profile.GET("/", h.getMyProfile)
+			profile.PUT("/", h.updateMyProfile)
+
 			profile.GET("/my-orders", h.getMyOrders)
+			profile.GET("/my-fav", h.getMyBillboards)
 		}
+
+
 	}
 
 	return router

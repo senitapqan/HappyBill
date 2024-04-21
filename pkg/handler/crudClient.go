@@ -1,7 +1,43 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"happyBill/dtos"
+	"net/http"
 
-func (h *Handler) getClientById(c *gin.Context) {
-	
+	"github.com/gin-gonic/gin"
+)
+
+func (h *Handler) getMyProfile(c *gin.Context) {
+	userId, _ := getId(c, userCtx)
+
+	user, err := h.service.GetClientByUserId(userId)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, dtos.GetUserByIdResponse{
+		Data: user,
+	})
+}
+
+func (h *Handler) GetClientById(c *gin.Context) {
+	clientId, err := ValidateId(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	client, err := h.service.GetClientById(clientId)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, dtos.GetUserByIdResponse{
+		Data: client,
+	})
 }
