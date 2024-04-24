@@ -28,3 +28,7 @@ func (s *service) GetBillboardById(id int) (dtos.Product, error) {
 func (s *service) UpdateBillboard(id int, input models.Product) error {
 	return s.repos.UpdateBillboard(id, input)
 }
+
+func (s *service) LikeBillboard(clientId, productId int, action string) error {
+	return s.repos.LikeBillboard(clientId, productId, action)
+}

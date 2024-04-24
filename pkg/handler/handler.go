@@ -35,7 +35,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 	admin := router.Group("/admin")
 	{
 		admin.Use(h.userIdentify())
-		admin.Use(h.adminIdentify())
+		admin.Use(h.roleIdentify(adminCtx))
 
 		billboard := admin.Group("/bill")
 		{
@@ -63,19 +63,31 @@ func (h Handler) InitRoutes() *gin.Engine {
 
 	client := router.Group("")
 	{
-		profile := client.Group("/profile")
+		profile := client.Group("/my")
 		{
 			profile.Use(h.userIdentify())
-			profile.Use(h.clientIdentify())
+			profile.Use(h.roleIdentify(clientCtx))
 
 			profile.GET("/", h.getMyProfile)
-			profile.PUT("/", h.UpdateMyProfile)
+			profile.PUT("/", h.updateMyProfile)
 
 			profile.GET("/my-orders", h.getMyOrders)
 			profile.GET("/my-fav", h.getMyBillboards)
-		}
 
+			profile.POST("/my-fav/:id", h.likeBillboard)
+			
+			profile.POST("/order/:id", h.createMyOrder)
+			profile.DELETE("/order/:id", h.deleteMyOrder)
+
+		}
+		app := client.Group("/home")
+		{
+			app.GET("/", h.getAllBillboards)
+			app.GET("/:id", h.getBillboardById)
+			
+		}
 	}
 
+	
 	return router
 }

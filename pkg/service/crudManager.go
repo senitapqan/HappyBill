@@ -18,6 +18,10 @@ func (s *service) GetAllManagers(page int) ([]dtos.User, error) {
 func (s *service) GetManagerById(id int) (dtos.User, error) {
 	return s.repos.GetManagerById(id)
 }
+
+func (s *service) GetMostFreeManager() (int, error)  {
+	return s.repos.GetMostFreeManager()
+}
 /*
 func (s *service) DeleteManager(id int) error {
 	return s.repos.DeleteManager(id)

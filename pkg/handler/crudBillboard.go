@@ -110,6 +110,10 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 	log.Info().Msg("GET BILLBOARD BY ID REQUEST ENDED")
 }
 
+func (h *Handler) getBillBoardCalendar(c *gin.Context) {
+
+}
+ 
 func (h *Handler) getMyBillboards(c *gin.Context) {
 	clientId, _ := getId(c, clientCtx)
 
@@ -131,6 +135,31 @@ func (h *Handler) getMyBillboards(c *gin.Context) {
 	})
 }
 
+func (h *Handler) likeBillboard(c *gin.Context) {
+	clientId, _ := getId(c, clientCtx)
+	productId, err := ValidateId(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	action, err := ValidateLike(c)
+	
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err = h.service.LikeBillboard(clientId, productId, action)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]string {
+		"message": "qeury was successfully pended",
+	})
+}
 // @Summary		UpdateById
 // @Tags			admin/billboard
 // @Security		ApiKeyAuth

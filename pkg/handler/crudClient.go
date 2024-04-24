@@ -42,13 +42,12 @@ func (h *Handler) GetClientById(c *gin.Context) {
 	})
 }
 
-func (h *Handler) UpdateMyProfile(c *gin.Context) {
+func (h *Handler) updateMyProfile(c *gin.Context) {
 	userId, _ := getId(c, userCtx)
 
 	var input dtos.UpdateUser
 
 	if err := c.BindJSON(&input); err != nil {
-
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}

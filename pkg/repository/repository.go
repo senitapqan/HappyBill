@@ -6,9 +6,10 @@ import (
 
 	"github.com/jmoiron/sqlx"
 )
-
+//go:generate mockgen -source=repository.go -destination=mocks/mock.go
 type Repository interface {
 	GetUser(username string) (models.User, error)
+	GetUserById(id int) (models.User, error)
 	GetRoles(id int) ([]string, error)
 	GetRoleId(role string, userId int) (int, error)
 
@@ -19,6 +20,7 @@ type Repository interface {
 	CreateManager(manager models.User) (int, error)
 	GetAllManagers(page int) ([]dtos.User, error)
 	GetManagerById(id int) (dtos.User, error)
+	GetMostFreeManager() (int, error)
 	/*UpdateManager(id int, input models.User) error
 	DeleteManager(id int) error*/
 
@@ -28,9 +30,11 @@ type Repository interface {
 	GetBillboardById(id int) (dtos.Product, error)
 	DeleteBillboard(id int) error
 	UpdateBillboard(id int, input models.Product) error
+	LikeBillboard(clientId, productId int, action string) error
 
 	//GetAllOrders() ([]dtos.Order, error)
-	GetMyOrders(clientId, page int) ([]dtos.MyOrder, error)
+	CreateOrder(clientId int, order models.Order) (int, error)
+	GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, error)
 	UpdateMyProfile(userId int, input dtos.UpdateUser) error
 }
 

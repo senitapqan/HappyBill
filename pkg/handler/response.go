@@ -46,3 +46,19 @@ func ValidatePage(c *gin.Context) (int, error) {
 
 	return pageInt, nil
 }
+
+func ValidateLike(c *gin.Context) (string, error) {
+	likeAction := c.Query("action")
+	if likeAction == "like" || likeAction == "unlike" {
+		return likeAction, nil
+	}
+	return "", errors.New("wrong format of action")
+}
+
+func ValidateStatus(c *gin.Context) (string, error) {
+	status := c.DefaultQuery("status", "active")
+	if status == "active" || status == "pending" || status == "passed" {
+		return status, nil
+	}
+	return "", errors.New("wrong format of action")
+}

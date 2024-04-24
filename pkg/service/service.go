@@ -23,17 +23,19 @@ type Service interface {
 		DeleteManager(id int) error
 	*/
 
-	//CreateOrder(order models.Order) (int, error)
+	CreateOrder(id int, order models.Order) (int, error)
 	GetAllOrders(page int) ([]dtos.Order, error)
-	GetMyOrders(clientId, page int) ([]dtos.MyOrder, error)
+	GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, error)
 	UpdateMyProfile(userId int, input dtos.UpdateUser) error
 
 	CreateBillboard(product models.Product) (int, error)
 	GetAllBillboards(page int) ([]dtos.Product, error)
-	GetMyBillboards(id, page int) ([]dtos.Product, error)
 	GetBillboardById(id int) (dtos.Product, error)
 	DeleteBillboard(id int) error
 	UpdateBillboard(id int, input models.Product) error
+	GetMyBillboards(id, page int) ([]dtos.Product, error)
+	LikeBillboard(clientId, productId int, action string) error
+	
 }
 
 type service struct {

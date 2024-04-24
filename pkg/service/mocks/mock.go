@@ -80,6 +80,21 @@ func (mr *MockServiceMockRecorder) CreateManager(manager interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateManager", reflect.TypeOf((*MockService)(nil).CreateManager), manager)
 }
 
+// CreateOrder mocks base method.
+func (m *MockService) CreateOrder(id int, order models.Order) (int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateOrder", id, order)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateOrder indicates an expected call of CreateOrder.
+func (mr *MockServiceMockRecorder) CreateOrder(id, order interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateOrder", reflect.TypeOf((*MockService)(nil).CreateOrder), id, order)
+}
+
 // DeleteBillboard mocks base method.
 func (m *MockService) DeleteBillboard(id int) error {
 	m.ctrl.T.Helper()
@@ -170,6 +185,36 @@ func (mr *MockServiceMockRecorder) GetBillboardById(id interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBillboardById", reflect.TypeOf((*MockService)(nil).GetBillboardById), id)
 }
 
+// GetClientById mocks base method.
+func (m *MockService) GetClientById(id int) (dtos.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetClientById", id)
+	ret0, _ := ret[0].(dtos.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetClientById indicates an expected call of GetClientById.
+func (mr *MockServiceMockRecorder) GetClientById(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClientById", reflect.TypeOf((*MockService)(nil).GetClientById), id)
+}
+
+// GetClientByUserId mocks base method.
+func (m *MockService) GetClientByUserId(id int) (dtos.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetClientByUserId", id)
+	ret0, _ := ret[0].(dtos.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetClientByUserId indicates an expected call of GetClientByUserId.
+func (mr *MockServiceMockRecorder) GetClientByUserId(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClientByUserId", reflect.TypeOf((*MockService)(nil).GetClientByUserId), id)
+}
+
 // GetManagerById mocks base method.
 func (m *MockService) GetManagerById(id int) (dtos.User, error) {
 	m.ctrl.T.Helper()
@@ -185,19 +230,48 @@ func (mr *MockServiceMockRecorder) GetManagerById(id interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetManagerById", reflect.TypeOf((*MockService)(nil).GetManagerById), id)
 }
 
-// GetMyOrders mocks base method.
-func (m *MockService) GetMyOrders(clientId, page int) ([]dtos.MyOrder, error) {
+// GetMyBillboards mocks base method.
+func (m *MockService) GetMyBillboards(id, page int) ([]dtos.Product, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMyOrders", clientId, page)
+	ret := m.ctrl.Call(m, "GetMyBillboards", id, page)
+	ret0, _ := ret[0].([]dtos.Product)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMyBillboards indicates an expected call of GetMyBillboards.
+func (mr *MockServiceMockRecorder) GetMyBillboards(id, page interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMyBillboards", reflect.TypeOf((*MockService)(nil).GetMyBillboards), id, page)
+}
+
+// GetMyOrders mocks base method.
+func (m *MockService) GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMyOrders", clientId, page, status)
 	ret0, _ := ret[0].([]dtos.MyOrder)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetMyOrders indicates an expected call of GetMyOrders.
-func (mr *MockServiceMockRecorder) GetMyOrders(clientId, page interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) GetMyOrders(clientId, page, status interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMyOrders", reflect.TypeOf((*MockService)(nil).GetMyOrders), clientId, page)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMyOrders", reflect.TypeOf((*MockService)(nil).GetMyOrders), clientId, page, status)
+}
+
+// LikeBillboard mocks base method.
+func (m *MockService) LikeBillboard(clientId, productId int, action string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "LikeBillboard", clientId, productId, action)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// LikeBillboard indicates an expected call of LikeBillboard.
+func (mr *MockServiceMockRecorder) LikeBillboard(clientId, productId, action interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LikeBillboard", reflect.TypeOf((*MockService)(nil).LikeBillboard), clientId, productId, action)
 }
 
 // ParseToken mocks base method.
@@ -228,4 +302,18 @@ func (m *MockService) UpdateBillboard(id int, input models.Product) error {
 func (mr *MockServiceMockRecorder) UpdateBillboard(id, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateBillboard", reflect.TypeOf((*MockService)(nil).UpdateBillboard), id, input)
+}
+
+// UpdateMyProfile mocks base method.
+func (m *MockService) UpdateMyProfile(userId int, input dtos.UpdateUser) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMyProfile", userId, input)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMyProfile indicates an expected call of UpdateMyProfile.
+func (mr *MockServiceMockRecorder) UpdateMyProfile(userId, input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMyProfile", reflect.TypeOf((*MockService)(nil).UpdateMyProfile), userId, input)
 }

@@ -6,6 +6,7 @@ import (
 	"happyBill/dtos"
 	"happyBill/models"
 	"strings"
+	"time"
 
 	"github.com/rs/zerolog/log"
 )
@@ -15,7 +16,6 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	log.Info().Msg("mglksjdf;vjksfdks")
 	var clientId int
 	userId, err := r.CreateUser(client, tx)
 	if err != nil {
@@ -23,7 +23,7 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 	}
 
 	query := fmt.Sprintf("insert into %s (user_id) values($1) returning id", consts.ClientsTable)
-	row := tx.QueryRowx(query, userId)
+	row := tx.QueryRowx(query, userId, time.Now())
 
 	if err := row.Scan(&clientId); err != nil {
 		tx.Rollback()
@@ -42,10 +42,11 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 	return clientId, tx.Commit()
 }
 
+
 func (r *repository) GetClientByUserId(id int) (dtos.User, error) {
 	var result dtos.User
 	query := fmt.Sprintf(`select usr.name, usr.surname, usr.phone, usr.email, usr.username from %s usr
-						where usr.id = $1`, consts.UsersRolesTable)
+						where usr.id = $1`, consts.UsersTable)
 	err := r.db.Get(&result, query, id)
 	return result, err
 }
@@ -54,7 +55,7 @@ func (r *repository) GetClientById(id int) (dtos.User, error) {
 	var result dtos.User
 	query := fmt.Sprintf(`select usr.name, usr.surname, usr.phone, usr.email, usr.username from %s clnt
 						join %s usr ON usr.id = clnt.user_id
-						where clnt.id = $1`, consts.ClientsTable, consts.UsersRolesTable)
+						where clnt.id = $1`, consts.ClientsTable, consts.UsersTable)
 	err := r.db.Get(&result, query, id)
 	return result, err
 }

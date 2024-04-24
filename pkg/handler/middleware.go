@@ -11,11 +11,11 @@ import (
 )
 
 const (
-	authorizationHeader = "Authorization"
-	userCtx             = "userId"
-	clientCtx           = "CLIENT"
-	managerCtx          = "MANAGER"
-	adminCtx            = "ADMIN"
+	authorizationHeader string = "Authorization"
+	userCtx string = "userId"
+	clientCtx string = "CLIENT"
+	managerCtx string = "MANAGER"
+	adminCtx  string  = "ADMIN"
 )
 
 func (h *Handler) userIdentify() gin.HandlerFunc {
@@ -58,30 +58,16 @@ func (h *Handler) userIdentify() gin.HandlerFunc {
 	}
 }
 
-func (h *Handler) adminIdentify() gin.HandlerFunc {
+func (h *Handler) roleIdentify(role string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id, err := getId(c, adminCtx)	
+		id, err := getId(c, role)
 		if err != nil {
-			log.Error().Msg("You dont have admin permission")
+			log.Error().Msg(fmt.Sprintf("You dont have %s permission", role))
 			newErrorResponse(c, http.StatusMethodNotAllowed, err.Error())
 			return
 		}
 
-		log.Info().Msg(fmt.Sprintf("ADMIN WITH ID %d SENT REQUEST", id))
-		c.Next()
-	}
-}
-
-func (h *Handler) clientIdentify() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id, err := getId(c, clientCtx)	
-		if err != nil {
-			log.Error().Msg("You are not signed in")
-			newErrorResponse(c, http.StatusMethodNotAllowed, err.Error())
-			return
-		}
-
-		log.Info().Msg(fmt.Sprintf("CLIENT WITH ID %d SENT REQUEST", id))
+		log.Info().Msg(fmt.Sprintf("%s WITH ID %d SENT REQUEST", role, id))
 		c.Next()
 	}
 }
