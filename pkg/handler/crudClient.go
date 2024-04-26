@@ -5,11 +5,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 )
 
 func (h *Handler) getMyProfile(c *gin.Context) {
 	userId, _ := getId(c, userCtx)
-
+	log.Info().Msg("started handling get my profile request")
 	user, err := h.service.GetClientByUserId(userId)
 
 	if err != nil {
@@ -30,6 +31,7 @@ func (h *Handler) GetClientById(c *gin.Context) {
 		return
 	}
 
+	log.Info().Msg("started handling get client by Id request")
 	client, err := h.service.GetClientById(clientId)
 
 	if err != nil {
@@ -52,6 +54,7 @@ func (h *Handler) updateMyProfile(c *gin.Context) {
 		return
 	}
 
+	log.Info().Msg("started handling update my profile request")
 	err := h.service.UpdateMyProfile(userId, input)
 
 	if err != nil {

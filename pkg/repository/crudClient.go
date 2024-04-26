@@ -76,7 +76,7 @@ func (r *repository) UpdateMyProfile(userId int, input dtos.UpdateUser) error {
 		args = append(args, input.Surname)
 		argId++
 	}
-
+	log.Info().Msg(input.Password)
 	if input.Password != "" {
 		setValues = append(setValues, fmt.Sprintf("password=$%d", argId))
 		args = append(args, input.Password)

@@ -1,10 +1,13 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"happyBill/consts"
 	"happyBill/dtos"
 	"happyBill/models"
+
+	"github.com/rs/zerolog/log"
 )
 
 func (r *repository) CreateManager(manager models.User) (int, error) {
@@ -54,7 +57,11 @@ func (r *repository) GetMostFreeManager() (int, error) {
 	var id int
 	query := fmt.Sprintf("select id from %s order by active_order_count limit 1", consts.ManagersTable)
 	err := r.db.Get(&id, query)
-	return id, err
+	if err != nil {
+		log.Error().Msg(err.Error())
+		return 0, errors.New("something went wrong in request")
+	}
+	return id, nil
 }
 
 func (r *repository) GetManagerById(id int) (dtos.User, error) {

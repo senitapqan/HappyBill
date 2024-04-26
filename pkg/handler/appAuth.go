@@ -20,12 +20,11 @@ import (
 func (h *Handler) signIn(c *gin.Context) {
 	var request dtos.SignInRequest
 	if err := c.BindJSON(&request); err != nil {
-		
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	log.Info().Msg("STARTED GENERATING TOKEN")
+	log.Info().Msg("started generating token")
 
 	_, token, err := h.service.GenerateToken(request.Username, request.Password)
 
@@ -35,8 +34,6 @@ func (h *Handler) signIn(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{"token": token,})
-
-	log.Info().Msg("TOKEN GENERATION ENDED")
 }
 
 //	@Summary		Sign Up
@@ -49,13 +46,13 @@ func (h *Handler) signIn(c *gin.Context) {
 //	@Router			/auth/sign-up [post]
 func (h *Handler) signUp(c *gin.Context) {
 	var request models.User
+
 	if err := c.BindJSON(&request); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
 
-	log.Info().Msg("STARTED HANDLING CREATE CLIENT REQUEST")
-
+	log.Info().Msg("started handling create client request")
 	id, err := h.service.CreateClient(request)
 
 	if err != nil {
@@ -66,6 +63,4 @@ func (h *Handler) signUp(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]int{
 		"new user was succesfully added with id": id,
 	})
-
-	log.Info().Msg("REQUEST CREATE CLIENT ENDED")
 }

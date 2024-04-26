@@ -12,10 +12,10 @@ import (
 
 const (
 	authorizationHeader string = "Authorization"
-	userCtx string = "userId"
-	clientCtx string = "CLIENT"
-	managerCtx string = "MANAGER"
-	adminCtx  string  = "ADMIN"
+	userCtx             string = "userId"
+	clientCtx           string = "CLIENT"
+	managerCtx          string = "MANAGER"
+	adminCtx            string = "ADMIN"
 )
 
 func (h *Handler) userIdentify() gin.HandlerFunc {
@@ -85,7 +85,7 @@ func getId(c *gin.Context, header string) (int, error) {
 	if err != nil {
 		return 0, fmt.Errorf("cant converse %s id", header)
 	}
-
+	log.Info().Msg(fmt.Sprintf("%d", intId))
 	return intId, nil
 }
 

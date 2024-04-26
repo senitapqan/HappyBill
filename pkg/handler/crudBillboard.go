@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"happyBill/dtos"
 	"happyBill/models"
 
@@ -23,13 +22,13 @@ import (
 func (h *Handler) createBillboard(c *gin.Context) {
 	var input models.Product
 	if err := c.BindJSON(&input); err != nil {
-		log.Error().Msg("STARTED HANDLING CREATE BILLBOARD REQUEST")
 		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
 
-	log.Info().Msg("STARTED HANDLING CREATE BILLBOARD REQUEST")
+	log.Info().Msg("started handling create billboard request")
 	id, err := h.service.CreateBillboard(input)
+
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -39,9 +38,6 @@ func (h *Handler) createBillboard(c *gin.Context) {
 		"Message": "New billboard was created!",
 		"id":      id,
 	})
-
-	log.Info().Msg("CREATE BILLBOARD REQUEST ENDED")
-
 }
 
 // @Summary		GetAll
@@ -55,8 +51,6 @@ func (h *Handler) createBillboard(c *gin.Context) {
 //
 //host:port/admin/bill?page=1&limit=10&q="naruto"
 func (h *Handler) getAllBillboards(c *gin.Context) {
-	log.Info().Msg("STARTED HANDLING GET ALL BILLBOARDS REQUEST")
-
 	page, err := ValidatePage(c)
 
 	if err != nil {
@@ -64,6 +58,8 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 		return
 	}
 
+	log.Info().Msg("started handling get all billboards request")
+	
 	products, err := h.service.GetAllBillboards(page)
 
 	if err != nil {
@@ -74,8 +70,6 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 	c.JSON(http.StatusOK, dtos.GetAllBillboardsResponse{
 		Data: products,
 	})
-
-	log.Info().Msg("GET ALL BILLBOARDS REQUEST ENDED")
 }
 
 // @Summary		GetById
@@ -94,7 +88,7 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 		return
 	}
 
-	log.Info().Msg("STARTED HANDLING GET BILLBOARD BY ID REQUEST")
+	log.Info().Msg("started handling get billboard by id request")
 
 	product, err := h.service.GetBillboardById(id)
 
@@ -106,8 +100,6 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 	c.JSON(http.StatusOK, dtos.GetBillboardByIdResponse{
 		Data: product,
 	})
-
-	log.Info().Msg("GET BILLBOARD BY ID REQUEST ENDED")
 }
 
 func (h *Handler) getBillBoardCalendar(c *gin.Context) {
@@ -124,6 +116,7 @@ func (h *Handler) getMyBillboards(c *gin.Context) {
 		return
 	}
 
+	log.Info().Msg("started handling get my billboards request")
 	products, err := h.service.GetMyBillboards(clientId, page)
 
 	if err != nil {
@@ -150,6 +143,7 @@ func (h *Handler) likeBillboard(c *gin.Context) {
 		return
 	}
 
+	log.Info().Msg("started handling like some billboard request")
 	err = h.service.LikeBillboard(clientId, productId, action)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -172,22 +166,17 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 	id, err := ValidateId(c)
 
 	if err != nil {
-
-		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter: " + err.Error())
 		return
 	}
 
 	var input models.Product
-
-	log.Info().Msg(fmt.Sprintf("input.Height: + %d", input.Height))
-
 	if err := c.BindJSON(&input); err != nil {
-
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	log.Info().Msg("STARTED HANDLING UPDATE BILLBOARD REQUEST")
+	log.Info().Msg("started handling update billboard request")
 
 	if err := h.service.UpdateBillboard(id, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -198,20 +187,17 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 		"Message": "Updated succesfully",
 	})
 
-	log.Info().Msg("UPDATE BILLBOARD REQUEST ENDED")
-
 }
 
 func (h *Handler) deleteBillboard(c *gin.Context) {
 	id, err := ValidateId(c)
 
 	if err != nil {
-
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	log.Info().Msg("STARTED HANDLING DELETE BILLBOARD REQUEST")
+	log.Info().Msg("started handling delete billboard request")
 
 	err = h.service.DeleteBillboard(id)
 
@@ -224,7 +210,4 @@ func (h *Handler) deleteBillboard(c *gin.Context) {
 	c.JSON(http.StatusOK, statusResponse{
 		Status: "ok",
 	})
-
-	log.Info().Msg("DELETE BILLBOARD REQUEST ENDED")
-
 }

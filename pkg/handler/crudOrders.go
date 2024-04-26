@@ -15,10 +15,10 @@ func (h *Handler) createMyOrder(c *gin.Context) {
 
 	var input models.Order
 	if err := c.BindJSON(&input); err != nil {
-		log.Error().Msg("Something wrong with request body params: " + err.Error())
-		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body: " + err.Error())
 		return
 	}
+
 	productId, err := ValidateId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id:" + err.Error())
@@ -27,6 +27,7 @@ func (h *Handler) createMyOrder(c *gin.Context) {
 
 	input.ProductId = productId
 
+	log.Info().Msg("started handling create my order request")
 	id, err := h.service.CreateOrder(clientId, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -54,28 +55,24 @@ func (h *Handler) getMyOrders(c *gin.Context) {
 	clientId, _ := getId(c, clientCtx)
 	page, err := ValidatePage(c)
 	if err != nil {
-		log.Error().Msg("Errors with page or client?")
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 	status, err := ValidateStatus(c)
 	if err != nil {
-		log.Error().Msg("Status of orders is inccorrect")
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	log.Info().Msg(fmt.Sprintf("Client with clientId %d want to see their orders on %d page", clientId, page))
 
 	var myOrders []dtos.MyOrder
+	log.Info().Msg("started handling get all my orders request")
 	myOrders, err = h.service.GetMyOrders(clientId, page, status)
 
 	if err != nil {
-		log.Error().Msg("Seems like in service were some errors")
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	log.Info().Msg("Everything is good")
 	c.JSON(http.StatusOK, dtos.GetMyOrdersResponse{
 		Data: myOrders,
 	})
@@ -99,6 +96,7 @@ func (h *Handler) getAllOrders(c *gin.Context) {
 
 	var orders []dtos.Order
 
+	log.Info().Msg("started handling get all orders request")
 	orders, err = h.service.GetAllOrders(page)
 
 	if err != nil {

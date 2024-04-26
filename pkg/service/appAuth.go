@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -31,6 +32,7 @@ func (s *service) hashPassword(password string) string {
 
 func (s *service) GenerateToken(input, password string) ([]models.RolesHeaders, string, error) {
 	password = s.hashPassword(password)
+	log.Info().Msg("service send request to repository: get user request")
 	user, err := s.repos.GetUser(input)
 
 	if err != nil {
@@ -38,6 +40,7 @@ func (s *service) GenerateToken(input, password string) ([]models.RolesHeaders, 
 	}
 
 	if user.Id == 0 {
+		
 		return nil, "", fmt.Errorf("there is no such user with username/email: %s", input)
 	}
 
@@ -46,6 +49,7 @@ func (s *service) GenerateToken(input, password string) ([]models.RolesHeaders, 
 	}
 
 	var rolesHeaders []models.RolesHeaders
+	log.Info().Msg("service send request to repository: get roles request")
 	roles, err := s.repos.GetRoles(user.Id)
 
 	if err != nil {

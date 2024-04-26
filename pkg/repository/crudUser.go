@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/rs/zerolog/log"
 )
 
 func (r *repository) CreateUser(user models.User, tx *sqlx.Tx) (int, error) {
@@ -35,8 +36,11 @@ func (r *repository) GetUser(input string) (models.User, error) {
 
 func (r *repository) GetUserById(id int) (models.User, error) {
 	var user models.User
-	query := fmt.Sprintf("select id, username, password, name, surname, phone, email from %s where id = $1", consts.UsersTable)
+	query := fmt.Sprintf("select id, username, password, name, surname, email from %s where id = $1", consts.UsersTable)
+
 	err := r.db.Get(&user, query, id)
+	
+	log.Info().Msg("")
 	return user, err
 }
 

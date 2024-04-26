@@ -3,32 +3,41 @@ package service
 import (
 	"happyBill/dtos"
 	"happyBill/models"
+
+	"github.com/rs/zerolog/log"
 )
 
 func (s *service) CreateBillboard(product models.Product) (int, error) {
+	log.Info().Msg("service send request to repository: create billboard request")
 	return s.repos.CreateBillboard(product)
 }
 
 func (s *service) GetAllBillboards(page int) ([]dtos.Product, error) {
+	log.Info().Msg("service send request to repository: get all billboards request")
 	return s.repos.GetAllBillboards(page)
 }
 
 func (s *service) GetMyBillboards(id, page int) ([]dtos.Product, error) {
+	log.Info().Msg("service send request to repository: get my billboards (my fav) request")
 	return s.repos.GetMyBillboards(id, page)
 }
 
 func (s *service) DeleteBillboard(id int) error {
+	log.Info().Msg("service send request to repository: delete billboards request")
 	return s.repos.DeleteBillboard(id)
 }
 
 func (s *service) GetBillboardById(id int) (dtos.Product, error) {
+	log.Info().Msg("service send request to repository: get billboard by id request")
 	return s.repos.GetBillboardById(id)
 }
 
 func (s *service) UpdateBillboard(id int, input models.Product) error {
+	log.Info().Msg("service send request to repository: update billboard request")
 	return s.repos.UpdateBillboard(id, input)
 }
 
 func (s *service) LikeBillboard(clientId, productId int, action string) error {
+	log.Info().Msg("service send request to repository: like/dislike billboard request")
 	return s.repos.LikeBillboard(clientId, productId, action)
 }

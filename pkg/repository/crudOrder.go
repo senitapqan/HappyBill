@@ -1,10 +1,12 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"happyBill/consts"
 	"happyBill/dtos"
 	"happyBill/models"
+	"time"
 
 	"github.com/rs/zerolog/log"
 )
@@ -25,6 +27,22 @@ func (r *repository) GetMyOrders(id, page int, status string) ([]dtos.MyOrder, e
 }
 
 func (r *repository) CreateOrder(id int, order models.Order) (int, error) {
+	OrderedTime, err := time.Parse("2006-01-02", order.OrderedTime)
+
+	if err != nil {
+		return -1, errors.New("wrong format of ordered time")
+	}
+
+	Deadline, err := time.Parse("2006-01-02", order.Deadline)
+
+	if err != nil {
+		return -1, errors.New("wrong format of deadline time")
+	}
+
+	if Deadline.Sub(OrderedTime).Hours() / 24 != 14 {
+		return -1, errors.New("wrong deadline is setted")
+	}
+
 	var orderId int
 	query := fmt.Sprintf(`insert into %s (ordertime, deadline, startdate, enddate, product_id, client_id, manager_id, price)
 		VALUES($1, $2, $3, $4, $5, $6, $7, $8) returning id`, consts.OrdersTable)

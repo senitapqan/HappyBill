@@ -1,36 +1,38 @@
 package service
 
 import (
+	"errors"
 	"happyBill/models"
 	mock_repository "happyBill/pkg/repository/mocks"
 	"testing"
+	"time"
 
 	"github.com/golang/mock/gomock"
 	"github.com/magiconair/properties/assert"
 )
 
 func TestService_CreateOrder(t *testing.T) {
-	type mock1 func(r *mock_repository.MockRepository, id int, order models.Order)
+	type mock func(r *mock_repository.MockRepository, id int, order models.Order)
 
 	testTable := []struct {
 		name  string
 		id    int
 		order models.Order
-		mock1 mock1
+		mock mock
 		wantId  int
 		wantError error
 	}{
 		{
 			name: "OK",
 			id: 1,
-			mock1: func(r *mock_repository.MockRepository, id int, order models.Order) {
+			mock: func(r *mock_repository.MockRepository, id int, order models.Order) {
 				r.EXPECT().GetMostFreeManager().Return(1, nil)
 				r.EXPECT().CreateOrder(id, order).Return(1, nil)
 			},
 			order: models.Order{
 				Id: 0,
-				OrderedTime: "2024-04-23",
-				Deadline: "2024-05-07",
+				OrderedTime: time.Now().Format("2006-01-02"),
+				Deadline: time.Now().AddDate(0, 0, 14).Format("2006-01-02"),
 				StartTime: "2024-05-10",
 				EndTime: "2024-05-25",
 				ProductId: 72,
@@ -41,6 +43,46 @@ func TestService_CreateOrder(t *testing.T) {
 			wantId: 1,
 			wantError: nil,
 		},
+		{
+			name: "No managers to take order",
+			id: 1,
+			mock: func(r *mock_repository.MockRepository, id int,  order models.Order) {
+				r.EXPECT().GetMostFreeManager().Return(0, nil) 
+			},
+			order: models.Order{
+				Id: 0,
+				OrderedTime: time.Now().Format("2006-01-02"),
+				Deadline: time.Now().AddDate(0, 0, 14).Format("2006-01-02"),
+				StartTime: "2024-05-10",
+				EndTime: "2024-05-25",
+				ProductId: 72,
+				ManagerId: 0,
+				ClientId: 1,
+				Price: 150000,
+			},
+			wantId: -1,
+			wantError: errors.New("no managers to take order"),
+		},
+		{
+			name: "Error from repository",
+			id: 1,
+			mock: func(r *mock_repository.MockRepository, id int,  order models.Order) {
+				r.EXPECT().GetMostFreeManager().Return(0, errors.New("something went wrong in request")) 
+			},
+			order: models.Order{
+				Id: 0,
+				OrderedTime: time.Now().Format("2006-01-02"),
+				Deadline: time.Now().AddDate(0, 0, 14).Format("2006-01-02"),
+				StartTime: "2024-05-10",
+				EndTime: "2024-05-25",
+				ProductId: 72,
+				ManagerId: 0,
+				ClientId: 1,
+				Price: 150000,
+			},
+			wantId: -1,
+			wantError: errors.New("something wrong with declaring manager for your order"),
+		},
 	}
 
 	for _, test := range testTable {
@@ -49,7 +91,7 @@ func TestService_CreateOrder(t *testing.T) {
 			defer c.Finish()
 
 			repository := mock_repository.NewMockRepository(c)
-			test.mock1(repository, test.id, test.order)
+			test.mock(repository, test.id, test.order)
 
 			service := &service{repository}
 
