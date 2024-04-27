@@ -46,8 +46,8 @@ func (r *repository) GetAllManagers(page int) ([]dtos.User, error) {
 	query := fmt.Sprintf(`select u.id, u.name, u.surname, u.username, u.email, m.id as role_id 
 			from %s u join %s m ON m.user_id = u.id 
 			order by m.created_time desc
-			limit %d offset %d`, 
-		consts.UsersTable, consts.ManagersTable, consts.PaginationLimit, (page - 1) * consts.PaginationLimit)
+			limit %d offset %d`,
+		consts.UsersTable, consts.ManagersTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
 
 	err := r.db.Select(&result, query)
 	return result, err
@@ -68,7 +68,7 @@ func (r *repository) GetManagerById(id int) (dtos.User, error) {
 	var result dtos.User
 
 	query := fmt.Sprintf(`select u.id, u.name, u.surname, u.username, u.email, m.id as role_id from %s u join %s m ON m.user_id = u.id where m.id = $1`,
-			consts.UsersRolesTable, consts.ManagersTable)
+		consts.UsersRolesTable, consts.ManagersTable)
 	err := r.db.Get(result, query, id)
 	return result, err
 }

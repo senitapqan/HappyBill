@@ -35,7 +35,10 @@ type Service interface {
 	UpdateBillboard(id int, input models.Product) error
 	GetMyBillboards(id, page int) ([]dtos.Product, error)
 	LikeBillboard(clientId, productId int, action string) error
-	
+
+	GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, error)
+	GetManagerOrderById(id int) (dtos.ManagerOrder, error)
+	UpdateManagerOrder(id int, input dtos.UpdateOrder) error
 }
 
 type service struct {

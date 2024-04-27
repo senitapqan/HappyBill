@@ -75,7 +75,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 			profile.GET("/my-fav", h.getMyBillboards)
 
 			profile.POST("/my-fav/:id", h.likeBillboard)
-			
+
 			profile.POST("/order/:id", h.createMyOrder)
 			profile.DELETE("/order/:id", h.deleteMyOrder)
 
@@ -84,10 +84,19 @@ func (h Handler) InitRoutes() *gin.Engine {
 		{
 			app.GET("/", h.getAllBillboards)
 			app.GET("/:id", h.getBillboardById)
-			
+
 		}
 	}
 
-	
+	manager := router.Group("")
+	{
+		admin.Use(h.userIdentify())
+		admin.Use(h.roleIdentify(managerCtx))
+
+		manager.GET("/", h.getAllManagerOrders)
+		manager.GET("/:id", h.getManagerOrderById)
+		//manager.PUT("/:id", h.updateManagerOrder)
+	}
+
 	return router
 }
