@@ -89,7 +89,6 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 	}
 
 	log.Info().Msg("started handling get billboard by id request")
-
 	product, err := h.service.GetBillboardById(id)
 
 	if err != nil {
@@ -100,10 +99,6 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 	c.JSON(http.StatusOK, dtos.GetBillboardByIdResponse{
 		Data: product,
 	})
-}
-
-func (h *Handler) getBillBoardCalendar(c *gin.Context) {
-
 }
  
 func (h *Handler) getMyBillboards(c *gin.Context) {

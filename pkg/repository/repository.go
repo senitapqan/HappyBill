@@ -36,6 +36,7 @@ type Repository interface {
 	CreateOrder(clientId int, order models.Order) (int, error)
 	GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, error)
 	UpdateMyProfile(userId int, input dtos.UpdateUser) error
+
 }
 
 type repository struct {
