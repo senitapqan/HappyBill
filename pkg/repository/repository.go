@@ -6,6 +6,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 )
+
 //go:generate mockgen -source=repository.go -destination=mocks/mock.go
 type Repository interface {
 	GetUser(username string) (models.User, error)
@@ -37,6 +38,9 @@ type Repository interface {
 	GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, error)
 	UpdateMyProfile(userId int, input dtos.UpdateUser) error
 
+	GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, error)
+	GetManagerOrderById(id int) (dtos.ManagerOrder, error)
+	UpdateManagerOrder(id int, input dtos.UpdateOrder) error
 }
 
 type repository struct {

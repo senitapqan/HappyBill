@@ -124,6 +124,21 @@ func (mr *MockRepositoryMockRecorder) GetAllBillboards(page interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockRepository)(nil).GetAllBillboards), page)
 }
 
+// GetAllManagerOrders mocks base method.
+func (m *MockRepository) GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAllManagerOrders", id, page)
+	ret0, _ := ret[0].([]dtos.ManagerOrder)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAllManagerOrders indicates an expected call of GetAllManagerOrders.
+func (mr *MockRepositoryMockRecorder) GetAllManagerOrders(id, page interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllManagerOrders", reflect.TypeOf((*MockRepository)(nil).GetAllManagerOrders), id, page)
+}
+
 // GetAllManagers mocks base method.
 func (m *MockRepository) GetAllManagers(page int) ([]dtos.User, error) {
 	m.ctrl.T.Helper()
@@ -197,6 +212,21 @@ func (m *MockRepository) GetManagerById(id int) (dtos.User, error) {
 func (mr *MockRepositoryMockRecorder) GetManagerById(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetManagerById", reflect.TypeOf((*MockRepository)(nil).GetManagerById), id)
+}
+
+// GetManagerOrderById mocks base method.
+func (m *MockRepository) GetManagerOrderById(id int) (dtos.ManagerOrder, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetManagerOrderById", id)
+	ret0, _ := ret[0].(dtos.ManagerOrder)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetManagerOrderById indicates an expected call of GetManagerOrderById.
+func (mr *MockRepositoryMockRecorder) GetManagerOrderById(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetManagerOrderById", reflect.TypeOf((*MockRepository)(nil).GetManagerOrderById), id)
 }
 
 // GetMostFreeManager mocks base method.
@@ -330,6 +360,20 @@ func (m *MockRepository) UpdateBillboard(id int, input models.Product) error {
 func (mr *MockRepositoryMockRecorder) UpdateBillboard(id, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateBillboard", reflect.TypeOf((*MockRepository)(nil).UpdateBillboard), id, input)
+}
+
+// UpdateManagerOrder mocks base method.
+func (m *MockRepository) UpdateManagerOrder(id int, input dtos.UpdateOrder) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateManagerOrder", id, input)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateManagerOrder indicates an expected call of UpdateManagerOrder.
+func (mr *MockRepositoryMockRecorder) UpdateManagerOrder(id, input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateManagerOrder", reflect.TypeOf((*MockRepository)(nil).UpdateManagerOrder), id, input)
 }
 
 // UpdateMyProfile mocks base method.

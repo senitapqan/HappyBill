@@ -19,6 +19,18 @@ type MyOrder struct {
 	ManagerUsername string `json:"manager_username" db:"manager_username"`
 }
 
+type ManagerOrder struct {
+	Deadline       string `json:"deadline"`
+	Status         string `json:"status"`
+	ProductId      int    `json:"product_id"`
+	ClientName     string `json:"manager_name" db:"manager_name"`
+	ClientUsername string `json:"manager_username" db:"manager_username"`
+}
+
+type UpdateOrder struct {
+	Status string `json:"status"`
+}
+
 type GetOrdersResponse struct {
 	Data []Order `json:"data"`
 }
