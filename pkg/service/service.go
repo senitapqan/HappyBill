@@ -29,7 +29,7 @@ type Service interface {
 	UpdateMyProfile(userId int, input dtos.UpdateUser) error
 
 	CreateBillboard(product models.Product) (int, error)
-	GetAllBillboards(page int) ([]dtos.Product, error)
+	GetAllBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, error)
 	GetBillboardById(id int) (dtos.Product, error)
 	DeleteBillboard(id int) error
 	UpdateBillboard(id int, input models.Product) error

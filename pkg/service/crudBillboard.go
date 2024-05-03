@@ -12,9 +12,9 @@ func (s *service) CreateBillboard(product models.Product) (int, error) {
 	return s.repos.CreateBillboard(product)
 }
 
-func (s *service) GetAllBillboards(page int) ([]dtos.Product, error) {
+func (s *service) GetAllBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, error) {
 	log.Info().Msg("service send request to repository: get all billboards request")
-	return s.repos.GetAllBillboards(page)
+	return s.repos.GetAllBillboards(page, search, filter)
 }
 
 func (s *service) GetMyBillboards(id, page int) ([]dtos.Product, error) {

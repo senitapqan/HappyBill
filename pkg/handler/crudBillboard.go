@@ -58,9 +58,24 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 		return
 	}
 
+	var search dtos.Search
+	err = ValidateSearch(c, &search)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var input dtos.Filter
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
 	log.Info().Msg("started handling get all billboards request")
-	
-	products, err := h.service.GetAllBillboards(page)
+
+	products, err := h.service.GetAllBillboards(page, search, input)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -105,7 +120,7 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 func (h *Handler) getBillBoardCalendar(c *gin.Context) {
 
 }
- 
+
 func (h *Handler) getMyBillboards(c *gin.Context) {
 	clientId, _ := getId(c, clientCtx)
 
@@ -137,7 +152,7 @@ func (h *Handler) likeBillboard(c *gin.Context) {
 	}
 
 	action, err := ValidateLike(c)
-	
+
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -150,10 +165,11 @@ func (h *Handler) likeBillboard(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]string {
+	c.JSON(http.StatusOK, map[string]string{
 		"message": "qeury was successfully pended",
 	})
 }
+
 // @Summary		UpdateById
 // @Tags			admin/billboard
 // @Security		ApiKeyAuth
@@ -166,7 +182,7 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 	id, err := ValidateId(c)
 
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter: " + err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter: "+err.Error())
 		return
 	}
 
