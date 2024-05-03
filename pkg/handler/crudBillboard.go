@@ -104,7 +104,6 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 	}
 
 	log.Info().Msg("started handling get billboard by id request")
-
 	product, err := h.service.GetBillboardById(id)
 
 	if err != nil {
@@ -116,11 +115,15 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 		Data: product,
 	})
 }
+<<<<<<< HEAD
 
 func (h *Handler) getBillBoardCalendar(c *gin.Context) {
 
 }
 
+=======
+ 
+>>>>>>> 682ff0b9d81553870cc2b945081433e7a1a7b016
 func (h *Handler) getMyBillboards(c *gin.Context) {
 	clientId, _ := getId(c, clientCtx)
 
