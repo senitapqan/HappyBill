@@ -6,6 +6,7 @@ import (
 	"happyBill/consts"
 	"happyBill/dtos"
 	"happyBill/models"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 )
@@ -45,7 +46,7 @@ func (r *repository) CreateManager(manager models.User) (int, error) {
 	return managerId, tx.Commit()
 }
 
-func (r *repository) GetAllManagers(page int) ([]dtos.User, error) {
+func (r *repository) GetAllManagers(page int) ([]dtos.User, dtos.Pagination, error) {
 	var result []dtos.User
 	query := fmt.Sprintf(`select u.id, u.name, u.surname, u.username, u.email, m.id as role_id 
 			from %s u join %s m ON m.user_id = u.id 
@@ -53,8 +54,26 @@ func (r *repository) GetAllManagers(page int) ([]dtos.User, error) {
 			limit %d offset %d`,
 		consts.UsersTable, consts.ManagersTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
 
-	err := r.db.Select(&result, query)
-	return result, err
+	if err := r.db.Select(&result, query); err != nil {
+		return nil, dtos.Pagination{}, err
+	}
+
+	var pagination dtos.Pagination
+	pagination.CurrentPage = page
+	var totalRows int
+	
+	query = fmt.Sprintf(`select count(*) from %s u join %s m ON m.user_id = u.id`, 
+			consts.UsersTable, consts.ManagersTable)
+
+	if err := r.db.Get(&totalRows, query); err != nil {
+		if strings.Contains(err.Error(), "no rows") {
+			return nil, dtos.Pagination{}, errors.New("there is no managers")
+		}
+		return nil, dtos.Pagination{}, err
+	}
+
+	pagination.TotalPage = (totalRows + consts.PaginationLimit - 1) / consts.PaginationLimit
+	return result, pagination, nil
 }
 
 func (r *repository) GetMostFreeManager() (int, error) {

@@ -126,27 +126,29 @@ func (mr *MockServiceMockRecorder) GenerateToken(username, password interface{})
 }
 
 // GetAllBillboards mocks base method.
-func (m *MockService) GetAllBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, error) {
+func (m *MockService) GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAllBillboards", page, search, filter)
+	ret := m.ctrl.Call(m, "GetAllBillboards", page)
 	ret0, _ := ret[0].([]dtos.Product)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetAllBillboards indicates an expected call of GetAllBillboards.
-func (mr *MockServiceMockRecorder) GetAllBillboards(page, search, filter interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) GetAllBillboards(page interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockService)(nil).GetAllBillboards), page, search, filter)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockService)(nil).GetAllBillboards), page)
 }
 
 // GetAllManagerOrders mocks base method.
-func (m *MockService) GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, error) {
+func (m *MockService) GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAllManagerOrders", id, page)
 	ret0, _ := ret[0].([]dtos.ManagerOrder)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetAllManagerOrders indicates an expected call of GetAllManagerOrders.
@@ -156,12 +158,13 @@ func (mr *MockServiceMockRecorder) GetAllManagerOrders(id, page interface{}) *go
 }
 
 // GetAllManagers mocks base method.
-func (m *MockService) GetAllManagers(page int) ([]dtos.User, error) {
+func (m *MockService) GetAllManagers(page int) ([]dtos.User, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAllManagers", page)
 	ret0, _ := ret[0].([]dtos.User)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetAllManagers indicates an expected call of GetAllManagers.
@@ -171,18 +174,35 @@ func (mr *MockServiceMockRecorder) GetAllManagers(page interface{}) *gomock.Call
 }
 
 // GetAllOrders mocks base method.
-func (m *MockService) GetAllOrders(page int) ([]dtos.Order, error) {
+func (m *MockService) GetAllOrders(page int) ([]dtos.Order, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAllOrders", page)
 	ret0, _ := ret[0].([]dtos.Order)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetAllOrders indicates an expected call of GetAllOrders.
 func (mr *MockServiceMockRecorder) GetAllOrders(page interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllOrders", reflect.TypeOf((*MockService)(nil).GetAllOrders), page)
+}
+
+// GetAllSearchedBillboards mocks base method.
+func (m *MockService) GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAllSearchedBillboards", page, search, filter)
+	ret0, _ := ret[0].([]dtos.Product)
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetAllSearchedBillboards indicates an expected call of GetAllSearchedBillboards.
+func (mr *MockServiceMockRecorder) GetAllSearchedBillboards(page, search, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllSearchedBillboards", reflect.TypeOf((*MockService)(nil).GetAllSearchedBillboards), page, search, filter)
 }
 
 // GetBillboardById mocks base method.
@@ -261,12 +281,13 @@ func (mr *MockServiceMockRecorder) GetManagerOrderById(id interface{}) *gomock.C
 }
 
 // GetMyBillboards mocks base method.
-func (m *MockService) GetMyBillboards(id, page int) ([]dtos.Product, error) {
+func (m *MockService) GetMyBillboards(id, page int) ([]dtos.Product, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMyBillboards", id, page)
 	ret0, _ := ret[0].([]dtos.Product)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetMyBillboards indicates an expected call of GetMyBillboards.
@@ -276,12 +297,13 @@ func (mr *MockServiceMockRecorder) GetMyBillboards(id, page interface{}) *gomock
 }
 
 // GetMyOrders mocks base method.
-func (m *MockService) GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, error) {
+func (m *MockService) GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMyOrders", clientId, page, status)
 	ret0, _ := ret[0].([]dtos.MyOrder)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetMyOrders indicates an expected call of GetMyOrders.

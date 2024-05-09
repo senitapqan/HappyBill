@@ -50,7 +50,13 @@ func (r *repository) GetClientByUserId(id int) (dtos.User, error) {
 	query := fmt.Sprintf(`select usr.name, usr.surname, usr.phone, usr.email, usr.username from %s usr
 						where usr.id = $1`, consts.UsersTable)
 	err := r.db.Get(&result, query, id)
-	return result, err
+	if err != nil {
+		if strings.Contains(err.Error(), "no rows") {
+			return dtos.User{}, fmt.Errorf("there is no such user with id: %d", id)
+		}
+		return dtos.User{}, err
+	}
+	return result, nil
 }
 
 func (r *repository) GetClientById(id int) (dtos.User, error) {
@@ -59,6 +65,12 @@ func (r *repository) GetClientById(id int) (dtos.User, error) {
 						join %s usr ON usr.id = clnt.user_id
 						where clnt.id = $1`, consts.ClientsTable, consts.UsersTable)
 	err := r.db.Get(&result, query, id)
+	if err != nil {
+		if strings.Contains(err.Error(), "no rows") {
+			return dtos.User{}, fmt.Errorf("there is no such user with clientid: %d", id)
+		}
+		return dtos.User{}, err
+	}
 	return result, err
 }
 

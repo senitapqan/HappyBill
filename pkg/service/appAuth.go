@@ -39,11 +39,6 @@ func (s *service) GenerateToken(input, password string) ([]models.RolesHeaders, 
 		return nil, "", err
 	}
 
-	if user.Id == 0 {
-		
-		return nil, "", fmt.Errorf("there is no such user with username/email: %s", input)
-	}
-
 	if user.Password != password {
 		return nil, "", errors.New("incorrect password")
 	}

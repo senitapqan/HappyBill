@@ -9,21 +9,21 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func (s *service) GetAllOrders(page int) ([]dtos.Order, error) {
+func (s *service) GetAllOrders(page int) ([]dtos.Order, dtos.Pagination, error) {
 	//return s.repos.GetAllOrders()
-	return nil, nil
+	return nil, dtos.Pagination{},  nil
 }
 
-func (s *service) GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, error) {
+func (s *service) GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, dtos.Pagination, error) {
 	log.Info().Msg("service send request to repository: get my orders request")
-	myOrders, err := s.repos.GetMyOrders(clientId, page, status)
+	myOrders, pagination, err := s.repos.GetMyOrders(clientId, page, status)
 	if err != nil {
-		return nil, err
+		return nil, dtos.Pagination{}, err
 	}
 	if len(myOrders) == 0 {
-		return nil, errors.New("there is no orders")
+		return nil, dtos.Pagination{}, errors.New("there is no orders")
 	}
-	return myOrders, err
+	return myOrders, pagination, err
 }
 
 func (s *service) CreateOrder(id int, order models.Order) (int, error) {
@@ -51,7 +51,7 @@ func (s *service) CreateOrder(id int, order models.Order) (int, error) {
 	return s.repos.CreateOrder(id, order)
 }
 
-func (s *service) GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, error) {
+func (s *service) GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, dtos.Pagination, error) {
 	log.Info().Msg("service send request to repository: get all manager orders request")
 	return s.repos.GetAllManagerOrders(id, page)
 }

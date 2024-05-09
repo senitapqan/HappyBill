@@ -110,27 +110,29 @@ func (mr *MockRepositoryMockRecorder) DeleteBillboard(id interface{}) *gomock.Ca
 }
 
 // GetAllBillboards mocks base method.
-func (m *MockRepository) GetAllBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, error) {
+func (m *MockRepository) GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAllBillboards", page, search, filter)
+	ret := m.ctrl.Call(m, "GetAllBillboards", page)
 	ret0, _ := ret[0].([]dtos.Product)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetAllBillboards indicates an expected call of GetAllBillboards.
-func (mr *MockRepositoryMockRecorder) GetAllBillboards(page, search, filter interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) GetAllBillboards(page interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockRepository)(nil).GetAllBillboards), page, search, filter)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockRepository)(nil).GetAllBillboards), page)
 }
 
 // GetAllManagerOrders mocks base method.
-func (m *MockRepository) GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, error) {
+func (m *MockRepository) GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAllManagerOrders", id, page)
 	ret0, _ := ret[0].([]dtos.ManagerOrder)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetAllManagerOrders indicates an expected call of GetAllManagerOrders.
@@ -140,18 +142,35 @@ func (mr *MockRepositoryMockRecorder) GetAllManagerOrders(id, page interface{}) 
 }
 
 // GetAllManagers mocks base method.
-func (m *MockRepository) GetAllManagers(page int) ([]dtos.User, error) {
+func (m *MockRepository) GetAllManagers(page int) ([]dtos.User, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAllManagers", page)
 	ret0, _ := ret[0].([]dtos.User)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetAllManagers indicates an expected call of GetAllManagers.
 func (mr *MockRepositoryMockRecorder) GetAllManagers(page interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllManagers", reflect.TypeOf((*MockRepository)(nil).GetAllManagers), page)
+}
+
+// GetAllSearchedBillboards mocks base method.
+func (m *MockRepository) GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAllSearchedBillboards", page, search, filter)
+	ret0, _ := ret[0].([]dtos.Product)
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetAllSearchedBillboards indicates an expected call of GetAllSearchedBillboards.
+func (mr *MockRepositoryMockRecorder) GetAllSearchedBillboards(page, search, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllSearchedBillboards", reflect.TypeOf((*MockRepository)(nil).GetAllSearchedBillboards), page, search, filter)
 }
 
 // GetBillboardById mocks base method.
@@ -245,12 +264,13 @@ func (mr *MockRepositoryMockRecorder) GetMostFreeManager() *gomock.Call {
 }
 
 // GetMyBillboards mocks base method.
-func (m *MockRepository) GetMyBillboards(id, page int) ([]dtos.Product, error) {
+func (m *MockRepository) GetMyBillboards(id, page int) ([]dtos.Product, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMyBillboards", id, page)
 	ret0, _ := ret[0].([]dtos.Product)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetMyBillboards indicates an expected call of GetMyBillboards.
@@ -260,12 +280,13 @@ func (mr *MockRepositoryMockRecorder) GetMyBillboards(id, page interface{}) *gom
 }
 
 // GetMyOrders mocks base method.
-func (m *MockRepository) GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, error) {
+func (m *MockRepository) GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMyOrders", clientId, page, status)
 	ret0, _ := ret[0].([]dtos.MyOrder)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(dtos.Pagination)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetMyOrders indicates an expected call of GetMyOrders.

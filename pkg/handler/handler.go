@@ -12,11 +12,13 @@ import (
 
 type Handler struct {
 	service service.Service
+	validator Validator
 }
 
 func NewHandler(serv service.Service) *Handler {
 	return &Handler{
 		service: serv,
+		validator: NewValidator(),
 	}
 }
 
@@ -84,6 +86,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 		app := client.Group("/home")
 		{
 			app.GET("/", h.getAllBillboards)
+			app.GET("/search", h.getAllSearchedBillboards)
 			app.GET("/:id", h.getBillboardById)
 
 		}

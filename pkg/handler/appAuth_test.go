@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"happyBill/models"
+	mock_validator "happyBill/pkg/handler/validatorMock"
 	mock_service "happyBill/pkg/service/mocks"
 	"net/http/httptest"
 	"testing"
@@ -105,9 +106,10 @@ func TestHandler_signUp(t *testing.T) {
 			defer c.Finish()
 
 			services := mock_service.NewMockService(c)
+			validator := mock_validator.NewMockValidator(c)
 			test.mockBehavior(services, test.inputUser)
 
-			handler := Handler{services}
+			handler := Handler{services, validator}
 
 			// Init Endpoint
 			r := gin.New()

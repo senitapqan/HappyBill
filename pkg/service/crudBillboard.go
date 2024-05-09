@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"happyBill/dtos"
 	"happyBill/models"
 
@@ -11,22 +12,36 @@ func (s *service) CreateBillboard(product models.Product) (int, error) {
 	log.Info().Msg("service send request to repository: create billboard request")
 
 	id, err := s.repos.CreateBillboard(product)
-	
+
 	if err != nil {
-		return -1, err;
+		return -1, err
 	}
 
 	return id, nil
 }
 
-func (s *service) GetAllBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, error) {
+func (s *service) GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, error) {
 	log.Info().Msg("service send request to repository: get all billboards request")
-	return s.repos.GetAllBillboards(page, search, filter)
+	return s.repos.GetAllBillboards(page)
 }
 
-func (s *service) GetMyBillboards(id, page int) ([]dtos.Product, error) {
+func (s *service) GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error) {
+	log.Info().Msg("service send request to repository: get all searched billboards request")
+	return s.repos.GetAllSearchedBillboards(page, search, filter)
+}
+
+func (s *service) GetMyBillboards(id, page int) ([]dtos.Product, dtos.Pagination, error) {
 	log.Info().Msg("service send request to repository: get my billboards (my fav) request")
-	return s.repos.GetMyBillboards(id, page)
+
+	myBillboards, pagination,  err := s.repos.GetMyBillboards(id, page)
+	if err != nil {
+		return nil, dtos.Pagination{}, err
+	}
+	if len(myBillboards) == 0 {
+		return nil, dtos.Pagination{}, errors.New("there is no liked billboards")
+	}
+
+	return myBillboards, pagination, err
 }
 
 func (s *service) DeleteBillboard(id int) error {

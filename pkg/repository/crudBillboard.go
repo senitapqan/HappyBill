@@ -28,13 +28,12 @@ func (r *repository) CreateBillboard(product models.Product) (int, error) {
 
 }
 
-func (r *repository) GetAllBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, error) {
+func (r *repository) GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error) {
 	var products []dtos.Product
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1
 	setValues = append(setValues, "1 = 1")
-
 	if search.RegionId != -1 {
 		setValues = append(setValues, fmt.Sprintf("region_id = $%d", argId))
 		args = append(args, search.RegionId)
@@ -50,28 +49,70 @@ func (r *repository) GetAllBillboards(page int, search dtos.Search, filter dtos.
 		args = append(args, search.CheckOut)
 		argId++
 	}
-	if filter.HeightIn != 0 {
-
-	}
-
-	setQuery := strings.Join(setValues, " and ")
-
-	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name
+	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name, loc.link as link
 			from %s prod
 			join %s loc on loc.id = prod.location_id
 			order by prod.created_time desc
-			where %s
 			limit %d offset %d`,
-		consts.ProductsTable, consts.LocationsTable, setQuery, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
-	if err := r.db.Select(&products, query, args...); err != nil {
-		return nil, err
+		consts.ProductsTable, consts.LocationsTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
+		
+	if err := r.db.Select(&products, query); err != nil {
+		return nil, dtos.Pagination{}, err
 	}
-	return products, nil
+
+	var pagination dtos.Pagination
+	pagination.CurrentPage = page
+	var totalRows int
+	
+	query = fmt.Sprintf(`select count(*)
+				from %s prod
+				join %s loc on loc.id = prod.location_id`, 
+				consts.ProductsTable, consts.LocationsTable)
+	
+	if err := r.db.Get(&totalRows, query); err != nil {
+		if strings.Contains(err.Error(), "no rows") {
+			return nil, dtos.Pagination{}, errors.New("there is no billboards with such filters")
+		}
+		return nil, dtos.Pagination{}, err
+	}
+	pagination.TotalPage = (totalRows + consts.PaginationLimit - 1) / consts.PaginationLimit
+	return products, pagination, nil
 }
 
-func (r *repository) GetMyBillboards(clientId, page int) ([]dtos.Product, error) {
+func (r *repository) GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, error) {
 	var products []dtos.Product
-	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name
+	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name, loc.link as link
+			from %s prod
+			join %s loc on loc.id = prod.location_id
+			order by prod.created_time desc
+			limit %d offset %d`,
+		consts.ProductsTable, consts.LocationsTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
+	if err := r.db.Select(&products, query); err != nil {
+		return nil, dtos.Pagination{}, err
+	}
+
+	var pagination dtos.Pagination
+	pagination.CurrentPage = page
+	var totalRows int
+	
+	query = fmt.Sprintf(`select count(*)
+				from %s prod
+				join %s loc on loc.id = prod.location_id`, 
+				consts.ProductsTable, consts.LocationsTable)
+	
+	if err := r.db.Get(&totalRows, query); err != nil {
+		if strings.Contains(err.Error(), "no rows") {
+			return nil, dtos.Pagination{}, errors.New("there is no billboards with such filters")
+		}
+		return nil, dtos.Pagination{}, err
+	}
+	pagination.TotalPage = (totalRows + consts.PaginationLimit - 1) / consts.PaginationLimit
+	return products, pagination, nil
+}
+
+func (r *repository) GetMyBillboards(clientId, page int) ([]dtos.Product, dtos.Pagination, error) {
+	var products []dtos.Product
+	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name, loc.link as link
 			from %s prod
 			join %s clprod on clprod.product_id = prod.id
 			join %s loc on loc.id = prod.location_id
@@ -80,9 +121,28 @@ func (r *repository) GetMyBillboards(clientId, page int) ([]dtos.Product, error)
 			limit %d offset %d`,
 		consts.ProductsTable, consts.ClientProductsTable, consts.LocationsTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
 	if err := r.db.Select(&products, query, clientId); err != nil {
-		return nil, err
+		return nil, dtos.Pagination{}, err
 	}
-	return products, nil
+	
+	var pagination dtos.Pagination
+	pagination.CurrentPage = page
+	var totalRows int
+	
+	query = fmt.Sprintf(`select count(*) from %s prod
+			join %s clprod on clprod.product_id = prod.id
+			join %s loc on loc.id = prod.location_id
+			where clprod.client_id = $1`, 
+		consts.ProductsTable, consts.ClientProductsTable, consts.LocationsTable)
+
+	if err := r.db.Get(&totalRows, query, clientId); err != nil {
+		if strings.Contains(err.Error(), "no rows") {
+			return nil, dtos.Pagination{}, errors.New("there is no billboards with such filters")
+		}
+		return nil, dtos.Pagination{}, err
+	}
+
+	pagination.TotalPage = (totalRows + consts.PaginationLimit - 1) / consts.PaginationLimit
+	return products, pagination, nil
 }
 
 func (r *repository) GetBillboardById(id int) (dtos.Product, error) {

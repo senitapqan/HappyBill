@@ -2,6 +2,7 @@ package dtos
 
 type GetAllBillboardsResponse struct {
 	Data []Product `json:"data"`
+	Pagination Pagination `json:"pagination"`
 }
 
 type GetBillboardByIdResponse struct {
@@ -13,7 +14,8 @@ type Product struct {
 	Width        int    `json:"width"`
 	Height       int    `json:"height"`
 	DisplayType  int    `json:"display_type" db:"display_type"`
-	LocationName string `json:"location_id" db:"location_name"`
+	LocationName string `json:"location_name" db:"location_name"`
+	LocationLink string `json:"location_link" db:"link"`
 	Price        int    `json:"price"`
 }
 

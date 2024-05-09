@@ -24,7 +24,7 @@ func (h *Handler) getMyProfile(c *gin.Context) {
 }
 
 func (h *Handler) GetClientById(c *gin.Context) {
-	clientId, err := ValidateId(c)
+	clientId, err := h.validator.ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
