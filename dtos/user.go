@@ -11,11 +11,11 @@ type User struct {
 }
 
 type UpdateUser struct {
-	Name     string `json:"name" db:"name"`
-	Surname  string `json:"surname" db:"surname"`
-	Username string `json:"username" db:"username"`
-	Password string `json:"password" db:"password"`
-	OldPassword string `json:"old_password"`
+	Name        string `json:"name" db:"name"`
+	Surname     string `json:"surname" db:"surname"`
+	Username    string `json:"username" db:"username"`
+	Password    string `json:"password" db:"password"`
+	OldPassword string `json:"old_password" binding:"required"`
 }
 
 type SignInRequest struct {
