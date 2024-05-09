@@ -13,11 +13,13 @@ import (
 func (r *repository) CreateClient(client models.User) (int, error) {
 	tx, err := r.db.Beginx()
 	if err != nil {
+		log.Error().Msg(err.Error())
 		return 0, err
 	}
 	var clientId int
 	userId, err := r.CreateUser(client, tx)
 	if err != nil {
+		log.Error().Msg(err.Error())
 		return 0, err
 	}
 
@@ -25,6 +27,7 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 	row := tx.QueryRowx(query, userId)
 
 	if err := row.Scan(&clientId); err != nil {
+		log.Error().Msg(err.Error())
 		tx.Rollback()
 		return 0, err
 	}
@@ -35,6 +38,7 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 
 	if err != nil {
 		tx.Rollback()
+		log.Error().Msg(err.Error())
 		return 0, err
 	}
 

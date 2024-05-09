@@ -13,13 +13,15 @@ import (
 func (r *repository) CreateManager(manager models.User) (int, error) {
 	tx, err := r.db.Beginx()
 	if err != nil {
-		return 0, err
+		log.Error().Msg(err.Error())
+		return 0, errors.New("something went wrong with repository")
 	}
 
 	var managerId int
 	userId, err := r.CreateUser(manager, tx)
 	if err != nil {
-		return 0, err
+		log.Error().Msg(err.Error())
+		return 0, errors.New("something went wrong with repository")
 	}
 
 	query := fmt.Sprintf("insert into %s (user_id) values($1) returning id", consts.ManagersTable)
@@ -27,7 +29,8 @@ func (r *repository) CreateManager(manager models.User) (int, error) {
 
 	if err := row.Scan(&managerId); err != nil {
 		tx.Rollback()
-		return 0, err
+		log.Error().Msg(err.Error())
+		return 0, errors.New("something went wrong with repository")
 	}
 
 	query = fmt.Sprintf("insert into %s (user_id, role_id) values ($1, $2)", consts.UsersRolesTable)
@@ -35,7 +38,8 @@ func (r *repository) CreateManager(manager models.User) (int, error) {
 
 	if err != nil {
 		tx.Rollback()
-		return 0, err
+		log.Error().Msg(err.Error())
+		return 0, errors.New("something went wrong with repository")
 	}
 
 	return managerId, tx.Commit()
