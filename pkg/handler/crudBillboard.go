@@ -48,8 +48,6 @@ func (h *Handler) createBillboard(c *gin.Context) {
 // @Accept			json
 // @Produce		json
 // @Router			/admin/bill [get]
-//
-//host:port/admin/bill?page=1&limit=10&q="naruto"
 func (h *Handler) getAllBillboards(c *gin.Context) {
 	page, err := ValidatePage(c)
 
@@ -115,15 +113,7 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 		Data: product,
 	})
 }
-<<<<<<< HEAD
 
-func (h *Handler) getBillBoardCalendar(c *gin.Context) {
-
-}
-
-=======
- 
->>>>>>> 682ff0b9d81553870cc2b945081433e7a1a7b016
 func (h *Handler) getMyBillboards(c *gin.Context) {
 	clientId, _ := getId(c, clientCtx)
 
