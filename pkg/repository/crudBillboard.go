@@ -28,15 +28,42 @@ func (r *repository) CreateBillboard(product models.Product) (int, error) {
 
 }
 
-func (r *repository) GetAllBillboards(page int) ([]dtos.Product, error) {
+func (r *repository) GetAllBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, error) {
 	var products []dtos.Product
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+	argId := 1
+	setValues = append(setValues, "1 = 1")
+
+	if search.RegionId != -1 {
+		setValues = append(setValues, fmt.Sprintf("region_id = $%d", argId))
+		args = append(args, search.RegionId)
+		argId++
+	}
+	if search.CheckIn != "" {
+		setValues = append(setValues, fmt.Sprintf("check_in > $%d", argId))
+		args = append(args, search.CheckIn)
+		argId++
+	}
+	if search.CheckOut != "" {
+		setValues = append(setValues, fmt.Sprintf("check_out = $%d", argId))
+		args = append(args, search.CheckOut)
+		argId++
+	}
+	if filter.HeightIn != 0 {
+
+	}
+
+	setQuery := strings.Join(setValues, " and ")
+
 	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name
 			from %s prod
 			join %s loc on loc.id = prod.location_id
 			order by prod.created_time desc
+			where %s
 			limit %d offset %d`,
-		consts.ProductsTable, consts.LocationsTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
-	if err := r.db.Select(&products, query); err != nil {
+		consts.ProductsTable, consts.LocationsTable, setQuery, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
+	if err := r.db.Select(&products, query, args...); err != nil {
 		return nil, err
 	}
 	return products, nil

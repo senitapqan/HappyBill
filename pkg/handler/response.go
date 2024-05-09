@@ -2,7 +2,9 @@ package handler
 
 import (
 	"errors"
+	"happyBill/dtos"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +19,37 @@ type statusResponse struct {
 
 func newErrorResponse(c *gin.Context, statusCode int, message string) {
 	c.AbortWithStatusJSON(statusCode, errorResponse{message})
+}
+
+func ValidateSearch(c *gin.Context, search *dtos.Search) error {
+	regionId, err := strconv.Atoi(c.Param("region"))
+
+	if err != nil {
+		return errors.New("Region id need to be int")
+	}
+
+	if regionId <= 0 {
+		return errors.New("Region id cannot be negative")
+	}
+
+	checkIn, err := time.Parse("2006-01-02", c.Param("check_in"))
+
+	if err != nil {
+		return errors.New("Wrong format of check-in")
+	}
+
+	checkOut, err := time.Parse("2006-01-02", c.Param("check_out"))
+
+	if err != nil {
+		return errors.New("Wrong format of check-out")
+	}
+
+	search.CheckIn = checkIn.String()
+	search.CheckOut = checkOut.String()
+	search.RegionId = regionId
+
+	return nil
+
 }
 
 func ValidateId(c *gin.Context) (int, error) {

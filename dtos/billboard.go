@@ -24,10 +24,11 @@ type Search struct {
 }
 
 type Filter struct {
-	PriceIn int 
-	PriceOut int
+	PriceIn     int
+	PriceOut    int
 	DisplayType []int
-	WidthIn int
-	WidthOut int
-	HeightIn int
+	WidthIn     int
+	WidthOut    int
+	HeightIn    int
+	HeightOut   int
 }

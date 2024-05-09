@@ -110,18 +110,18 @@ func (mr *MockRepositoryMockRecorder) DeleteBillboard(id interface{}) *gomock.Ca
 }
 
 // GetAllBillboards mocks base method.
-func (m *MockRepository) GetAllBillboards(page int) ([]dtos.Product, error) {
+func (m *MockRepository) GetAllBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAllBillboards", page)
+	ret := m.ctrl.Call(m, "GetAllBillboards", page, search, filter)
 	ret0, _ := ret[0].([]dtos.Product)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAllBillboards indicates an expected call of GetAllBillboards.
-func (mr *MockRepositoryMockRecorder) GetAllBillboards(page interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) GetAllBillboards(page, search, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockRepository)(nil).GetAllBillboards), page)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockRepository)(nil).GetAllBillboards), page, search, filter)
 }
 
 // GetAllManagerOrders mocks base method.
