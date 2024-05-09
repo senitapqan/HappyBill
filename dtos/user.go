@@ -6,16 +6,17 @@ type User struct {
 	Email    string      `json:"email" db:"email"`
 	Name     string      `json:"name" db:"name"`
 	Surname  string      `json:"surname" db:"surname"`
-	Phone    interface{} `db:"phone"`
+	Phone    interface{} `json:"phone" db:"phone"`
 	RoleId   int         `json:"role_id" db:"role_id"`
 }
 
 type UpdateUser struct {
-	Name        string `json:"name" db:"name"`
-	Surname     string `json:"surname" db:"surname"`
-	Username    string `json:"username" db:"username"`
-	Password    string `json:"password" db:"password"`
-	OldPassword string `json:"old_password" binding:"required"`
+	Name        string      `json:"name" db:"name"`
+	Surname     string      `json:"surname" db:"surname"`
+	Username    string      `json:"username" db:"username"`
+	Password    string      `json:"password" db:"password"`
+	OldPassword string      `json:"old_password"`
+	Phone       interface{} `json:"phone" db:"phone"`
 }
 
 type SignInRequest struct {

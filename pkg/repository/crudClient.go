@@ -78,10 +78,22 @@ func (r *repository) UpdateMyProfile(userId int, input dtos.UpdateUser) error {
 		args = append(args, input.Surname)
 		argId++
 	}
-	log.Info().Msg(input.Password)
+
 	if input.Password != "" {
 		setValues = append(setValues, fmt.Sprintf("password=$%d", argId))
 		args = append(args, input.Password)
+		argId++
+	}
+
+	if input.Username != "" {
+		setValues = append(setValues, fmt.Sprintf("username=$%d", argId))
+		args = append(args, input.Username)
+		argId++
+	}
+
+	if input.Phone != nil {
+		setValues = append(setValues, fmt.Sprintf("phone=$%d", argId))
+		args = append(args, input.Phone)
 		argId++
 	}
 
@@ -90,6 +102,7 @@ func (r *repository) UpdateMyProfile(userId int, input dtos.UpdateUser) error {
 	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = %d",
 		consts.UsersTable, setQuery, userId)
 
+	log.Info().Msg(query)
 	_, err := r.db.Exec(query, args...)
 
 	return err

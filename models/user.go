@@ -3,8 +3,8 @@ package models
 import "time"
 
 type Manager struct {
-	Id     int `json:"manager_id"`
-	UserId int `json:"user_id"`
+	Id        int       `json:"manager_id"`
+	UserId    int       `json:"user_id"`
 	CreatedAt time.Time `json:"created"`
 }
 
@@ -15,11 +15,11 @@ type Client struct {
 }
 
 type Admin struct {
-	Id        int       `json:"admin_id"`
-	UserId    int       `json:"user_id"`
-	OrderCount int	
+	Id               int `json:"admin_id"`
+	UserId           int `json:"user_id"`
+	OrderCount       int
 	ActiveOrderCount int
-	CreatedAt time.Time `json:"created"`
+	CreatedAt        time.Time `json:"created"`
 }
 
 type User struct {
@@ -30,6 +30,7 @@ type User struct {
 	Name     string `json:"name"     binding:"required"`
 	Surname  string `json:"surname"  binding:"required"`
 	Phone    string `json:"phone"`
+	Archive  bool   `json:"archive" db:"archive"`
 }
 
 type Roles struct {
