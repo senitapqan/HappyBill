@@ -10,6 +10,7 @@ type Product struct {
 	LocationId  int       `json:"location_id" binding:"required"`
 	Price       int       `json:"price" binding:"required"`
 	CreatedAt   time.Time `json:"created"`
+	Archive     bool   `json:"archive" db:"archive"`
 }
 
 type Location struct {

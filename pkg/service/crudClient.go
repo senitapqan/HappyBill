@@ -42,7 +42,7 @@ func (s service) GetClientByUserId(id int) (dtos.User, error) {
 	user, err := s.repos.GetClientByUserId(id)
 	if err != nil {
 		return user, err
-	}	
+	}
 	if user.Phone == nil {
 		user.Phone = ""
 	}
@@ -50,13 +50,16 @@ func (s service) GetClientByUserId(id int) (dtos.User, error) {
 }
 
 func (s service) UpdateMyProfile(userId int, input dtos.UpdateUser) error {
+	log.Info().Msg(input.OldPassword)
 	input.OldPassword = s.hashPassword(input.OldPassword)
-	input.Password = s.hashPassword(input.Password)
-
+	if input.Password != "" {
+		input.Password = s.hashPassword(input.Password)
+	}
 	log.Info().Msg("service send request to repository: get user info by id request")
 	client, _ := s.repos.GetUserById(userId)
-	
+
 	if client.Password != input.OldPassword {
+		log.Info().Msg(client.Password + " " + input.OldPassword)
 		return errors.New("incorrect password")
 	}
 

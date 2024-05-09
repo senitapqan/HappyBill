@@ -40,7 +40,7 @@ func (r *repository) GetUserById(id int) (models.User, error) {
 
 	err := r.db.Get(&user, query, id)
 	
-	log.Info().Msg("")
+	log.Info().Msg("dfgdfsg")
 	return user, err
 }
 

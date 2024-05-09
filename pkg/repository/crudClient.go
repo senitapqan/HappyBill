@@ -6,7 +6,6 @@ import (
 	"happyBill/dtos"
 	"happyBill/models"
 	"strings"
-	"time"
 
 	"github.com/rs/zerolog/log"
 )
@@ -23,7 +22,7 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 	}
 
 	query := fmt.Sprintf("insert into %s (user_id) values($1) returning id", consts.ClientsTable)
-	row := tx.QueryRowx(query, userId, time.Now())
+	row := tx.QueryRowx(query, userId)
 
 	if err := row.Scan(&clientId); err != nil {
 		tx.Rollback()
@@ -41,7 +40,6 @@ func (r *repository) CreateClient(client models.User) (int, error) {
 
 	return clientId, tx.Commit()
 }
-
 
 func (r *repository) GetClientByUserId(id int) (dtos.User, error) {
 	var result dtos.User
@@ -76,10 +74,22 @@ func (r *repository) UpdateMyProfile(userId int, input dtos.UpdateUser) error {
 		args = append(args, input.Surname)
 		argId++
 	}
-	log.Info().Msg(input.Password)
+
 	if input.Password != "" {
 		setValues = append(setValues, fmt.Sprintf("password=$%d", argId))
 		args = append(args, input.Password)
+		argId++
+	}
+
+	if input.Username != "" {
+		setValues = append(setValues, fmt.Sprintf("username=$%d", argId))
+		args = append(args, input.Username)
+		argId++
+	}
+
+	if input.Phone != nil {
+		setValues = append(setValues, fmt.Sprintf("phone=$%d", argId))
+		args = append(args, input.Phone)
 		argId++
 	}
 
@@ -88,6 +98,7 @@ func (r *repository) UpdateMyProfile(userId int, input dtos.UpdateUser) error {
 	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = %d",
 		consts.UsersTable, setQuery, userId)
 
+	log.Info().Msg(query)
 	_, err := r.db.Exec(query, args...)
 
 	return err

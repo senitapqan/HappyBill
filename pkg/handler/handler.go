@@ -39,6 +39,7 @@ func (h Handler) InitRoutes() *gin.Engine {
 
 		billboard := admin.Group("/bill")
 		{
+			
 			billboard.GET("/", h.getAllBillboards)
 			billboard.GET("/:id", h.getBillboardById)
 			billboard.POST("/", h.createBillboard)
@@ -88,14 +89,14 @@ func (h Handler) InitRoutes() *gin.Engine {
 		}
 	}
 
-	manager := router.Group("")
+	manager := router.Group("/manager")
 	{
 		admin.Use(h.userIdentify())
 		admin.Use(h.roleIdentify(managerCtx))
 
 		manager.GET("/", h.getAllManagerOrders)
 		manager.GET("/:id", h.getManagerOrderById)
-		//manager.PUT("/:id", h.updateManagerOrder)
+		manager.PUT("/:id", h.updateManagerOrder)
 	}
 
 	return router

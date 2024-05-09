@@ -1,13 +1,15 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"happyBill/consts"
 	"happyBill/dtos"
 	"happyBill/models"
-	"log"
 
 	"strings"
+
+	"github.com/rs/zerolog/log"
 )
 
 func (r *repository) CreateBillboard(product models.Product) (int, error) {
@@ -18,7 +20,8 @@ func (r *repository) CreateBillboard(product models.Product) (int, error) {
 
 	err := row.Scan(&productId)
 	if err != nil {
-		return -1, err
+		log.Error().Msg(err.Error())
+		return -1, errors.New("something wrong with sql request")
 	}
 
 	return productId, nil

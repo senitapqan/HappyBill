@@ -9,7 +9,14 @@ import (
 
 func (s *service) CreateBillboard(product models.Product) (int, error) {
 	log.Info().Msg("service send request to repository: create billboard request")
-	return s.repos.CreateBillboard(product)
+
+	id, err := s.repos.CreateBillboard(product)
+	
+	if err != nil {
+		return -1, err;
+	}
+
+	return id, nil
 }
 
 func (s *service) GetAllBillboards(page int) ([]dtos.Product, error) {
