@@ -47,7 +47,7 @@ func (h *Handler) createManager(c *gin.Context) {
 // @Produce		json
 // @Router			/admin/manager [get]
 func (h *Handler) getAllManager(c *gin.Context) {
-	page, err := ValidatePage(c)
+	page, err := h.validator.ValidatePage(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -55,7 +55,7 @@ func (h *Handler) getAllManager(c *gin.Context) {
 	}
 
 	log.Info().Msg("started handling get all managers request")
-	managers, err := h.service.GetAllManagers(page)
+	managers, pagination, err := h.service.GetAllManagers(page)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadGateway, err.Error())
@@ -66,6 +66,7 @@ func (h *Handler) getAllManager(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dtos.GetAllManagersResponse{
 		Data: managers,
+		Pagination: pagination,
 	})
 }
 
@@ -78,7 +79,7 @@ func (h *Handler) getAllManager(c *gin.Context) {
 // @Produce		json
 // @Router			/admin/manager/:id [get]
 func (h *Handler) getManagerById(c *gin.Context) {
-	id, err := ValidateId(c)
+	id, err := h.validator.ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter: "+err.Error())
@@ -94,7 +95,7 @@ func (h *Handler) getManagerById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, dtos.GetManagersResponse{
+	c.JSON(http.StatusOK, dtos.GetManagerResponse{
 		Data: manager,
 	})
 }

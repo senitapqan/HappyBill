@@ -19,7 +19,7 @@ func (h *Handler) createMyOrder(c *gin.Context) {
 		return
 	}
 
-	productId, err := ValidateId(c)
+	productId, err := h.validator.ValidateId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id:" + err.Error())
 		return
@@ -53,12 +53,12 @@ func (h *Handler) deleteMyOrder(c *gin.Context) {
 // @Router			/profile/my-orders/ [get]
 func (h *Handler) getMyOrders(c *gin.Context) {
 	clientId, _ := getId(c, clientCtx)
-	page, err := ValidatePage(c)
+	page, err := h.validator.ValidatePage(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	status, err := ValidateStatus(c)
+	status, err := h.validator.ValidateStatus(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -66,7 +66,7 @@ func (h *Handler) getMyOrders(c *gin.Context) {
 
 	var myOrders []dtos.MyOrder
 	log.Info().Msg("started handling get all my orders request")
-	myOrders, err = h.service.GetMyOrders(clientId, page, status)
+	myOrders, pagination, err := h.service.GetMyOrders(clientId, page, status)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -75,6 +75,7 @@ func (h *Handler) getMyOrders(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dtos.GetMyOrdersResponse{
 		Data: myOrders,
+		Pagination: pagination,
 	})
 }
 
@@ -87,7 +88,7 @@ func (h *Handler) getMyOrders(c *gin.Context) {
 // @Produce		json
 // @Router			/admin/order/ [get]
 func (h *Handler) getAllOrders(c *gin.Context) {
-	page, err := ValidatePage(c)
+	page, err := h.validator.ValidatePage(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -97,7 +98,7 @@ func (h *Handler) getAllOrders(c *gin.Context) {
 	var orders []dtos.Order
 
 	log.Info().Msg("started handling get all orders request")
-	orders, err = h.service.GetAllOrders(page)
+	orders, pagination, err := h.service.GetAllOrders(page)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadGateway, err.Error())
@@ -106,6 +107,7 @@ func (h *Handler) getAllOrders(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dtos.GetOrdersResponse{
 		Data: orders,
+		Pagination: pagination,
 	})
 }
 
@@ -123,7 +125,7 @@ func (h *Handler) deleteOrder(c *gin.Context) {
 // @Produce		json
 // @Router			/manager/ [get]
 func (h *Handler) getAllManagerOrders(c *gin.Context) {
-	page, err := ValidatePage(c)
+	page, err := h.validator.ValidatePage(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -138,7 +140,7 @@ func (h *Handler) getAllManagerOrders(c *gin.Context) {
 	}
 
 	log.Info().Msg("started handling get all manager orders request")
-	orders, err := h.service.GetAllManagerOrders(manager_id, page)
+	orders, pagination, err := h.service.GetAllManagerOrders(manager_id, page)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadGateway, err.Error())
@@ -149,6 +151,7 @@ func (h *Handler) getAllManagerOrders(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dtos.GetAllManagerOrdersResponse{
 		Data: orders,
+		Pagination: pagination,
 	})
 }
 
@@ -161,7 +164,7 @@ func (h *Handler) getAllManagerOrders(c *gin.Context) {
 // @Produce			json
 // @Router			/manager/:id [get]
 func (h *Handler) getManagerOrderById(c *gin.Context) {
-	id, err := ValidateId(c)
+	id, err := h.validator.ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter: "+err.Error())
@@ -191,7 +194,7 @@ func (h *Handler) getManagerOrderById(c *gin.Context) {
 // @Produce			json
 // @Router			/manager/{id} [put]
 func (h *Handler) updateManagerOrder(c *gin.Context) {
-	id, err := ValidateId(c)
+	id, err := h.validator.ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter: "+err.Error())

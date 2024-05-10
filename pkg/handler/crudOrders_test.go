@@ -3,6 +3,7 @@ package handler
 import (
 	"bytes"
 	"happyBill/models"
+	mock_validator "happyBill/pkg/handler/validatorMock"
 	mock_service "happyBill/pkg/service/mocks"
 	"net/http/httptest"
 	"testing"
@@ -48,9 +49,10 @@ func TestHandler_CreateMyOrder(t *testing.T) {
 			defer c.Finish()
 
 			services := mock_service.NewMockService(c)
+			validator := mock_validator.NewMockValidator(c)
 			test.mock(services, 1, test.order)
 
-			handler := Handler{services}
+			handler := Handler{services, validator}
 
 			r := gin.New()
 			r.POST("/my/order/:id", handler.createMyOrder)

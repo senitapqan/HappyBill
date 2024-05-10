@@ -12,10 +12,11 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func (r *repository) GetMyOrders(id, page int, status string) ([]dtos.MyOrder, error) {
+func (r *repository) GetMyOrders(id, page int, status string) ([]dtos.MyOrder, dtos.Pagination, error) {
 	var result []dtos.MyOrder
-	query := fmt.Sprintf(`Select ord.deadline, ord.status, ord.product_id, usr.name AS manager_name, 
-			usr.username AS manager_username from %s ord 
+	query := fmt.Sprintf(`Select ord.deadline, ord.status, ord.startdate, ord.enddate, ord.product_id, usr.name AS manager_name, 
+			usr.username AS manager_username 
+			from %s ord 
 			join %s mng on ord.manager_id = mng.id 
 			join %s usr on usr.id = mng.user_id 
 			where ord.client_id = $1 and ord.status = '%s' 
@@ -23,8 +24,32 @@ func (r *repository) GetMyOrders(id, page int, status string) ([]dtos.MyOrder, e
 			consts.OrdersTable, consts.ManagersTable, consts.UsersTable, status,
 		consts.PaginationLimit, (page-1)*consts.PaginationLimit)
 	log.Info().Msg(query)
-	err := r.db.Select(&result, query, id)
-	return result, err
+	if err := r.db.Select(&result, query, id); err != nil {
+		return nil, dtos.Pagination{}, err	
+	}
+	
+
+	var pagination dtos.Pagination
+	pagination.CurrentPage = page
+	var totalRows int
+	
+	query = fmt.Sprintf(`select count(*) 
+			from %s ord 
+			join %s mng on ord.manager_id = mng.id 
+			join %s usr on usr.id = mng.user_id 
+			where ord.client_id = $1 and ord.status = '%s'`, 
+			consts.OrdersTable, consts.ManagersTable, consts.UsersTable, status)
+
+	if err := r.db.Get(&totalRows, query, id); err != nil {
+		if strings.Contains(err.Error(), "no rows") {
+			return nil, dtos.Pagination{}, errors.New("there is no orders")
+		}
+		return nil, dtos.Pagination{}, err
+	}
+
+	pagination.TotalPage = (totalRows + consts.PaginationLimit - 1) / consts.PaginationLimit
+	return result, pagination, nil
+
 }
 
 func (r *repository) CreateOrder(id int, order models.Order) (int, error) {
@@ -57,20 +82,43 @@ func (r *repository) CreateOrder(id int, order models.Order) (int, error) {
 	return orderId, nil
 }
 
-func (r *repository) GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, error) {
+func (r *repository) GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, dtos.Pagination, error) {
 	var result []dtos.ManagerOrder
 	query := fmt.Sprintf(`Select ord.deadline, ord.status, ord.product_id, usr.name AS client_name,
-			usr.username AS client_username from %s ord
+			usr.username AS client_username 
+			from %s ord
 			join %s clnt on ord.client_id = clnt.id
 			join %s usr on usr.id = clnt.user_id
 			where ord.manager_id = $1
 			order by ord.created_time desc limit %d offset %d`,
-		consts.OrdersTable, consts.ClientsTable, consts.UsersTable,
-		consts.PaginationLimit, (page-1)*consts.PaginationLimit)
+			consts.OrdersTable, consts.ClientsTable, consts.UsersTable,
+			consts.PaginationLimit, (page-1)*consts.PaginationLimit)
+
 	log.Info().Msg(query)
-	err := r.db.Select(&result, query, id)
-	// return result, err
-	return nil, err
+	if err := r.db.Select(&result, query, id); err != nil {
+		return nil, dtos.Pagination{}, err
+	}
+
+	var pagination dtos.Pagination
+	pagination.CurrentPage = page
+	var totalRows int
+	
+	query = fmt.Sprintf(`select count(*) from %s ord
+			join %s clnt on ord.client_id = clnt.id
+			join %s usr on usr.id = clnt.user_id
+			where ord.manager_id = $1`, 
+			consts.OrdersTable, consts.ClientsTable, consts.UsersTable)
+
+	if err := r.db.Get(&totalRows, query, id); err != nil {
+		if strings.Contains(err.Error(), "no rows") {
+			return nil, dtos.Pagination{}, errors.New("there is no manager orders")
+		}
+		return nil, dtos.Pagination{}, err
+	}
+
+	pagination.TotalPage = (totalRows + consts.PaginationLimit - 1) / consts.PaginationLimit
+	return result, pagination, nil
+	
 }
 
 func (r *repository) GetManagerOrderById(id int) (dtos.ManagerOrder, error) {

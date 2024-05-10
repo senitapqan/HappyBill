@@ -48,34 +48,16 @@ func (h *Handler) createBillboard(c *gin.Context) {
 // @Accept			json
 // @Produce		json
 // @Router			/admin/bill [get]
-//
-//host:port/admin/bill?page=1&limit=10&q="naruto"
 func (h *Handler) getAllBillboards(c *gin.Context) {
-	page, err := ValidatePage(c)
+	page, err := h.validator.ValidatePage(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	var search dtos.Search
-	err = ValidateSearch(c, &search)
-
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
-	var input dtos.Filter
-
-	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
 	log.Info().Msg("started handling get all billboards request")
 
-	products, err := h.service.GetAllBillboards(page, search, input)
+	products, pagination, err := h.service.GetAllBillboards(page)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -83,7 +65,43 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, dtos.GetAllBillboardsResponse{
-		Data: products,
+		Data:       products,
+		Pagination: pagination,
+	})
+}
+
+func (h *Handler) getAllSearchedBillboards(c *gin.Context) {
+	page, err := h.validator.ValidatePage(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var search dtos.Search
+	if err := h.validator.ValidateSearch(c, &search); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var filter dtos.Filter
+	if err := h.validator.ValidateFilter(c, &filter); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	log.Info().Msg("started handling get all billboards request")
+
+	products, pagination, err := h.service.GetAllSearchedBillboards(page, search, filter)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, dtos.GetAllBillboardsResponse{
+		Data:       products,
+		Pagination: pagination,
 	})
 }
 
@@ -96,7 +114,7 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 // @Produce		json
 // @Router			/admin/bill/{id} [get]
 func (h *Handler) getBillboardById(c *gin.Context) {
-	id, err := ValidateId(c)
+	id, err := h.validator.ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
@@ -119,7 +137,7 @@ func (h *Handler) getBillboardById(c *gin.Context) {
 func (h *Handler) getMyBillboards(c *gin.Context) {
 	clientId, _ := getId(c, clientCtx)
 
-	page, err := ValidatePage(c)
+	page, err := h.validator.ValidatePage(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -127,26 +145,27 @@ func (h *Handler) getMyBillboards(c *gin.Context) {
 	}
 
 	log.Info().Msg("started handling get my billboards request")
-	products, err := h.service.GetMyBillboards(clientId, page)
+	products, pagination, err := h.service.GetMyBillboards(clientId, page)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, dtos.GetAllBillboardsResponse{
-		Data: products,
+		Data:       products,
+		Pagination: pagination,
 	})
 }
 
 func (h *Handler) likeBillboard(c *gin.Context) {
 	clientId, _ := getId(c, clientCtx)
-	productId, err := ValidateId(c)
+	productId, err := h.validator.ValidateId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	action, err := ValidateLike(c)
+	action, err := h.validator.ValidateLike(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -161,7 +180,7 @@ func (h *Handler) likeBillboard(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, map[string]string{
-		"message": "qeury was successfully pended",
+		"message": "query was successfully pended",
 	})
 }
 
@@ -174,14 +193,14 @@ func (h *Handler) likeBillboard(c *gin.Context) {
 // @Produce		json
 // @Router			/admin/bill/{id} [put]
 func (h *Handler) updateBillboard(c *gin.Context) {
-	id, err := ValidateId(c)
+	id, err := h.validator.ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter: "+err.Error())
 		return
 	}
 
-	var input models.Product
+	var input dtos.Product
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -201,7 +220,7 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 }
 
 func (h *Handler) deleteBillboard(c *gin.Context) {
-	id, err := ValidateId(c)
+	id, err := h.validator.ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())

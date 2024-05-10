@@ -14,7 +14,7 @@ func (s *service) CreateManager(manager models.User) (int, error) {
 	return manager_id, err
 }
 
-func (s *service) GetAllManagers(page int) ([]dtos.User, error) {
+func (s *service) GetAllManagers(page int) ([]dtos.User, dtos.Pagination, error) {
 	log.Info().Msg("service send request to repository: get all managers request")
 	return s.repos.GetAllManagers(page)
 }

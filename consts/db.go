@@ -11,6 +11,7 @@ const (
 	LocationsTable      = "t_location"
 	OrdersTable         = "t_order"
 	ClientProductsTable = "t_client_products"
+	ProductPhotosTable  = "t_product_photos"
 
 	ClientRoleId  = 3
 	ManagerRoleId = 2
