@@ -28,7 +28,7 @@ func NewValidator() Validator {
 }
 
 func (v *validator) ValidateSearch(c *gin.Context, search *dtos.Search) error {
-	regionId, err := strconv.Atoi(c.Param("region"))
+	regionId, err := strconv.Atoi(c.Query("region"))
 
 	if err != nil {
 		return errors.New("Region id need to be int")
@@ -38,13 +38,13 @@ func (v *validator) ValidateSearch(c *gin.Context, search *dtos.Search) error {
 		return errors.New("Region id cannot be negative")
 	}
 
-	checkIn, err := time.Parse("2006-01-02", c.Param("check_in"))
+	checkIn, err := time.Parse("2006-01-02", c.Query("check_in"))
 
 	if err != nil {
 		return errors.New("Wrong format of check-in")
 	}
 
-	checkOut, err := time.Parse("2006-01-02", c.Param("check_out"))
+	checkOut, err := time.Parse("2006-01-02", c.Query("check_out"))
 
 	if err != nil {
 		return errors.New("Wrong format of check-out")
@@ -58,7 +58,36 @@ func (v *validator) ValidateSearch(c *gin.Context, search *dtos.Search) error {
 }
 
 func (v *validator) ValidateFilter(c *gin.Context, filter *dtos.Filter) error {
-
+	heightIn, err := strconv.Atoi(c.DefaultQuery("height_in", "0"))
+	if err != nil {
+		return err
+	}
+	heightOut, err := strconv.Atoi(c.DefaultQuery("height_out", "99999999"))
+	if err != nil {
+		return err
+	}
+	widthIn, err := strconv.Atoi(c.DefaultQuery("width_in", "0"))
+	if err != nil {
+		return err
+	}
+	widthOut, err := strconv.Atoi(c.DefaultQuery("width_out", "99999999"))
+	if err != nil {
+		return err
+	}
+	priceIn, err := strconv.Atoi(c.DefaultQuery("price_in", "0"))
+	if err != nil {
+		return err
+	}
+	priceOut, err := strconv.Atoi(c.DefaultQuery("price_out", "99999999"))
+	if err != nil {
+		return err
+	}
+	filter.HeightIn = heightIn
+	filter.HeightOut = heightOut
+	filter.PriceIn = priceIn
+	filter.PriceOut = priceOut
+	filter.WidthIn = widthIn
+	filter.WidthOut = widthOut
 	return nil
 }
 

@@ -12,6 +12,17 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+func (r *repository) GetAllOrders() ([]dtos.Order, error) {
+	var result []dtos.Order
+	query := fmt.Sprintf(`Select ord.deadline, ord.status, ord.startdate, ord.enddate, ord.product_id
+			from %s ord`, consts.OrdersTable)
+	log.Info().Msg(query)
+	if err := r.db.Select(&result, query); err != nil {
+		return nil, err	
+	}
+	return result, nil
+}
+
 func (r *repository) GetMyOrders(id, page int, status string) ([]dtos.MyOrder, dtos.Pagination, error) {
 	var result []dtos.MyOrder
 	query := fmt.Sprintf(`Select ord.deadline, ord.status, ord.startdate, ord.enddate, ord.product_id, usr.name AS manager_name, 
