@@ -2,6 +2,8 @@ package service
 
 import (
 	"errors"
+	"fmt"
+	"happyBill/consts"
 	"happyBill/dtos"
 	"happyBill/models"
 
@@ -28,13 +30,53 @@ func (s *service) GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, e
 
 func (s *service) GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error) {
 	log.Info().Msg("service send request to repository: get all searched billboards request")
-	return s.repos.GetAllSearchedBillboards(page, search, filter)
+	products, err := s.repos.GetAllSearchedBillboardsFake(filter)
+	if err != nil {
+		return nil, dtos.Pagination{}, err
+	}
+
+	orders, err := s.repos.GetAllOrders()
+	if err != nil {
+		return nil, dtos.Pagination{}, err
+	}
+
+	useless := make(map[int]bool)
+
+	for _, order := range orders {
+		if order.StartTime > search.CheckOut || search.CheckIn > order.EndTime {
+			continue
+		} else {
+			useless[order.ProductId] = true
+			log.Info().Msg(fmt.Sprintf("this product is shit: %d", order.ProductId))
+		}
+	}
+
+	skipped := 0
+	added := 0
+	total := 0
+	var result []dtos.Product
+	for _, product := range products {
+		if useless[product.Id] == false {
+			if skipped < consts.PaginationLimit * (page - 1) {
+				skipped++
+				total++
+				continue
+			}
+			if added < consts.PaginationLimit {
+				result = append(result, product)
+				added++
+			}
+			total++
+		}
+	}
+
+	return result, dtos.Pagination{CurrentPage: page, TotalPage: (total + consts.PaginationLimit - 1) / consts.PaginationLimit}, nil
 }
 
 func (s *service) GetMyBillboards(id, page int) ([]dtos.Product, dtos.Pagination, error) {
 	log.Info().Msg("service send request to repository: get my billboards (my fav) request")
 
-	myBillboards, pagination,  err := s.repos.GetMyBillboards(id, page)
+	myBillboards, pagination, err := s.repos.GetMyBillboards(id, page)
 	if err != nil {
 		return nil, dtos.Pagination{}, err
 	}

@@ -157,6 +157,21 @@ func (mr *MockRepositoryMockRecorder) GetAllManagers(page interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllManagers", reflect.TypeOf((*MockRepository)(nil).GetAllManagers), page)
 }
 
+// GetAllOrders mocks base method.
+func (m *MockRepository) GetAllOrders() ([]dtos.Order, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAllOrders")
+	ret0, _ := ret[0].([]dtos.Order)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAllOrders indicates an expected call of GetAllOrders.
+func (mr *MockRepositoryMockRecorder) GetAllOrders() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllOrders", reflect.TypeOf((*MockRepository)(nil).GetAllOrders))
+}
+
 // GetAllSearchedBillboards mocks base method.
 func (m *MockRepository) GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
@@ -171,6 +186,21 @@ func (m *MockRepository) GetAllSearchedBillboards(page int, search dtos.Search, 
 func (mr *MockRepositoryMockRecorder) GetAllSearchedBillboards(page, search, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllSearchedBillboards", reflect.TypeOf((*MockRepository)(nil).GetAllSearchedBillboards), page, search, filter)
+}
+
+// GetAllSearchedBillboardsFake mocks base method.
+func (m *MockRepository) GetAllSearchedBillboardsFake(filter dtos.Filter) ([]dtos.Product, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAllSearchedBillboardsFake", filter)
+	ret0, _ := ret[0].([]dtos.Product)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAllSearchedBillboardsFake indicates an expected call of GetAllSearchedBillboardsFake.
+func (mr *MockRepositoryMockRecorder) GetAllSearchedBillboardsFake(filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllSearchedBillboardsFake", reflect.TypeOf((*MockRepository)(nil).GetAllSearchedBillboardsFake), filter)
 }
 
 // GetBillboardById mocks base method.

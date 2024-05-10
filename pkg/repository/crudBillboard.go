@@ -42,6 +42,19 @@ func (r *repository) CreateBillboard(product models.Product) (int, error) {
 
 }
 
+func (r *repository) GetAllSearchedBillboardsFake(filter dtos.Filter) ([]dtos.Product, error) {
+	var products []dtos.Product
+	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name, loc.link as link, prod.main_photo
+			from %s prod
+			join %s loc on loc.id = prod.location_id
+			WHERE prod.archive = false and prod.height >= $1 and prod.height <= $2 and prod.width >= $3 and prod.width <= $4 
+			and prod.price >= $5 and prod.price <= $6`, consts.ProductsTable, consts.LocationsTable)
+	if err := r.db.Select(&products, query, filter.HeightIn, filter.HeightOut, filter.WidthIn, filter.WidthOut, filter.PriceIn, filter.PriceOut); err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
 func (r *repository) GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error) {
 	var products []dtos.Product
 	setValues := make([]string, 0)

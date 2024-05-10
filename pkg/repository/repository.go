@@ -28,13 +28,14 @@ type Repository interface {
 	CreateBillboard(product models.Product) (int, error)
 	GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, error)
 	GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error)
+	GetAllSearchedBillboardsFake(filter dtos.Filter) ([]dtos.Product, error)
 	GetMyBillboards(id, page int) ([]dtos.Product, dtos.Pagination, error)
 	GetBillboardById(id int) (dtos.Product, error)
 	DeleteBillboard(id int) error
 	UpdateBillboard(id int, input dtos.Product) error
 	LikeBillboard(clientId, productId int, action string) error
 
-	//GetAllOrders() ([]dtos.Order, error)
+	GetAllOrders() ([]dtos.Order, error)
 	CreateOrder(clientId int, order models.Order) (int, error)
 	GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, dtos.Pagination, error)
 	UpdateMyProfile(userId int, input dtos.UpdateUser) error

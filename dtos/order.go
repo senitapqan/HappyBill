@@ -4,7 +4,7 @@ type Order struct {
 	Id              int    `json:"order_id"`
 	Deadline        string `json:"deadline"`
 	Status          string `json:"status"`
-	ProductId       int    `json:"product_id"`
+	ProductId       int    `json:"product_id" db:"product_id"`
 	StartTime       string `json:"startdate" db:"startdate"`
 	EndTime         string `json:"enddate" db:"enddate"`
 	ManagerName     string `json:"manager_name"`
@@ -26,7 +26,7 @@ type MyOrder struct {
 type ManagerOrder struct {
 	Deadline       string `json:"deadline"`
 	Status         string `json:"status"`
-	ProductId      int    `json:"product_id"`
+	ProductId      int    `json:"product_id" db:"product_id"`
 	StartTime      string `json:"startdate" db:"startdate"`
 	EndTime        string `json:"enddate" db:"enddate"`
 	ClientName     string `json:"manager_name" db:"manager_name"`
@@ -38,11 +38,11 @@ type UpdateOrder struct {
 }
 
 type GetOrdersResponse struct {
-	Data []Order `json:"data"`
+	Data       []Order    `json:"data"`
 	Pagination Pagination `json:"pagination"`
 }
 
 type GetMyOrdersResponse struct {
-	Data []MyOrder `json:"data"`
+	Data       []MyOrder  `json:"data"`
 	Pagination Pagination `json:"pagination"`
 }
