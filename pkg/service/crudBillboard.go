@@ -10,6 +10,7 @@ import (
 
 func (s *service) CreateBillboard(product models.Product) (int, error) {
 	log.Info().Msg("service send request to repository: create billboard request")
+	product.MainPhoto = &product.Photos[0]
 
 	id, err := s.repos.CreateBillboard(product)
 
@@ -54,7 +55,7 @@ func (s *service) GetBillboardById(id int) (dtos.Product, error) {
 	return s.repos.GetBillboardById(id)
 }
 
-func (s *service) UpdateBillboard(id int, input models.Product) error {
+func (s *service) UpdateBillboard(id int, input dtos.Product) error {
 	log.Info().Msg("service send request to repository: update billboard request")
 	return s.repos.UpdateBillboard(id, input)
 }

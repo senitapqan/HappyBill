@@ -29,7 +29,7 @@ type Service interface {
 	GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error)
 	GetBillboardById(id int) (dtos.Product, error)
 	DeleteBillboard(id int) error
-	UpdateBillboard(id int, input models.Product) error
+	UpdateBillboard(id int, input dtos.Product) error
 	GetMyBillboards(id, page int) ([]dtos.Product, dtos.Pagination, error)
 	LikeBillboard(clientId, productId int, action string) error
 

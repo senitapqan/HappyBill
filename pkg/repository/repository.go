@@ -31,7 +31,7 @@ type Repository interface {
 	GetMyBillboards(id, page int) ([]dtos.Product, dtos.Pagination, error)
 	GetBillboardById(id int) (dtos.Product, error)
 	DeleteBillboard(id int) error
-	UpdateBillboard(id int, input models.Product) error
+	UpdateBillboard(id int, input dtos.Product) error
 	LikeBillboard(clientId, productId int, action string) error
 
 	//GetAllOrders() ([]dtos.Order, error)

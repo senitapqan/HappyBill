@@ -11,6 +11,8 @@ type Product struct {
 	Price       int       `json:"price" binding:"required"`
 	CreatedAt   time.Time `json:"created"`
 	Archive     bool      `json:"archive" db:"archive"`
+	MainPhoto    *string  `json:"main_photo" db:"main_photo"`
+	Photos       []string `json:"photos_link" db:"photos_link"`
 }
 
 type Location struct {

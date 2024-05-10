@@ -370,7 +370,7 @@ func (mr *MockRepositoryMockRecorder) LikeBillboard(clientId, productId, action 
 }
 
 // UpdateBillboard mocks base method.
-func (m *MockRepository) UpdateBillboard(id int, input models.Product) error {
+func (m *MockRepository) UpdateBillboard(id int, input dtos.Product) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateBillboard", id, input)
 	ret0, _ := ret[0].(error)

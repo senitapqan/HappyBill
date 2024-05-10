@@ -343,7 +343,7 @@ func (mr *MockServiceMockRecorder) ParseToken(accessToken interface{}) *gomock.C
 }
 
 // UpdateBillboard mocks base method.
-func (m *MockService) UpdateBillboard(id int, input models.Product) error {
+func (m *MockService) UpdateBillboard(id int, input dtos.Product) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateBillboard", id, input)
 	ret0, _ := ret[0].(error)

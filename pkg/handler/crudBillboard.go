@@ -54,7 +54,7 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
-	} 
+	}
 	log.Info().Msg("started handling get all billboards request")
 
 	products, pagination, err := h.service.GetAllBillboards(page)
@@ -65,7 +65,7 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, dtos.GetAllBillboardsResponse{
-		Data: products,
+		Data:       products,
 		Pagination: pagination,
 	})
 }
@@ -76,13 +76,13 @@ func (h *Handler) getAllSearchedBillboards(c *gin.Context) {
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
-	} 
+	}
 
 	var search dtos.Search
 	if err := h.validator.ValidateSearch(c, &search); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
-	} 
+	}
 
 	var filter dtos.Filter
 	if err := h.validator.ValidateFilter(c, &filter); err != nil {
@@ -100,7 +100,7 @@ func (h *Handler) getAllSearchedBillboards(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, dtos.GetAllBillboardsResponse{
-		Data: products,
+		Data:       products,
 		Pagination: pagination,
 	})
 }
@@ -152,7 +152,7 @@ func (h *Handler) getMyBillboards(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, dtos.GetAllBillboardsResponse{
-		Data: products,
+		Data:       products,
 		Pagination: pagination,
 	})
 }
@@ -180,7 +180,7 @@ func (h *Handler) likeBillboard(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, map[string]string{
-		"message": "qeury was successfully pended",
+		"message": "query was successfully pended",
 	})
 }
 
@@ -200,7 +200,7 @@ func (h *Handler) updateBillboard(c *gin.Context) {
 		return
 	}
 
-	var input models.Product
+	var input dtos.Product
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
