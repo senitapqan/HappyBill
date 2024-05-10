@@ -90,7 +90,7 @@ func ValidateLike(c *gin.Context) (string, error) {
 
 func ValidateStatus(c *gin.Context) (string, error) {
 	status := c.DefaultQuery("status", "active")
-	if status == "active" || status == "pending" || status == "passed" {
+	if status == "active" || status == "pending" || status == "archived" {
 		return status, nil
 	}
 	return "", errors.New("wrong format of action")
