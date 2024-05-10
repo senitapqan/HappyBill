@@ -55,9 +55,13 @@ func (h *Handler) getAllBillboards(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+	clinetId, err := getId(c, clientCtx)
+	if err != nil {
+		clinetId = -1
+	}
 	log.Info().Msg("started handling get all billboards request")
 
-	products, pagination, err := h.service.GetAllBillboards(page)
+	products, pagination, err := h.service.GetAllBillboards(page, clinetId)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())

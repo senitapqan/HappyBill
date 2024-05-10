@@ -17,7 +17,7 @@ type Service interface {
 
 	CreateManager(manager models.User) (int, error)
 	GetAllManagers(page int) ([]dtos.User, dtos.Pagination, error)
-	GetManagerById(id int) (dtos.User, error) 
+	GetManagerById(id int) (dtos.User, error)
 
 	CreateOrder(id int, order models.Order) (int, error)
 	GetAllOrders(page int) ([]dtos.Order, dtos.Pagination, error)
@@ -25,7 +25,7 @@ type Service interface {
 	UpdateMyProfile(userId int, input dtos.UpdateUser) error
 
 	CreateBillboard(product models.Product) (int, error)
-	GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, error)
+	GetAllBillboards(page, client_id int) ([]dtos.Product, dtos.Pagination, error)
 	GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error)
 	GetBillboardById(id int) (dtos.Product, error)
 	DeleteBillboard(id int) error

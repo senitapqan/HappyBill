@@ -95,15 +95,24 @@ func (r *repository) GetAllSearchedBillboards(page int, search dtos.Search, filt
 	return products, pagination, nil
 }
 
-func (r *repository) GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, error) {
+func (r *repository) GetAllBillboards(page, clinetId int) ([]dtos.Product, dtos.Pagination, error) {
 	var products []dtos.Product
-	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name, loc.link as link, prod.main_photo
+	var likedInfo1 string
+	var likedInfo2 string
+	likedInfo1 = ""
+	likedInfo2 = ""
+	if clinetId == -1 {
+		likedInfo1 = fmt.Sprintf(`left join %s likes on prod.id = likes.product_id and likes.client_id = %d`, consts.ClientProductsTable, clinetId)
+		likedInfo2 = `, case when likes.product_id is not null then true else false end as liked`
+	}
+	query := fmt.Sprintf(`select prod.id, prod.height, prod.width, prod.display_type, prod.price, loc.name as location_name, loc.link as link, prod.main_photo %s
 			from %s prod
 			join %s loc on loc.id = prod.location_id
+			%s
 			WHERE prod.archive = false
 			order by prod.created_time desc
 			limit %d offset %d`,
-		consts.ProductsTable, consts.LocationsTable, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
+		likedInfo2, consts.ProductsTable, consts.LocationsTable, likedInfo1, consts.PaginationLimit, (page-1)*consts.PaginationLimit)
 	if err := r.db.Select(&products, query); err != nil {
 		return nil, dtos.Pagination{}, err
 	}

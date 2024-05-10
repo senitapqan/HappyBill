@@ -17,6 +17,7 @@ type Product struct {
 	LocationName string   `json:"location_name" db:"location_name"`
 	LocationLink string   `json:"location_link" db:"link"`
 	Price        int      `json:"price"`
+	Liked        bool     `json:"liked" db:"liked"`
 	MainPhoto    *string  `json:"main_photo" db:"main_photo"`
 	Photos       []string `json:"photos_link" db:"photos_link"`
 }

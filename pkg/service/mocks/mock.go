@@ -126,9 +126,9 @@ func (mr *MockServiceMockRecorder) GenerateToken(username, password interface{})
 }
 
 // GetAllBillboards mocks base method.
-func (m *MockService) GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, error) {
+func (m *MockService) GetAllBillboards(page, client_id int) ([]dtos.Product, dtos.Pagination, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAllBillboards", page)
+	ret := m.ctrl.Call(m, "GetAllBillboards", page, client_id)
 	ret0, _ := ret[0].([]dtos.Product)
 	ret1, _ := ret[1].(dtos.Pagination)
 	ret2, _ := ret[2].(error)
@@ -136,9 +136,9 @@ func (m *MockService) GetAllBillboards(page int) ([]dtos.Product, dtos.Paginatio
 }
 
 // GetAllBillboards indicates an expected call of GetAllBillboards.
-func (mr *MockServiceMockRecorder) GetAllBillboards(page interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) GetAllBillboards(page, client_id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockService)(nil).GetAllBillboards), page)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllBillboards", reflect.TypeOf((*MockService)(nil).GetAllBillboards), page, client_id)
 }
 
 // GetAllManagerOrders mocks base method.

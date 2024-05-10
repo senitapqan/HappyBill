@@ -26,7 +26,7 @@ type Repository interface {
 	DeleteManager(id int) error*/
 
 	CreateBillboard(product models.Product) (int, error)
-	GetAllBillboards(page int) ([]dtos.Product, dtos.Pagination, error)
+	GetAllBillboards(page, clinetId int) ([]dtos.Product, dtos.Pagination, error)
 	GetAllSearchedBillboards(page int, search dtos.Search, filter dtos.Filter) ([]dtos.Product, dtos.Pagination, error)
 	GetMyBillboards(id, page int) ([]dtos.Product, dtos.Pagination, error)
 	GetBillboardById(id int) (dtos.Product, error)
@@ -39,7 +39,7 @@ type Repository interface {
 	GetMyOrders(clientId, page int, status string) ([]dtos.MyOrder, dtos.Pagination, error)
 	UpdateMyProfile(userId int, input dtos.UpdateUser) error
 
-	GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, dtos.Pagination,error)
+	GetAllManagerOrders(id, page int) ([]dtos.ManagerOrder, dtos.Pagination, error)
 	GetManagerOrderById(id int) (dtos.ManagerOrder, error)
 	UpdateManagerOrder(id int, input dtos.UpdateOrder) error
 }
